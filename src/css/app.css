@@ -1,0 +1,177 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+.app .Kopf {
+  /* 头部样式 */
+  background: linear-gradient(270deg, #4aa6ff, #3563ff);
+  display: flex;
+  flex-direction: row;
+  height: 90px;
+}
+.app .Kopf .eins {
+  /* 左侧图标 */
+  width: 491px;
+  margin-right: 20px;
+  background: url('http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/1-logo.409e15ee.png');
+  background-repeat: no-repeat;
+  background-position: 0% 50%;
+  margin-left: 50px;
+}
+.app .Kopf .zwei {
+  /* 中间ul表样式 */
+  width: 700px;
+  display: flex;
+  flex-direction: row;
+}
+.app .Kopf .zwei ul {
+  user-select: none;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.app .Kopf .zwei ul li {
+  width: 150px;
+  height: 100%;
+  color: #fff;
+  display: block;
+  line-height: 30px;
+}
+.app .Kopf .zwei ul li img {
+  display: block;
+  margin: 10px auto;
+  height: 30px;
+}
+.app .Kopf .zwei ul li span {
+  display: block;
+  font-family: "楷体";
+  font-size: 20px;
+  text-align: center;
+}
+.app .Kopf .drei {
+  /* 右侧用户样式 */
+  flex: 10;
+  display: flex;
+}
+.app .a {
+  margin: 18px;
+  display: flex;
+  flex-direction: column;
+  background-color: #EAF5FF;
+}
+.app .a .Mitte {
+  display: flex;
+  flex-direction: row;
+  flex: 3;
+}
+.app .a .Mitte .eins {
+  /* 左侧按钮 */
+  flex: 5;
+  display: flex;
+}
+.app .a .Mitte .eins span {
+  margin: 22px 0 0 30px;
+}
+.app .a .Mitte .eins span img {
+  width: 260px;
+  height: auto;
+}
+.app .a .Mitte .zwei {
+  /* 中间图片 */
+  flex: 3;
+  text-align: center;
+}
+.app .a .Mitte .zwei img {
+  margin: 18px auto;
+  width: 90px;
+  height: auto;
+}
+.app .a .Mitte .drei {
+  /* 右侧搜索框 */
+  flex: 4;
+  display: flex;
+  justify-content: center;
+  text-align: right;
+}
+.app .a .Boden {
+  flex: 15;
+}
+.app .search {
+  width: 426px;
+  height: 32px;
+  margin: auto;
+}
+.app .search .xiaLaKuang {
+  width: 112px;
+  height: 32px;
+  text-align: center;
+  background-color: #FFFFFF;
+  border: 1px solid #DCDCDC;
+  font-size: 16px;
+}
+.app .search .shuRuKuang {
+  width: 226px;
+  height: 32px;
+  border: 1px solid #DCDCDC;
+  color: #050505;
+  font-size: 16px;
+  outline: none;
+}
+.app .search .shuRuKuang::placeholder {
+  color: #BFBFBF;
+}
+.app .search .DasButton {
+  display: inline-block;
+  width: 88px;
+  height: 32px;
+  text-align: center;
+  background-color: #479CFF;
+  color: #fff;
+  position: absolute;
+  transition: background-color 0.2s ease-in-out;
+}
+.app .search .DasButton span {
+  user-select: none;
+  position: relative;
+  top: 20%;
+}
+.app .search .DasButton:hover {
+  background-color: #66BDFF;
+}
+.aaaa .grepButton {
+  margin-right: 7px;
+  display: inline-block;
+  width: 128px;
+  height: 32px;
+  text-align: center;
+  background-color: #62D862;
+  color: #fff;
+}
+.aaaa .grepButton span {
+  user-select: none;
+  position: relative;
+  top: 15%;
+  /* 调整字体粗细 */
+  font-weight: 400;
+}
+.aaaa .DasButton {
+  display: inline-block;
+  width: 96px;
+  height: 32px;
+  text-align: center;
+  background-color: #479CFF;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out;
+}
+.aaaa .DasButton span {
+  user-select: none;
+  position: relative;
+  top: 15%;
+  /* 调整字体粗细 */
+  font-weight: 400;
+}
+.aaaa .DasButton:hover {
+  background-color: #66BDFF;
+}

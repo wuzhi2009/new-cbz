@@ -1,0 +1,193 @@
+.app {
+    width: 100vw;
+    height: 100vh;
+    .Kopf {
+        /* 头部样式 */
+        background: linear-gradient(270deg,#4aa6ff,#3563ff);
+        display: flex;
+        flex-direction: row;
+        height: 90px;
+        .eins {
+            /* 左侧图标 */
+            width: 491px;
+            margin-right: 20px;
+            background: url('http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/1-logo.409e15ee.png');
+            background-repeat: no-repeat;
+            background-position: 0% 50%;
+            margin-left: 50px;
+        }
+        .zwei {
+            /* 中间ul表样式 */
+            width: 700px;
+            display: flex;
+            flex-direction: row;
+            ul {
+                user-select: none;
+                list-style: none;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                li {
+                    width: 150px;
+                    height: 100%;
+                    color: #fff;
+                    display: block;
+                    line-height: 30px;
+                    img {
+                        display: block;
+                        margin: 10px auto;
+                        height: 30px;
+                    }
+                    span {
+                        display: block;
+                        font-family: "楷体";
+                        font-size: 20px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        .drei {
+            /* 右侧用户样式 */
+            flex:10;
+            display: flex;
+        }
+    }
+    .a {
+        // height: calc(100vh - 90px);
+        margin: 18px;
+        display: flex;
+        flex-direction: column;
+        background-color: #EAF5FF;
+      .Mitte {
+            display: flex;
+            flex-direction: row;
+            flex: 3;
+            .eins {
+                /* 左侧按钮 */
+                flex:5;
+                display: flex;
+                span {
+                    margin: 22px 0 0 30px;
+                    img {
+                        width: 260px;
+                        height: auto;
+                    }
+                }
+            }
+            .zwei {
+                /* 中间图片 */
+                flex:3;
+                text-align: center;
+                img {
+                    margin: 18px auto;
+                    width: 90px;
+                    height: auto;
+                }
+            }
+            .drei {
+                /* 右侧搜索框 */
+                flex: 4;
+                display: flex;
+                justify-content: center;
+                text-align: right;
+            }
+        }
+        .Boden {
+            flex: 15;
+        }  
+    }
+    // 下拉框搜索样式
+    .search {
+        width: 426px;
+        height: 32px;
+        margin: auto;
+        .xiaLaKuang {
+            width: 112px;
+            height: 32px;
+            text-align: center;
+            background-color: #FFFFFF;
+            border: 1px solid #DCDCDC;
+            font-size: 16px;
+        }
+        .shuRuKuang {
+            width: 226px;
+            height: 32px;
+            border: 1px solid #DCDCDC;
+            color: #050505;
+            font-size: 16px;
+            // 去掉光标时候的黑边框
+            outline: none;
+        }
+        .shuRuKuang::placeholder {
+            color: #BFBFBF;
+        }
+        .DasButton {
+            display: inline-block;
+            width: 88px;
+            height: 32px;
+            text-align: center;
+            background-color: #479CFF;
+            color: #fff;
+            position: absolute;
+            // 设置缓慢过渡
+            transition: background-color 0.2s ease-in-out;
+            span {
+                // 文字不可被选中
+                user-select: none;
+                position: relative;
+                top: 20%;
+            }
+            
+        }
+        .DasButton:hover {
+            background-color: #66BDFF;
+        }
+    }
+}
+.aaaa {
+    // 绿色按钮
+    .grepButton {
+        margin-right: 7px;
+        display: inline-block;
+        width: 128px;
+        height: 32px;
+        text-align: center;
+        background-color: #62D862;
+        color: #fff;
+        span {
+            // 文字不可被选中
+            user-select: none;
+            position: relative;
+            top: 15%;
+             /* 调整字体粗细 */
+            font-weight: 400;
+         }
+    }
+    // 蓝色按钮
+    .DasButton {
+        display: inline-block;
+        width: 96px;
+        height: 32px;
+        text-align: center;
+        background-color: #479CFF;
+        color: #fff;
+        // 设置缓慢过渡
+        transition: background-color 0.2s ease-in-out;
+        span {
+           // 文字不可被选中
+            user-select: none;
+            position: relative;
+            top: 15%;
+             /* 调整字体粗细 */
+            font-weight: 400;
+        }
+        
+    }
+    .DasButton:hover {
+        background-color: #66BDFF;
+    }
+
+    
+}
