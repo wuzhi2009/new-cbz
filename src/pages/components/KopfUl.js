@@ -49,7 +49,7 @@ const KopfUl = () => {
         <ul>
             {list.map((item, key) => {
                 return <li key={key} onClick={() =>  go(item.key) }
-                    style={pathname.match(item.key) ? { backgroundColor: '#39CE39' } : {}}>
+                    style={pathname.match(item.key) ? {backgroundColor: '#39CE39'} : {cursor: 'pointer'}}>
                     <div>
                         <img src={item.icon} alt=""></img>
                     </div>

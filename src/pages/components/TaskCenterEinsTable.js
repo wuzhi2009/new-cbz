@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import OpenUndClose from './OpenUndClose';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "操作"];
 class TaskCenterEinsTable extends Component {
     state = {  } 
     render() { 
+        const {data} = this.props;
         return (
             <table width={'98%'} style={{borderSpacing: '0 10px', margin: "0 auto"}} >
                 <colgroup>
@@ -24,7 +26,7 @@ class TaskCenterEinsTable extends Component {
                         )
                     }) }
                 </tr>
-                {this.props.data.map((item, key) => {
+                { data.map((item, key) => {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 45} }>
                         <td style={ {display: 'none'} }>{item.id}</td>
@@ -32,10 +34,10 @@ class TaskCenterEinsTable extends Component {
                         <td>{item.name}</td>
                         <td style={ {textAlign: 'center'} }>{item.man}</td>
                         <td style={ {textAlign: 'center'} }>{item.create}</td>
-                        <td>{item.fanWei}</td>
+                        <td style={ {textAlign: 'center'} }><OpenUndClose text={item.fanWei} /></td>
                         <td style={ {textAlign: 'center'} } className='aaaa'>
-                            <div className='grepButton'><span>查看检测结果</span></div>
-                            <div className='DasButton'><span>点击下载</span></div>
+                            <div className='grepButton' style={ {cursor: 'pointer'} }><span>查看检测结果</span></div>
+                            <div className='DasButton' style={ {cursor: 'pointer'} }><span>点击下载</span></div>
                         </td>
                     </tr>
                     )

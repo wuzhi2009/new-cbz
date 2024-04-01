@@ -154,7 +154,7 @@
   position: relative;
   top: 15%;
   /* 调整字体粗细 */
-  font-weight: 400;
+  font-weight: 600;
 }
 .aaaa .DasButton {
   display: inline-block;
@@ -170,8 +170,45 @@
   position: relative;
   top: 15%;
   /* 调整字体粗细 */
-  font-weight: 400;
+  font-weight: 600;
 }
 .aaaa .DasButton:hover {
   background-color: #66BDFF;
+}
+.zweiTable .DasButton {
+  display: inline-block;
+  width: 70px;
+  height: 26px;
+  text-align: center;
+  padding-top: 5px;
+  background-color: #479CFF;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out;
+  user-select: none;
+  position: relative;
+  top: 15%;
+  /* 调整字体粗细 */
+  font-weight: 600;
+  right: 0%;
+  cursor: pointer;
+}
+.zweiTable .DasButton:hover {
+  background-color: #66BDFF;
+}
+.zweiTable .grepButton {
+  padding-top: 5px;
+  margin-right: 7px;
+  display: inline-block;
+  width: 70px;
+  height: 26px;
+  text-align: center;
+  background-color: #62D862;
+  color: #fff;
+  user-select: none;
+  position: relative;
+  top: 15%;
+  /* 调整字体粗细 */
+  font-weight: 600;
+  right: 0%;
+  cursor: pointer;
 }

@@ -1,100 +1,89 @@
-import { useEffect } from "react";
 import { connect } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
+import React, { Component } from 'react';
 
 /**
  * 检测情况查看组件
  * 
  * @author wuzhi
  */
-const TaskCenterChenk = (props) => {
-    const { pathname } = useLocation();
-    const nav = useNavigate();
-    const go = (path) => {
+class TaskCenterChenk extends Component {
+    state = {  } 
+    go = (path) => {
+        const nav = this.props.router.navigate;
         if (path === '/taskCenter/zwei') {
-            console.log("向xxx接口发送axios请求 参数321" + props.searchValue);
-            const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"}];
-            console.log('将得到的data传给list2 :>> ', data);
-            var info = {type: "getTask2List", data: data};
-            var info2 = {page: 1, total: 20};
-            window.sessionStorage.removeItem("currentPageundefined");
-            window.sessionStorage.setItem("DasEins", "1");
-            props.change(info2);
-            props.sendAction(info);
+            this.getZweiList();
         } else {
-            console.log("向xxx接口发送axios请求 参数123" + props.label + props.searchValue);
-            const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:80", status:1, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"}];
-            console.log('将得到的data传给list1 :>> ', data);
-            info = {type: "getTask1List", data: data};
-            info2 = {page: 1, total: 19};
-            window.sessionStorage.removeItem("currentPageundefined");
-            window.sessionStorage.setItem("DasEins", "1");
-            props.change(info2);
-            props.sendAction(info);
+            this.getEinsList();
         }
         nav(path);
     }
-    useEffect(() => {
-        // 每当props更新时执行
-        if (props.label) {
-            // 防止执行两次
-            console.log('发送请求 参数:>> ', props.searchValue + props.label + props.page);
-            if (pathname === '/taskCenter/zwei') {
-                console.log("向xxx接口发送axios请求 参数3" + props.searchValue);
-                const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"}];
-                console.log('将得到的data传给list2 :>> ', data);
-                var info = {type: "getTask2List", data: data};
-                props.sendAction(info) 
-            } else {
-                console.log("向xxx接口发送axios请求 参数123" + props.label + props.searchValue);
-                const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:80", status:1, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"}];
-                console.log('将得到的data传给list1 :>> ', data);
-                info = {type: "getTask1List", data: data};
-                props.sendAction(info) 
-            }
-            window.sessionStorage.setItem("DasEins", "1");
+    getEinsList = () => {
+        console.log("向xxx接口发送axios请求获得第一个表的数据 参数321" + this.props.searchValue);
+        const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
+        console.log('将得到的data传给list2 :>> ', data);
+        var info = {type: "getTask2List", data: data};
+        var info2 = {page: 1, total: 20};
+        window.sessionStorage.removeItem("currentPageundefined");
+        this.props.change(info2);
+        this.props.sendAction(info);
+    }
+    getZweiList = () => {
+        console.log("向xxx接口发送axios请求获得第二个表的数据 参数321" + this.props.searchValue);
+        const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
+        console.log('将得到的data传给list2 :>> ', data);
+        var info = {type: "getTask2List", data: data};
+        var info2 = {page: 1, total: 31};
+        window.sessionStorage.removeItem("currentPageundefined");
+        this.props.change(info2);
+        this.props.sendAction(info);
+    }
+    componentDidMount() {
+        const { pathname } = this.props.router.location;
+        if (pathname === '/taskCenter/zwei') {
+            this.getZweiList();
         } else {
-            // 利用缓存判断是否为第二次
-            if (window.sessionStorage.getItem("DasEins")) {
-                console.log("是第二次 不发送请求");
-                window.sessionStorage.removeItem("DasEins");
-            } else {
-                // 通过点击页码和初始化触发的
-                console.log('props.page :>> ', props.page);
-                if (pathname === '/taskCenter/zwei') {
-                    console.log("向xxx接口发送axios请求 参数3211111111" + props.searchValue);
-                    const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"}];
-                    console.log('将得到的data传给list2 :>> ', data);
-                    info = {type: "getTask2List", data: data};
-                    props.change({total:40});
-                    props.sendAction(info) 
-                } else {
-                    console.log("向xxx接口发送axios请求 参数123" + props.label + props.searchValue);
-                    const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:80", status:1, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"},{id: 6, type: "自定义", name: "测试2", man: "wuzhi", create: "2024-03-33", status:0, fanWei: "all"}];
-                    console.log('将得到的data传给list1 :>> ', data);
-                    info = {type: "getTask1List", data: data};
-                    
-                    props.sendAction(info) 
-                }
-            }
-            
+            this.getEinsList();
         }
-    }, [props.page, pathname, props.searchValue, props.label]);// eslint-disable-line react-hooks/exhaustive-deps
-    return (
-        <>
+    }
+    componentDidUpdate(prevProps) {
+        const { pathname } = this.props.router.location;
+        const { page, searchValue } = this.props;
+        const page2 = prevProps.page;
+        const searchValue2 = prevProps.searchValue;
+        if (page !== page2 || searchValue !== searchValue2) {
+            this.onPropChange(pathname);
+        }
+    }
+    onPropChange(path) {
+        // 根据props变化执行的操作
+        console.log("初始化不执行");
+        console.log('当前页数 :>> ', this.props.page);
+        console.log('搜索数据 :>> ', this.props.searchValue);
+        if (path === '/taskCenter/zwei') {
+            console.log("向xxx接口发送axios请求获得第二个表的数据");
+        } else {
+            console.log("向xxx接口发送axios请求获得第一个表的数据");
+        }
+    }
+    render() { 
+        const { pathname } = this.props.router.location;
+        return (
+            <>
             { pathname === '/taskCenter/eins' ? 
             <>
-            <span><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result-active.3d1dfdc0.png' /></span> 
-            <span><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting.c7343f38.png" alt="" onClick={ () => {go('/taskCenter/zwei')} } /></span>
+            <span style={ {cursor: 'pointer'} }><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result-active.3d1dfdc0.png' /></span> 
+            <span style={ {cursor: 'pointer'} }><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting.c7343f38.png" alt="" onClick={ () => {this.go('/taskCenter/zwei')} } /></span>
             </> 
             : 
             <>
-            <span><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result.93cc4c77.png' onClick={ () => {go('/taskCenter/eins')} }/></span> 
-            <span><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting-active.0658a338.png" alt=""  /><span style={ {position: 'absolute', top: 153, left: 395, fontSize: 12, fontWeight: 100, color: '#F56460', userSelect: 'none'} }>有0次检测正在队列中</span></span>
+            <span style={ {cursor: 'pointer'} }><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result.93cc4c77.png' onClick={ () => {this.go('/taskCenter/eins')} }/></span> 
+            <span style={ {cursor: 'pointer'} }><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting-active.0658a338.png" alt=""  /><span style={ {position: 'absolute', top: 153, left: 395, fontSize: 12, fontWeight: 100, color: '#F56460', userSelect: 'none'} }>有0次检测正在队列中</span></span>
             </> 
             }
         </>
-    )
+        );
+    }
 }
 
 //发送list数据
@@ -111,5 +100,6 @@ const setListData = (dispatch) => {
 const getSearch = (search) => {
     return search;
 }
+export default connect(({search}) => getSearch(search), setListData)(withRouter(TaskCenterChenk));
 
-export default connect(({search}) => getSearch(search), setListData)(TaskCenterChenk);
+

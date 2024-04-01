@@ -26,15 +26,6 @@ const reducer = (state, action) => {
                 } 
             }
             return state;
-        case "pageAndSize":
-            state = {
-                ...DasState,
-                pageAndSize:{
-                    page: action.page,
-                    total: action.total 
-                } 
-            }
-                return state;
         default:
             return DasState;
     }

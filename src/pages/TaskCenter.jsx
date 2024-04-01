@@ -13,7 +13,7 @@ class TaskCenter extends Component {
         const options = [{key: '检测名称', value: '1'}];
         const {page, total} = this.state;
         return (
-            <>
+            <div className='a'>
                 <div className="Mitte">
                 <div className="eins">
                     <TaskCenterChenk page={page} change={this.setState.bind(this)}/>
@@ -25,10 +25,10 @@ class TaskCenter extends Component {
                 </div>
                 <div className="Boden">
                     <Outlet />
-                    <Pagination defaultCurrent={page} total={total} onChange={(page) => {this.getPage(page)}} />
+                    <Pagination defaultCurrent={page} total={total} onChange={(page) => {this.getPage(page)}} style={ {marginTop: 6, paddingTop: 15} } />
                 </div>
                 
-            </>
+            </div>
         );
     }
 }

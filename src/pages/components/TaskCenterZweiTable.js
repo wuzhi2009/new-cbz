@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import OpenUndClose from './OpenUndClose';
+import Modal from './Modal';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "状态", "操作"];
 class TaskCenterZweiTable extends Component {
-    state = {  } 
+    state = { open:false, id:-1 } 
+    // 关闭模态框
+    close = () => {
+        this.setState({open: false});
+    }
+    // 确认删除
+    ok = () => {
+        console.log("确认删除任务id:" + this.state.id);
+    }
     render() { 
+        const { open } = this.state;
         return (
+            <>
             <table width={'98%'} style={{borderSpacing: '0 10px', margin: "0 auto"}} >
                 <colgroup>
                 <col style={ {width: 120, minWidth: 120} } />
@@ -33,11 +45,11 @@ class TaskCenterZweiTable extends Component {
                         <td>{item.name}</td>
                         <td style={ {textAlign: 'center'} }>{item.man}</td>
                         <td style={ {textAlign: 'center'} }>{item.create}</td>
-                        <td>{item.fanWei}</td>
-                        <td style={ {textAlign: 'center'} }>{item.status === 0 ? <>等待运行</> : <>正在运行</>}</td>
+                        <td style={ {textAlign: 'center'} }><OpenUndClose text={ item.fanWei } /></td>
+                        <td style={ {textAlign: 'center'} }>{item.status === 0 ? <div style={ {color: '#FF9854'} }>等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
                         <td style={ {textAlign: 'center'} }>
-                            <div style={ {display: 'inlineBlock',width: 120,height: 26, textAlign: 'center',backgroundColor: 'red',color: '#fff'} } onClick={() => {console.log("取消任务" + item.id)}}>
-                                <span style={ { userSelect: 'none',position: 'relative',top: '15%',fontWeight: 400} }>取消</span>
+                            <div style={ {display: 'inlineBlock',width: 120,height: 26, textAlign: 'center',backgroundColor: 'red',color: '#fff', cursor: 'pointer'} } onClick={() => {this.setState({open: true, id:item.id})}}>
+                                <span style={ { userSelect: 'none', position: 'relative', top: '15%', fontWeight: 600} }>取消</span>
                             </div>
                         </td>
                     </tr>
@@ -45,6 +57,15 @@ class TaskCenterZweiTable extends Component {
                 })}
             </thead>
             </table>
+            <Modal open={open} close={this.close.bind(this)}>
+                <div style={ {marginBottom: 20} }>提示：</div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您是否要取消此任务</div>
+                <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
+                    <span className='DasButton' onClick={() => {this.close()}} >取消</span>
+                    <span className='grepButton' onClick={() => {this.ok()}}>确定</span> 
+                </div>
+            </Modal>
+            </>
         );
     }
 }

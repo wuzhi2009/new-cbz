@@ -4,16 +4,29 @@ import '../../css/pagination.css';
  * 分页
  * 
  * @author wuzhi
+ * 
+ * @param defaultCurrent 当前页
+ * @param total 总数据量
+ * @param style 样式
  */
 class Pagination extends Component{
     constructor(props) {
         super(props)  
         var {defaultCurrent,total} = props;
+        if (total <= 0) {
+            var pageTotal = 1;
+        } else {
+           // 计算总页数
+            pageTotal = Math.ceil(total / 10); 
+        }
+        if (defaultCurrent <= 0) {
+            defaultCurrent = 1;
+        }
         this.state = {
             currentPage: defaultCurrent, //当前页码
             groupCount: 5, //页码分组，显示7个页码，其余用省略号显示
             startPage: parseInt(defaultCurrent)-2>0 ? parseInt(defaultCurrent)-2 : parseInt(defaultCurrent), //分组开始页码
-            totalPage:total //总页数
+            totalPage:pageTotal //总页数
         }
  
     }
@@ -115,15 +128,21 @@ class Pagination extends Component{
         window.sessionStorage.removeItem(`currentPage${this.state.url}`);
     }
     render(){
-        const { defaultCurrent,total } = this.props;
+        const { defaultCurrent,total, style } = this.props;
         const localCurrent = parseInt(sessionStorage.getItem(`currentPage${this.state.url}`)) || 1;
+        if (total <= 0) {
+            var pageTotal = 1;
+        } else {
+           // 计算总页数
+            pageTotal = Math.ceil(total / 10); 
+        }
         const pageCfg = {
             currentPage: localCurrent || defaultCurrent,
             startPage: localCurrent-2>0 ? localCurrent-2 : localCurrent, //分组开始页码
-            totalPage:total //总页数
+            totalPage:pageTotal //总页数
         }
         return(
-            <div className="pagination">
+            <div className="pagination" style={ style }>
                 <ul style={ {display: 'flex',flexDirection: 'row',alignItems: 'center',justifyContent: 'right',userSelect: 'none', listStyle: 'none'} }>
                     {this.createPage(pageCfg)}
                 </ul>

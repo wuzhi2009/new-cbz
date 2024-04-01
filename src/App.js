@@ -8,7 +8,7 @@ function App() {
     <div className="app">
       <Provider store={store}>
       <Kopf />
-      <div className='a'>
+      <div>
         <Outlet />
       </div>
       </Provider>
