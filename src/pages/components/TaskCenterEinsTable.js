@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import OpenUndClose from './OpenUndClose';
+import { withRouter } from '../../utils/withRouter';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "操作"];
 class TaskCenterEinsTable extends Component {
-    state = {  } 
+    state = { } 
+    // 跳转到检测详情页面
+    go = (item) => {
+        const nav = this.props.router.navigate;
+        nav("/taskCenterXiangQing", {state: {...item}})
+    }
     render() { 
-        const {data} = this.props;
+        const { data } = this.props;
         return (
             <table width={'98%'} style={{borderSpacing: '0 10px', margin: "0 auto"}} >
                 <colgroup>
@@ -36,7 +42,7 @@ class TaskCenterEinsTable extends Component {
                         <td style={ {textAlign: 'center'} }>{item.create}</td>
                         <td style={ {textAlign: 'center'} }><OpenUndClose text={item.fanWei} /></td>
                         <td style={ {textAlign: 'center'} } className='aaaa'>
-                            <div className='grepButton' style={ {cursor: 'pointer'} }><span>查看检测结果</span></div>
+                            <div className='grepButton' style={ {cursor: 'pointer'} } onClick={() => {this.go(item)}}><span>查看检测结果</span></div>
                             <div className='DasButton' style={ {cursor: 'pointer'} }><span>点击下载</span></div>
                         </td>
                     </tr>
@@ -52,4 +58,4 @@ const getList = (task1List) => {
     return task1List;
 }
  
-export default connect(({task1List}) => getList(task1List))(TaskCenterEinsTable);
+export default withRouter(connect(({task1List}) => getList(task1List))(TaskCenterEinsTable));

@@ -35,20 +35,20 @@ class Pagination extends Component{
         const {groupCount} = this.state;
         const {currentPage, totalPage,startPage} = pageCfg;
         // const {currentPage,groupCount, startPage,totalPage} = this.state;
-        let pages = [];
+        var pages = [];
         //上一页
-        pages.push(<li className={currentPage === 1 ? "nomore" : "abc"} onClick={this.prePageHandeler.bind(this)} key={0}>上一页</li>)
+        pages.push(<li className={currentPage === 1 ? "nomore" : "abc"} onClick={this.prePageHandeler.bind(this)} key={0}>&lt;</li>)
  
         if (totalPage <= 10) {
             /*总页码小于等于10时，全部显示出来*/
-            for (let i = 1; i <= totalPage; i++) {
+            for (var i = 1; i <= totalPage; i++) {
                 pages.push(<li key={i} onClick={this.pageClick.bind(this, i)} className={currentPage === i ? "activePage" : "abc"}>{i}</li>)
             }
         } else {
             /*总页码大于10时，部分显示*/
             //第一页
             pages.push(<li className={currentPage === 1 ? "activePage" : "abc"} key={1} onClick={this.pageClick.bind(this, 1)}>1</li>)
-            let pageLength = 0;
+            var pageLength = 0;
             if (groupCount + startPage > totalPage) {
                 pageLength = totalPage;
             } else {
@@ -60,7 +60,7 @@ class Pagination extends Component{
                 pages.push(<li className="omission" key={-1}>···</li>)
             }
             //非第一页和最后一页显示
-            for (let i = startPage; i < pageLength; i++) {
+            for (i = startPage; i < pageLength; i++) {
                 if (i <= totalPage - 1 && i > 1) {
                     pages.push(<li className={currentPage === i ? "activePage" : "abc"} key={i} onClick={this.pageClick.bind(this, i)}>{i}</li>)
                 }
@@ -73,12 +73,17 @@ class Pagination extends Component{
             pages.push(<li className={currentPage === totalPage ? "activePage" : "abc"} key={totalPage} onClick={this.pageClick.bind(this, totalPage)}>{totalPage}</li>)
         }
         //下一页
-        pages.push(<li className={currentPage === totalPage ? "nomore" : "abc"} onClick={this.nextPageHandeler.bind(this)} key={totalPage + 1}>下一页</li>)
+        pages.push(<li className={currentPage === totalPage ? "nomore" : "abc"} onClick={this.nextPageHandeler.bind(this)} key={totalPage + 1}>&gt;</li>);
         return pages;
     }
     //页码点击 currentPage当前页
     pageClick(currentPage) {
-        const {groupCount} = this.state
+        const { groupCount } = this.state;
+        const currentPage2 = this.state.currentPage;
+        if (currentPage2 === currentPage) {
+            // 点击的是当前页 不执行
+            return;
+        }
         const {onChange} = this.props;
         //当 当前页码 大于 分组的页码 时，使 当前页 前面 显示 两个页码
         if (currentPage >= groupCount) {
@@ -107,7 +112,7 @@ class Pagination extends Component{
     }
     //上一页事件
     prePageHandeler() {
-        let {currentPage} = this.state
+        var {currentPage} = this.state
         if (--currentPage === 0) {
             return false;
         }
@@ -116,7 +121,7 @@ class Pagination extends Component{
  
     //下一页事件
     nextPageHandeler() {
-        let {currentPage,totalPage} = this.state
+        var {currentPage,totalPage} = this.state
         // const {totalPage} = this.props.pageConfig;
         if (++currentPage > totalPage) {
             return false;
@@ -124,17 +129,32 @@ class Pagination extends Component{
         this.pageClick(currentPage)
     }
     // 重新加载组件需要删除页数缓存
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         window.sessionStorage.removeItem(`currentPage${this.state.url}`);
+        const {currentPage} = this.state;
+        if (currentPage !== 1) {
+            this.setState({currentPage: 1});
+        }
+    }
+    componentDidUpdate(prevProps) {
+        const { totalPage, currentPage } = this.state;
+        const { total, defaultCurrent } = this.props;
+        var pageTotal = Math.ceil(total / 10);
+        if (totalPage !== pageTotal) {
+            // 数据总数发生改变 进行更新
+            this.setState({totalPage: pageTotal});
+        }
+        if (currentPage !== defaultCurrent) {
+            // 数据页数发生变化进行更新
+            this.setState({currentPage: defaultCurrent});
+        }
     }
     render(){
         const { defaultCurrent,total, style } = this.props;
         const localCurrent = parseInt(sessionStorage.getItem(`currentPage${this.state.url}`)) || 1;
+        var pageTotal = Math.ceil(total / 10);
         if (total <= 0) {
-            var pageTotal = 1;
-        } else {
-           // 计算总页数
-            pageTotal = Math.ceil(total / 10); 
+            pageTotal = 1;
         }
         const pageCfg = {
             currentPage: localCurrent || defaultCurrent,

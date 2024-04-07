@@ -20,9 +20,9 @@ class TaskCenterChenk extends Component {
     }
     getEinsList = () => {
         console.log("向xxx接口发送axios请求获得第一个表的数据 参数321" + this.props.searchValue);
-        const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
+        const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, smId: 123, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", smId:22222,create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
         console.log('将得到的data传给list2 :>> ', data);
-        var info = {type: "getTask2List", data: data};
+        var info = {type: "getTask1List", data: data};
         var info2 = {page: 1, total: 20};
         window.sessionStorage.removeItem("currentPageundefined");
         this.props.change(info2);
@@ -62,8 +62,18 @@ class TaskCenterChenk extends Component {
         console.log('搜索数据 :>> ', this.props.searchValue);
         if (path === '/taskCenter/zwei') {
             console.log("向xxx接口发送axios请求获得第二个表的数据");
+            const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
+            var info = {type: "getTask2List", data: data};
+            var info2 = {page: this.props.page, total: 31};
+            this.props.change(info2);
+            this.props.sendAction(info);
         } else {
             console.log("向xxx接口发送axios请求获得第一个表的数据");
+            const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
+            info = {type: "getTask1List", data: data};
+            info2 = {page: this.props.page, total: 41};
+            this.props.change(info2);
+            this.props.sendAction(info);
         }
     }
     render() { 
@@ -72,7 +82,7 @@ class TaskCenterChenk extends Component {
             <>
             { pathname === '/taskCenter/eins' ? 
             <>
-            <span style={ {cursor: 'pointer'} }><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result-active.3d1dfdc0.png' /></span> 
+            <span style={ {cursor: 'pointer'} }><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result-active.3d1dfdc0.png' /><span className="count">99+</span></span>
             <span style={ {cursor: 'pointer'} }><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting.c7343f38.png" alt="" onClick={ () => {this.go('/taskCenter/zwei')} } /></span>
             </> 
             : 
@@ -100,6 +110,6 @@ const setListData = (dispatch) => {
 const getSearch = (search) => {
     return search;
 }
-export default connect(({search}) => getSearch(search), setListData)(withRouter(TaskCenterChenk));
+export default withRouter(connect(({search}) => getSearch(search), setListData)(TaskCenterChenk));
 
 

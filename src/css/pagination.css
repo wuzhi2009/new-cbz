@@ -5,8 +5,7 @@
     font-weight: bold;
 }
 .activePage {
-    border: 1px solid #333;
-    background-color: #333;
+    background-color: #4698FF;
     color: #eee;
     font-size: 13px;
 }
@@ -18,6 +17,7 @@
     line-height: 32px;
     border-radius: 4px;
     margin: 0 3px;
+
 }
 .pagination {
     display: flex;
@@ -29,9 +29,12 @@
     /* 禁止选取 */
     user-select: none;
 }
+.abc {
+    background-color: #efecec;
+}
 .abc:hover {
-    background-color: #000;
-    color: white;
+    /* 鼠标停留时 */
+    color: #4698FF;
     cursor: pointer;
 }
 .pagination li {
@@ -42,5 +45,4 @@
     line-height: 32px;
     border-radius: 4px;
     margin: 0 3px;
-    border: 1px solid black;
 }

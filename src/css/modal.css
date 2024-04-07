@@ -13,11 +13,14 @@
   .modal-content {
     width: 300px;
     height: 160px;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.4);
     padding: 20px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    animation: modalOpen 300ms infinite alternate;
+    animation-iteration-count: 1;
+    backdrop-filter: blur(3px);
   }
    
   .close {
@@ -25,4 +28,13 @@
     margin-left: 90%;
     font-size: 28px;
     font-weight: bold;
+  }
+
+  @keyframes modalOpen {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
