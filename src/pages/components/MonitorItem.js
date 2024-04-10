@@ -28,11 +28,12 @@ const ulStyle = {
     marginBottom: 10, 
     position: 'relative', 
     width: 1350, 
-    minHeight: 30
+    minHeight: 40
 }
 /**
  * 发起检测模块组件
  * 
+ * @author wuzhi
  * @param title 左侧标题
  * @param data[] 数据 {label,别的数据}
  * @param en 是否默认选择第一个
@@ -64,6 +65,7 @@ class MonitorItem extends Component {
     xuanZhe = (key, item) => {
         const { data, change } = this.props;
         if (key < 1000) {
+            // 自治区的
             var newData = data.filter(dasItem => dasItem.id === item.id);
             this.setState({key: key + 1, label: item.label, cityListOpen: false});
             if (newData[0].children) {
@@ -72,6 +74,7 @@ class MonitorItem extends Component {
                 change(undefined, newData[0].label, key + 1)
             }   
         } else {
+            // 非自治区的
             this.setState({cityLabel: item});
             change(undefined, item, key)
         }
@@ -127,7 +130,7 @@ class MonitorItem extends Component {
                     }
                 </div> : <></>
                 }
-                { !haben ? open ? <span style={ rightStyle } onClick={() => {this.setState({open:false})}}>收起∧</span> : <span style={ rightStyle } onClick={() => {this.setState({open:true})}}>展开∨</span> : <></>}
+                { !haben ? (open ? <span style={ rightStyle } onClick={() => {this.setState({open:false})}}>收起∧</span> : <span style={ rightStyle } onClick={() => {this.setState({open:true})}}>展开∨</span>) : <></>}
             </ul>
         );
     }

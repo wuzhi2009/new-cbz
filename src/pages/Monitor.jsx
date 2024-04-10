@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import MonitorItem from './components/MonitorItem';
+import MonitorItemZwei from './components/MonitorItemZwei';
+import MonitorItemDrei from './components/MonitorItemDrei';
 const data = [
             {
                 "id": 18087,
@@ -8359,7 +8361,7 @@ const data = [
             }
 ]
 class Monitor extends Component {
-    state = { dpName:"", mediaType:1, data:[], data2:[], checkVendor:"KPY"} 
+    state = { dpName:"", mediaType:1, data:[], data2:[], checkVendor:"KPY", data3:[], postStartTime:"", postEndTime:""} 
     componentDidMount() {
         console.log("获取全部data数据 传给区域");
     }
@@ -8369,19 +8371,19 @@ class Monitor extends Component {
             console.log('获取栏目数据: dpName :>> mediaType ', dpName, mediaType);
         }
     }
-    getDanWei = () => {
-
-    }
     render() { 
-        const { data2 } = this.state;
+        const { data2, mediaType, dpName } = this.state;
         return (
             <div style={ {position: 'relative'} }>
                 <div style={ {position: 'absolute', left: 140, right:20, top: 40} }>
                     <MonitorItem title="平台" data={[{id:1, label:"网站"},{id:2, label:"新媒体"}]} en={true} change={(a, b, key) => {this.setState({mediaType: key});}} />
                     <MonitorItem title="区域" data={data} en={true} change={(children) => {this.setState({data2: children})}} />
                     <MonitorItem title="单位" data={data2} en={false} change={(_, label) => {this.setState({dpName: label})}} />
-                    <MonitorItem title="栏目" data={[{label:""},{label:""}]} />
+                    <MonitorItemDrei onChange={(list) => {this.setState({data3: list})}} />
                     <MonitorItem title="接口" data={[{label:"KPY"}]} en={true} haben={true} change={(_, label) => {this.setState({checkVendor: label})}} />
+                    <MonitorItemZwei onChange={(sDate, eDate) => {this.setState({postStartTime: sDate, postEndTime: eDate})}} />
+                    <div style={ {color: '#4B83F0', display: 'inline-block', marginRight: 20} }>已选择</div>
+                    <div style={ {backgroundColor: '#E8ECF2', height: 24, display: 'inline-block', textAlign: 'center', padding: 5} }>【{mediaType === 1 ? "网站" : "新媒体"}】{dpName}</div>
                 </div>
             </div>
         );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LangText from './LangText';
+import { Tooltip } from 'antd';
 const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误类型", "不规范表述", "规范表述", "文章标题", "片段", "数据类型", "引用页", "发布时间", "修改状态", "操作"];
 /**
  * 检测详情表
@@ -129,7 +130,7 @@ class XiangQingTable extends Component {
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={item.articleTitle} is={false} /> </td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={newDescription} is={true} /></td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.doctype}</td>
-                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><a href={item.postUrl}>{newPostUrl}</a></td>
+                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><Tooltip title={item.postUrl}><a href={item.postUrl}>{newPostUrl}</a></Tooltip></td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.postTime}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newModifyState}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>

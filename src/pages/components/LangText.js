@@ -1,3 +1,4 @@
+import { Tooltip } from 'antd';
 import React, { Component } from 'react';
 /**
  * 超长文本隐藏显示组件
@@ -13,25 +14,27 @@ class LangText extends Component {
         const { text, col, is } = this.props;
         if (is) {
             return (
-                <p style={ 
+                <Tooltip title={() => {return <span dangerouslySetInnerHTML={ {__html:text} }></span>}} >
+                    <span style={ 
+                        {overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: col,
+                        WebkitBoxOrient: 'vertical'}
+                        } dangerouslySetInnerHTML={ {__html:text} } />
+                </Tooltip> 
+            )
+        }
+        return (
+            <Tooltip title={text}>
+                <span style={ 
                     {overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     display: '-webkit-box',
                     WebkitLineClamp: col,
                     WebkitBoxOrient: 'vertical'}
-                    } title={text} dangerouslySetInnerHTML={ {__html:text} } />
-            )
-        }
-        return (
-            <p style={ 
-                {overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                display: '-webkit-box',
-                WebkitLineClamp: col,
-                WebkitBoxOrient: 'vertical'}
-                } title={text}>
-                { text }
-            </p>
+                    } >{text}</span>
+            </Tooltip>
         );
     }
 }
