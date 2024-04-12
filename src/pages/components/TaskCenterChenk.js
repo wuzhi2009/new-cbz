@@ -8,7 +8,7 @@ import React, { Component } from 'react';
  * @author wuzhi
  */
 class TaskCenterChenk extends Component {
-    state = {  } 
+    state = { searchValue:"" } 
     go = (path) => {
         const nav = this.props.router.navigate;
         if (path === '/taskCenter/zwei') {
@@ -24,7 +24,6 @@ class TaskCenterChenk extends Component {
         console.log('将得到的data传给list2 :>> ', data);
         var info = {type: "getTask1List", data: data};
         var info2 = {page: 1, total: 20};
-        window.sessionStorage.removeItem("currentPageundefined");
         this.props.change(info2);
         this.props.sendAction(info);
     }
@@ -34,39 +33,47 @@ class TaskCenterChenk extends Component {
         console.log('将得到的data传给list2 :>> ', data);
         var info = {type: "getTask2List", data: data};
         var info2 = {page: 1, total: 31};
-        window.sessionStorage.removeItem("currentPageundefined");
         this.props.change(info2);
         this.props.sendAction(info);
     }
     componentDidMount() {
         const { pathname } = this.props.router.location;
         if (pathname === '/taskCenter/zwei') {
-            this.getZweiList();
+            // this.getZweiList();
         } else {
             this.getEinsList();
         }
     }
     componentDidUpdate(prevProps) {
         const { pathname } = this.props.router.location;
-        const { page, searchValue } = this.props;
+        const { page, searchValue, label} = this.props;
         const page2 = prevProps.page;
         const searchValue2 = prevProps.searchValue;
-        if (page !== page2 || searchValue !== searchValue2) {
+        if (page !== page2) {
             this.onPropChange(pathname);
+        }
+        if (label && searchValue && searchValue !== searchValue2) {
+            var s = searchValue;
+            if (s === "空的里边是空的wuzhi") {
+                // 空的标识
+                s = "";
+            }
+            this.setState({searchValue: s}, () => {this.onPropChange(pathname)});
         }
     }
     onPropChange(path) {
+        const { searchValue } = this.state;
         // 根据props变化执行的操作
         console.log("初始化不执行");
         console.log('当前页数 :>> ', this.props.page);
-        console.log('搜索数据 :>> ', this.props.searchValue);
+        console.log('搜索数据 :>> ', searchValue);
         if (path === '/taskCenter/zwei') {
             console.log("向xxx接口发送axios请求获得第二个表的数据");
             const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];
             var info = {type: "getTask2List", data: data};
             var info2 = {page: this.props.page, total: 31};
-            this.props.change(info2);
-            this.props.sendAction(info);
+            // this.props.change(info2);
+            // this.props.sendAction(info);
         } else {
             console.log("向xxx接口发送axios请求获得第一个表的数据");
             const data = [{id: 3, type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]},{id: 6,  type: "自定义", name: "测试", man: "wuzhi", create: "2024-03-29 08:57:26", status:1, fanWei: [{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"},{channelId:193628,channelName:"纠错"}]}];

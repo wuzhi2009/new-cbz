@@ -103,14 +103,14 @@ class MonitorItem extends Component {
                     const monitorLiStyle3 = {...monitorLiStyle, background: '#EEEEEE', color: '#4B83F0', width: 89, height: 28, textAlign: 'center', marginBottom: 0};
                     return (
                         istSpan ? 
-                        <span key={key} style={ label === item.label ? monitorLiStyle3 : monitorLiStyle } onClick={() => {
+                        <span key={key} style={ label === item.id ? monitorLiStyle3 : monitorLiStyle } onClick={() => {
                             var cityList = [];
                             item.children.map(({label}) => {
                                 return (
                                     cityList.push(label)
                                 )
                             })
-                            this.setState({cityListOpen: true, label: item.label, cityList, open: true});
+                            this.setState({cityListOpen: true, label: item.id, cityList, open: true});
                         }}>{item.label}</span>
                         : 
                         <li key={key} style={ key2 === key + 1 ? monitorLiStyle2 : monitorLiStyle} onClick={() => {this.xuanZhe(key, item)}}>{item.label}</li> 

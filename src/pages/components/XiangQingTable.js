@@ -26,9 +26,10 @@ class XiangQingTable extends Component {
     }
     xuanZhe = (e, DasMdId) => {
         const { mdId } = this.state;
+        const { data } = this.props;
         var q = false;
         if (e.target.checked) {
-            if (mdId.length >= 9) {
+            if (mdId.length === data.length - 1) {
                 q = true;
             }
             this.setState({mdId:[...mdId, DasMdId], quanXuan: q});
@@ -59,7 +60,7 @@ class XiangQingTable extends Component {
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 200,minWidth: 200, textAlign: 'center'} } />
+                    <col style={ {} } />
                     <col style={ {width: 70,minWidth: 70, textAlign: 'center'} } />
                     <col style={ {width: 130,minWidth: 130, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />

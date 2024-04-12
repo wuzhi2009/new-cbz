@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 import '../../css/pagination.css';
+const selectStyle = {
+    width: 80,
+    height: 32,
+    backgroundColor: '#FFFFFF',
+    border: '1px solid #DCDCDC',
+    fontSize: 16,
+    color: '#616161',
+    margin: '0px 20px'
+}
 /**
  * 分页
  * 
@@ -26,7 +35,8 @@ class Pagination extends Component{
             currentPage: defaultCurrent, //当前页码
             groupCount: 5, //页码分组，显示7个页码，其余用省略号显示
             startPage: parseInt(defaultCurrent)-2>0 ? parseInt(defaultCurrent)-2 : parseInt(defaultCurrent), //分组开始页码
-            totalPage:pageTotal //总页数
+            totalPage:pageTotal, //总页数
+            pageSize: 10
         }
  
     }
@@ -74,11 +84,47 @@ class Pagination extends Component{
         }
         //下一页
         pages.push(<li className={currentPage === totalPage ? "nomore" : "abc"} onClick={this.nextPageHandeler.bind(this)} key={totalPage + 1}>&gt;</li>);
+        var options = [{key:"10条/页", value:10},{key:"20条/页", value:20},{key:"50条/页", value:50}];
+        pages.push(
+            <select style={ selectStyle } onChange={ (event) => {
+                const { total } = this.props; 
+                // 计算总页数
+                var pageTotal = Math.ceil(total / event.target.value); 
+                pageTotal = parseInt(pageTotal);
+                var pageSize = parseInt(event.target.value)
+                this.setState({pageSize, totalPage: pageTotal, currentPage: 1});
+                this.props.onChange(1, pageSize);
+            }
+                } key={3030}>
+                        {options.map((item, key) => {
+                            return (
+                                <option key={key} value={item.value}>{item.key}</option>
+                            );
+                        })}
+                    </select>
+        )
+        pages.push(<span key={5050} style={ {marginRight: 20} }>共{totalPage}页</span>)
+        pages.push(
+            <span style={ {marginRight: 10} } key={7777}>前往
+                <input type='text' style={ {margin: '0 5px', width: 40, height: 28, color: '#050505', fontSize: 16, outline: 'none'} } onKeyDown={(e) => {
+                    if (e.keyCode === 13 && Number(e.target.value)) {
+                        // 回车触发
+                        var value = parseInt(e.target.value);
+                        if (value > totalPage) {
+                            value = totalPage;
+                        }
+                        this.setState({currentPage: value});
+                        this.props.onChange(value, this.state.pageSize);
+                    }
+                }} />页
+            </span>
+        )
+        pages.push(<span key={6060}>共找到{this.props.total}条记录</span>)
         return pages;
     }
     //页码点击 currentPage当前页
     pageClick(currentPage) {
-        const { groupCount } = this.state;
+        const { groupCount, pageSize } = this.state;
         const currentPage2 = this.state.currentPage;
         if (currentPage2 === currentPage) {
             // 点击的是当前页 不执行
@@ -108,7 +154,7 @@ class Pagination extends Component{
         // 缓存当前页码
         sessionStorage.setItem(`currentPage${this.state.url}`, encodeURIComponent(currentPage));
         //将当前页码返回父组件
-        onChange(currentPage)
+        onChange(currentPage, pageSize);
     }
     //上一页事件
     prePageHandeler() {
@@ -137,13 +183,8 @@ class Pagination extends Component{
         }
     }
     componentDidUpdate(prevProps) {
-        const { totalPage, currentPage } = this.state;
-        const { total, defaultCurrent } = this.props;
-        var pageTotal = Math.ceil(total / 10);
-        if (totalPage !== pageTotal) {
-            // 数据总数发生改变 进行更新
-            this.setState({totalPage: pageTotal});
-        }
+        const {  currentPage } = this.state;
+        const { defaultCurrent } = this.props;
         if (currentPage !== defaultCurrent) {
             // 数据页数发生变化进行更新
             this.setState({currentPage: defaultCurrent});
@@ -151,13 +192,15 @@ class Pagination extends Component{
     }
     render(){
         const { defaultCurrent,total, style } = this.props;
+        const { pageSize  } = this.state;
         const localCurrent = parseInt(sessionStorage.getItem(`currentPage${this.state.url}`)) || 1;
-        var pageTotal = Math.ceil(total / 10);
+        const s = pageSize || 10;
+        var pageTotal = Math.ceil(total / s);
         if (total <= 0) {
             pageTotal = 1;
         }
         const pageCfg = {
-            currentPage: localCurrent || defaultCurrent,
+            currentPage: defaultCurrent,
             startPage: localCurrent-2>0 ? localCurrent-2 : localCurrent, //分组开始页码
             totalPage:pageTotal //总页数
         }

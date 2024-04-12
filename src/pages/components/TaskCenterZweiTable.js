@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import OpenUndClose from './OpenUndClose';
 import Modal from './Modal';
+import { Empty } from 'antd';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "状态", "操作"];
 /**
  * 正在检测表格
@@ -21,6 +22,7 @@ class TaskCenterZweiTable extends Component {
     }
     render() { 
         const { open } = this.state;
+        const { data } = this.props;
         return (
             <>
             <table width={'98%'} style={{borderSpacing: '0 10px', margin: "0 auto"}} >
@@ -43,7 +45,18 @@ class TaskCenterZweiTable extends Component {
                         )
                     }) }
                 </tr>
-                {this.props.data.map((item, key) => {
+                {data.length === 0 ?
+                    <tr>
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={ {} } /></td>
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                    </tr> : <></>
+                }
+                {data.map((item, key) => {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 45} }>
                         <td style={ {display: 'none'} }>{item.id}</td>

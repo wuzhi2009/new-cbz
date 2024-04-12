@@ -36,8 +36,8 @@ const list = [
 const KopfUl = () => {
     const { pathname } = useLocation();
     const nav = useNavigate();
-    const go = (path) => {
-        if (!pathname.match(path)) {
+    const go = (path, b) => {
+        if (!b) {
             if (path === '/taskCenter') {
                 nav('/taskCenter/eins');
             } else {
@@ -48,8 +48,13 @@ const KopfUl = () => {
     return (
         <ul>
             {list.map((item, key) => {
-                return <li key={key} onClick={() =>  go(item.key) }
-                    style={pathname.match(item.key) ? {backgroundColor: '#39CE39'} : {cursor: 'pointer'}}>
+                var newKey = item.key;
+                var b = pathname.match(item.key);
+                if (item.key === '/searchData' || item.key === '/monitor') {
+                    newKey = "/choose" + newKey;
+                }
+                return <li key={key} onClick={() =>  go(newKey, b) }
+                    style={b ? {backgroundColor: '#39CE39'} : {cursor: 'pointer'}}>
                     <div>
                         <img src={item.icon} alt=""></img>
                     </div>

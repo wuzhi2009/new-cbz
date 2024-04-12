@@ -19,122 +19,86 @@ const titleStyle = {
     position: 'absolute',
     top: 0
 };
-const data = [
-    {
-        "channelId": 34825,
-        "channelDesc": "政府文件",
-        "channelName": "政府文件_100",
-        "parentChannelId": 0,
-        "siteId": null,
-        "siteDesc": null,
-        "totalArticles": null,
-        wcmchannels: [
-            {
-                "channelId": 34849,
-                "channelDesc": "最新文件",
-                "channelName": "最新文件",
-                "parentChannelId": 34825,
-                "siteId": null,
-                "siteDesc": null,
-                "totalArticles": null,
-                wcmchannels: [{
-                    "channelId": 1090333,
-                    "channelDesc": "会议回顾",
-                    "channelName": "会议回顾_d86c_109038",
-                    "parentChannelId": 109037,
-                    "siteId": null,
-                    "siteDesc": null,
-                    "totalArticles": null,
-                    wcmchannels: []
-                }]
-            },
-            {
-                "channelId": 34846,
-                "channelDesc": "自治区人民政府令",
-                "channelName": "自治区人民政府令_34846",
-                "parentChannelId": 34825,
-                "siteId": null,
-                "siteDesc": null,
-                "totalArticles": null,
-                wcmchannels: []
-            }
-        ]
-    },
-    {
-        "channelId": 109037,
-        "channelDesc": "自治区十三届人民政府第88次常务会议",
-        "channelName": "自治区十三届人民政府第88次常务会议",
-        "parentChannelId": 29128,
-        "siteId": null,
-        "siteDesc": null,
-        "totalArticles": null,
-        wcmchannels: [
-            {
-                "channelId": 109038,
-                "channelDesc": "会议回顾",
-                "channelName": "会议回顾_d86c_109038",
-                "parentChannelId": 109037,
-                "siteId": null,
-                "siteDesc": null,
-                "totalArticles": null,
-                wcmchannels: []
-            },
-            {
-                "channelId": 109039,
-                "channelDesc": "图解",
-                "channelName": "图解_d88c",
-                "parentChannelId": 109037,
-                "siteId": null,
-                "siteDesc": null,
-                "totalArticles": null,
-                wcmchannels: []
-            }
-        ]
-    }
-];
 /**
  * 栏目选择组件
  * 
  * @author wuzhi
  * @param onChange 选择栏目回调 ([{栏目对象},{},{}])
+ * @param dpName 部门名称
+ * @param del 需要通过点击删除的集
  * @param data 树
  */
 class MonittorItemDrei extends Component {
     state = { data:[], list:[] } 
     onCheck = (key, e) => {
-        this.setState({data: e.checkedNodes, list: key});
-        this.props.onChange(e.checkedNodes);
+        const { dpName } = this.props;
+        const { list, data } = this.state;
+        var l = list.filter((item) => item.dpName !== dpName);
+        var d = data.filter((item) => item.dpName !== dpName);
+        if (key.length > 0) {
+            this.setState({list: [...l, {dpName: dpName, key}]});  
+        } else {
+            this.setState({list:l})
+        }
+        if (e.checkedNodes.length > 0) {
+            this.setState({data: [...d, {dpName, name: e.checkedNodes}]})
+        } else {
+            this.setState({data: d})
+        }
+        this.props.onChange([...d, {dpName, name: e.checkedNodes}]);
     };
     // 全选
-    all = (data, dList, dData) => {
-        const { onChange } = this.props;
-        data.map((item) => {
+    all = (data2, dList, dData) => {
+        const { onChange, dpName } = this.props;
+        const { list, data } = this.state;
+        data2.map((item) => {
             if (item.wcmchannels.length > 0) {
                 this.all(item.wcmchannels, dList, dData);
             }
-            dData.push(item);
+            dData.push({...item, dpName, name: item});
             return dList.push(item.channelId);
         })
-        this.setState({list: dList}, () => {onChange(dData)});
+        var l = list.filter((item) => {return item.dpName !== dpName});
+        var nowData = data.filter((item) => {return item.dpName !== dpName});
+        this.setState({list: [...l, {dpName: dpName, key: dList}], data: [...nowData, {dpName, name: dData}]}, () => {onChange([...nowData, {dpName, name: dData}])});
     };
-    componentDidUpdate() {
-
+    componentDidUpdate(oldProps) {
+        const { del } = this.props;
+        const { data, list } = this.state;
+        if (del === "chongZhi" && del !== oldProps.del) {
+            this.setState({data: [], list: []});
+        } else if (del !== "" && del !== oldProps.del) {
+            var nowData = data.filter((item) => {return item.dpName !== del});
+            var nowList = list.filter((item) => {return item.dpName !== del});
+            this.setState({data: nowData, list: nowList});
+        }
     }
     render() { 
         const { list } = this.state;
-        const { onChange } = this.props;
+        const { onChange, data, dpName } = this.props;
+        var list2 = list.filter((item) => item.dpName === dpName);
+        var dasKey = [];
+        if (list2[0]) {
+            dasKey = list2[0].key;
+        }
         return (
             <ul style={ ulStyle }>
                 <span style={titleStyle}>栏目</span>
                 <span className='spanspan' onClick={() => {var dList= []; var dData = []; this.all(data, dList, dData)}} style={ {marginLeft: 75} }>全选</span>
-                <span className='spanspan' onClick={() => {this.setState({list:[]});onChange([])}} style={ {marginLeft: 11} }>清空</span>
+                <span className='spanspan' onClick={() => {
+                    var l = list.filter((item) => {return item.dpName !== dpName});
+                    var d = this.state.data.filter((item) => {return item.dpName !== dpName});
+                    this.setState({list: l, data: d});
+                    console.log('d :>> ', d);
+                    onChange(d)
+                    }} style={ {marginLeft: 11} }>清空</span>
                 <Tree
                     checkable={true}
                     onCheck={(key, e) => {this.onCheck(key, e)}}
                     multiple={true}
                     fieldNames={ {key:"channelId", title:"channelDesc", children:"wcmchannels"} }
                     height={300}
-                    checkedKeys={list}
+                    checkedKeys={dasKey}
                     treeData={data} 
                     style={ {marginLeft: 55, marginTop: 10} }
                 />

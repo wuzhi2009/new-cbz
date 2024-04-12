@@ -2,6 +2,9 @@ const DasState = {search:{label:"", searchValue:""}, task1List:{data:[]}, task2L
 const reducer = (state, action) => {
     switch (action.type) {
         case "search":
+            if (action.searchValue === "") {
+                action.searchValue = "空的里边是空的wuzhi";
+            }
             // 下拉输入框
             state = {
                 ...DasState,

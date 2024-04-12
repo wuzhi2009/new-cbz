@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import OpenUndClose from './OpenUndClose';
 import { withRouter } from '../../utils/withRouter';
+import { Empty } from 'antd';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "操作"];
 class TaskCenterEinsTable extends Component {
     state = { } 
@@ -32,10 +33,19 @@ class TaskCenterEinsTable extends Component {
                         )
                     }) }
                 </tr>
+                {data.length === 0 ?
+                    <tr>
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
+                        <td style={ {backgroundColor: 'white'} } />
+                        <td style={ {backgroundColor: 'white'} } />
+                    </tr> : <></>
+                }
                 { data.map((item, key) => {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 45} }>
-                        <td style={ {display: 'none'} }>{item.id}</td>
                         <td style={ {textAlign: 'center'} }>{item.type}</td>
                         <td>{item.name}</td>
                         <td style={ {textAlign: 'center'} }>{item.man}</td>

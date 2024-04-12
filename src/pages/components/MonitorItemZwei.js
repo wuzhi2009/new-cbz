@@ -42,6 +42,7 @@ const fDate = (date) => {
  * 
  * @author wuzhi
  * @param onChange 日期回调 （startDate, endDate)
+ * @param del 重置传chongZhi
  */
 class MonitorItemZwei extends Component {
     state = {key:1, startDate:"", endDate:""}
@@ -86,7 +87,14 @@ class MonitorItemZwei extends Component {
         endDate.setSeconds(59);
         startDate = fDate(startDate);
         endDate = fDate(endDate);
+        this.setState({startDate, endDate, key: 1});
         this.props.onChange(startDate, endDate);
+    }
+    componentDidUpdate(oldProps) {
+        const { del } = this.props;
+        if (del === "chongZhi" && del !== oldProps.del) {
+            this.componentDidMount();
+        }
     }
     render() {
         const { startDate, endDate, key } = this.state;

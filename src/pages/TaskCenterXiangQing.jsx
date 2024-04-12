@@ -247,18 +247,17 @@ class TaskCenterXiangQing extends Component {
         const { state } = location;
         this.setState(state);
         console.log("向后端发送请求获取检测详情数据 请求参数：id" + state.smId);
-		window.sessionStorage.removeItem("currentPageundefined");
 		this.setState({data: data});
     }
     componentDidUpdate(oldProps) {
         // console.log('发生改变 发送请求 参数如下 :>> ');
 		// console.log('this.state :>> ', this.state);
     }
-	getPage = (page) => {
+	getPage = (page, pageSize) => {
 		// 获取当前页数
-		console.log('发送请求当前页数 :>> ', page);
+		console.log('发送请求当前页数 :>> ', page + '数据量' + pageSize);
 		// 发送请求
-		this.setState({page});
+		this.setState({page, pageSize});
 	}
 	// 复选框
 	changeMdId = (mdIds) => {
@@ -292,7 +291,7 @@ class TaskCenterXiangQing extends Component {
         var options2 = [{key: "全部", value: "2"},{key: "未修改", value: "1"},{key: "已修改", value: "3"},{key: "无需修改", value: "null"}]
         var options3 = [{key: "默认排序", value: "id"},{key: "时间升序", value: "time"},{key: "时间降序", value: "time1"}]
         return (
-            <>
+            <div style={ {position: 'relative'} }>
                 <div style={ {margin: '20px 21px', display: 'flex', flexDirection: 'column'} } className='xiangQing'>
                     <div style={ {display: 'flex', flexDirection: 'row'} }>
                         <p style={ {flex: 4} }>
@@ -314,7 +313,7 @@ class TaskCenterXiangQing extends Component {
                             <span className='xiangQingText'>检测时间范围：</span><span>空着-空着</span>
                         </p>
                         <div style={ {flex: 7} }>
-                            <span style={ {position: 'absolute', right: '3%'} }>
+                            <span style={ {position: 'absolute', right: 10} }>
                                 <span className='YellowButton' onClick={() => {}} style={ {background: '#62D862', marginRight: 6} }><span>无需修改</span></span>
                                 <span className='YellowButton' onClick={() => {}} style={ {background: '#B188E5', width: 130, marginRight: 6} }><span>部分重新检测</span></span>
                                 <span className='YellowButton' onClick={() => {nav("/taskCenter/eins")}}><span>返 回</span></span>
@@ -329,10 +328,10 @@ class TaskCenterXiangQing extends Component {
                     <div style={ {flex:5} }><XiangQingSearch options={options} set={this.setState.bind(this)} /></div>
                 </div>
                 <div>
-                    <XiangQingTable style={ {margin: '20px auto', borderSpacing: '0 0px'} } data={data} page={page} changeMdId={this.changeMdId.bind(this)} />
-					<Pagination defaultCurrent={page} total={total} onChange={(page) => {this.getPage(page)}} style={ {marginTop: 6, paddingTop: 15} } />
+                    <XiangQingTable style={ {margin: '20px 10px', borderSpacing: '0 0px'} } data={data} page={page} changeMdId={this.changeMdId.bind(this)} />
+					<Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => {this.getPage(page, pageSize)}} style={ {marginTop: 6, paddingTop: 15} } />
                 </div>
-            </>
+            </div>
         );
     }
 }
