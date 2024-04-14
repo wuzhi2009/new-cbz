@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 const ulStyle = {
     listStyle: 'none', 
     userSelect: 'none',
@@ -31,7 +32,8 @@ class SearchData extends Component {
     state = { key: "-1" } 
     setChenkDate = (key) => {
         this.setState({key});
-    }
+        this.props.sendAction({type: 'status', modifyState: key});
+    };
     render() { 
         const { key } = this.state;
         return (
@@ -48,4 +50,11 @@ class SearchData extends Component {
     }
 }
  
-export default SearchData;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendAction: (info) => {
+            dispatch(info)
+        }
+    }
+}
+export default connect(null, mapDispatchToProps)(SearchData);

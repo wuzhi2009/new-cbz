@@ -1,4 +1,4 @@
-const DasState = {search:{label:"", searchValue:""}, task1List:{data:[]}, task2List: {data:[]}, pageAndSize:{page:0, total:0}}
+const DasState = {search:{label:"", searchValue:""}, task1List:{data:[], wait:true}, task2List: {data:[], wait:true}, pageAndSize:{page:0, total:0}, status:{}}
 const reducer = (state, action) => {
     switch (action.type) {
         case "search":
@@ -9,7 +9,7 @@ const reducer = (state, action) => {
             state = {
                 ...DasState,
                 search:{
-                    label: action.label, 
+                    label: parseInt(action.label), 
                     searchValue: action.searchValue
             }}
             return state;
@@ -17,7 +17,8 @@ const reducer = (state, action) => {
             state = {
                 ...DasState,
                 task1List:{
-                   data: action.data 
+                   data: action.data,
+                   wait: action.wait
                 } 
             }
             return state;
@@ -25,8 +26,18 @@ const reducer = (state, action) => {
             state = {
                 ...DasState,
                 task2List:{
-                    data: action.data 
+                    data: action.data,
+                    wait: action.wait
                 } 
+            }
+            return state;
+        case "status":
+            // 检测历史状态选择
+            state = {
+                ...DasState,
+                status:{
+                    modifyState: action.modifyState
+                }
             }
             return state;
         default:

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LangText from './LangText';
-import { Tooltip } from 'antd';
+import { Empty, Spin, Tooltip } from 'antd';
 const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误类型", "不规范表述", "规范表述", "文章标题", "片段", "数据类型", "引用页", "发布时间", "修改状态", "操作"];
 /**
  * 检测详情表
@@ -9,7 +9,9 @@ const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误�
  * @param data[] 表数据
  * @param getMdId 获取选择id的方法
  * @param page 当前页数 用于获取前面的索引
+ * @param pageSize 当前数据量 用于获取前面的索引
  * @param style 样式
+ * @param del "传chongZhi"则删除所有mdId
  */
 class XiangQingTable extends Component {
     state = { mdId:[],quanXuan: false, items:[] } 
@@ -43,31 +45,39 @@ class XiangQingTable extends Component {
             this.props.changeMdId(mdId);
         }
     }
+    componentDidUpdate(oldProps) {
+        const { del } = this.props;
+        const del2 = oldProps.del;
+        if (del && del === "chongZhi" && del !== del2) {
+            this.setState({mdId: [], quanXuan: false, items:[]})
+        }
+    }
     render() { 
         // 复选框是否全选
         const { quanXuan, mdId } = this.state;
-        const { data, page } = this.props;
+        const { data, page, pageSize, wait } = this.props;
         return (
-            <>
+            <Spin spinning={wait}>
             <table style={ this.props.style }>
                 <colgroup>
                     <col style={ {width: 50,minWidth: 50,textAlign: 'center'} }/>
                     <col style={ {width: 60,minWidth: 60, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
+                    <col style={ {width: 140,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 60,minWidth: 80, textAlign: 'center'} }  />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {} } />
+                    <col style={ {width: 240, textAlign: 'center'} } />
                     <col style={ {width: 70,minWidth: 70, textAlign: 'center'} } />
-                    <col style={ {width: 130,minWidth: 130, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
+                    <col style={ {width: 150, textAlign: 'center'} } />
+                    <col style={ {width: 100,minWidth: 100, textAlign: 'center'} } />
+                    <col style={ {width: 100,minWidth: 100, textAlign: 'center'} } />
                     <col style={ {width: 110,minWidth: 110,textAlign: 'center'} } />
                 </colgroup>
                 <thead>
+                    
                     <tr>
                         <th style={ {backgroundColor: '#ECF2F8', height: 50, border: '1px solid #8F9399'} }>
                             <input type='checkbox' style={ {width: 20, height: 20} } onChange={(e) => {this.xuanAll(e)}} checked={quanXuan} />
@@ -78,6 +88,24 @@ class XiangQingTable extends Component {
                             )
                         })}
                     </tr>
+                    {data.length === 0 ? <tr>
+                    <td style={ {textAlign: 'center'} } />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td style={ {textAlign: 'center', width: '100%'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                                    <td />
+                    </tr> : <></>
+                    }
                         {data.map((item, key) => {
                             const { description, amendments, modifyState, mediaType, postUrl } = item;
                             var newDescription = description.replace(/yellow/g, "red");
@@ -121,7 +149,7 @@ class XiangQingTable extends Component {
                             return (
                                 <tr key={key} style={ mdId.includes(item.id) ? {background: '#F0FAFF', maxHeight: 40} : {maxHeight: 40}}>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><input type='checkbox' style={ {width: 20, height: 20} } onChange={(e) => {this.xuanZhe(e, item.id)}} checked={mdId.includes(item.id)} /></td>
-                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{(key + 1) + ((page - 1) * 10)}</td>
+                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{(key + 1) + ((page - 1) * pageSize)}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.deptName}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.siteName}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newMediaType}</td>
@@ -145,7 +173,7 @@ class XiangQingTable extends Component {
                         })}
                 </thead>
             </table>
-            </>
+            </Spin>
         );
     }
 }

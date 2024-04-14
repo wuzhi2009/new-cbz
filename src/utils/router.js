@@ -4,12 +4,18 @@ import ChooseMonitor from "../pages/ChooseMonitor";
 import TaskCenterEinsTable from "../pages/components/TaskCenterEinsTable";
 import TaskCenterZweiTable from "../pages/components/TaskCenterZweiTable";
 import Historical from "../pages/Historical";
+import Login from "../pages/Login";
 import Monitor from "../pages/Monitor";
 import SearchData from "../pages/SearchData";
+import SearchDataTable from "../pages/SearchDataTable";
 import TaskCenter from "../pages/TaskCenter";
 import TaskCenterXiangQing from "../pages/TaskCenterXiangQing";
 
 const routers = createBrowserRouter([
+    {
+        index: true,
+        element: <Navigate to="/taskCenter/eins" />
+    },
     {
         path: '/',
         element: <App />,
@@ -62,9 +68,17 @@ const routers = createBrowserRouter([
                 path: 'searchData',
                 element: <Historical />
                     
+            },
+            {
+                path: 'searchDataTable',
+                element: <SearchDataTable />
             }
             
         ]
+    },
+    {
+        path: '/login',
+        element: <Login />
     }
 ])
 

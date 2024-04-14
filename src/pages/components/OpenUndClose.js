@@ -10,11 +10,15 @@ class OpenUndClose extends Component {
     state = { open: false } 
     render() { 
         const { text, param } = this.props;
+        var newText = text;
+        if (newText === null || newText.length < 0) {
+            newText=[{channelName:""}];
+        }
         var allName = [];
         var name = "";
         // 是否显示展开收回按钮
         var is = false;
-        text.map((item) => {
+        newText.map((item) => {
             var name = item.channelName;
             if (param) {
                 name = item[param];

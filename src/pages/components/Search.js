@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { SearchOutlined } from '@ant-design/icons'
 /**
  * 搜索组件
  * 
@@ -16,7 +17,7 @@ class Search extends Component {
         }
         this.props.sendAction(info)
     }
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         // 初始化的时候发送action到table触发更新
         if (this.state.label === "" ) {
             // 初始化下拉框值
@@ -37,7 +38,7 @@ class Search extends Component {
                     })}
                 </select>
                 <input type= "search" placeholder='请输入关键词' className='shuRuKuang' onChange={ (event) => {this.setState({...this.state, searchValue: event.target.value})} }/>
-                <div className='DasButton' onClick={ () => {this.setInfo()} }><span>搜索</span></div>
+                <div className='DasButton' onClick={ () => {this.setInfo()} }><SearchOutlined /><span>搜索</span></div>
             </div>
         );
     }

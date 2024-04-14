@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import OpenUndClose from './OpenUndClose';
 import Modal from './Modal';
-import { Empty } from 'antd';
+import { Empty, Spin } from 'antd';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "状态", "操作"];
 /**
  * 正在检测表格
@@ -22,9 +22,9 @@ class TaskCenterZweiTable extends Component {
     }
     render() { 
         const { open } = this.state;
-        const { data } = this.props;
+        const { data, wait } = this.props;
         return (
-            <>
+            <Spin spinning={wait}>
             <table width={'98%'} style={{borderSpacing: '0 10px', margin: "0 auto"}} >
                 <colgroup>
                 <col style={ {width: 120, minWidth: 120} } />
@@ -60,11 +60,11 @@ class TaskCenterZweiTable extends Component {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 45} }>
                         <td style={ {display: 'none'} }>{item.id}</td>
-                        <td style={ {textAlign: 'center'} }>{item.type}</td>
-                        <td>{item.name}</td>
-                        <td style={ {textAlign: 'center'} }>{item.man}</td>
-                        <td style={ {textAlign: 'center'} }>{item.create}</td>
-                        <td style={ {textAlign: 'center'} }><OpenUndClose text={ item.fanWei } /></td>
+                        <td style={ {textAlign: 'center'} }>{item.checkType}</td>
+                        <td>{item.monitoringTitle}</td>
+                        <td style={ {textAlign: 'center'} }>{item.originator}</td>
+                        <td style={ {textAlign: 'center'} }>{item.createTime}</td>
+                        <td style={ {textAlign: 'center'} }><OpenUndClose text={ item.siteChannelsJson } /></td>
                         <td style={ {textAlign: 'center'} }>{item.status === 0 ? <div style={ {color: '#FF9854'} }>等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
                         <td style={ {textAlign: 'center'} }>
                             <div style={ {display: 'inlineBlock',width: 120,height: 26, textAlign: 'center',backgroundColor: 'red',color: '#fff', cursor: 'pointer'} } onClick={() => {this.setState({open: true, id:item.id})}}>
@@ -84,7 +84,7 @@ class TaskCenterZweiTable extends Component {
                     <span className='grepButton' onClick={() => {this.ok()}} style={ {marginLeft: 2} }>确定</span> 
                 </div>
             </Modal>
-            </>
+            </Spin>
         );
     }
 }

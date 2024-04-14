@@ -84,14 +84,15 @@ class MonittorItemDrei extends Component {
         return (
             <ul style={ ulStyle }>
                 <span style={titleStyle}>栏目</span>
-                <span className='spanspan' onClick={() => {var dList= []; var dData = []; this.all(data, dList, dData)}} style={ {marginLeft: 75} }>全选</span>
+                {data.length > 0 ? 
+                <><span className='spanspan' onClick={() => {var dList= []; var dData = []; this.all(data, dList, dData)}} style={ {marginLeft: 75} }>全选</span>
                 <span className='spanspan' onClick={() => {
                     var l = list.filter((item) => {return item.dpName !== dpName});
                     var d = this.state.data.filter((item) => {return item.dpName !== dpName});
                     this.setState({list: l, data: d});
-                    console.log('d :>> ', d);
                     onChange(d)
-                    }} style={ {marginLeft: 11} }>清空</span>
+                    }} style={ {marginLeft: 11} }>清空</span></> : <></>}
+                
                 <Tree
                     checkable={true}
                     onCheck={(key, e) => {this.onCheck(key, e)}}
