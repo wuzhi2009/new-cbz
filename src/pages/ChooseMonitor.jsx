@@ -109,12 +109,14 @@ class ChooseMonitor extends Component {
                     <Spin spinning={wait}>
                     <MonitorItem title="平台" data={[{ id: 1, label: "网站" }, { id: 2, label: "新媒体" }]} en={true} change={(a, b, key) => { 
                         this.setState({wait:true}, () => {
-                          get(`/monitoring/getChannelByDpName?dpName=${dpName}&mediaType=${key}`).then((res) => {
-                            if (res.data.code === 200) {
-                                var dasData4 = res.data.data;
-                            this.setState({ mediaType: key, data4: dasData4, wait:false });   
+                            if (dpName) {
+                                get(`/monitoring/getChannelByDpName?dpName=${dpName}&mediaType=${key}`).then((res) => {
+                                    if (res.data.code === 200) {
+                                        var dasData4 = res.data.data;
+                                    this.setState({ mediaType: key, data4: dasData4, wait:false });   
+                                    }
+                                })   
                             }
-                        })   
                         })
                         
                         }} />

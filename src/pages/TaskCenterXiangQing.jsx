@@ -5,11 +5,11 @@ import XiaLaKuang from './components/XiaLaKuang';
 import XiangQingTable from './components/XiangQingTable';
 import Pagination from './components/Pagination';
 import Search from './components/Search';
-import { UserOutlined, FieldTimeOutlined, ContainerOutlined, OneToOneOutlined } from '@ant-design/icons';
-import { post, put } from '../utils/reqUtil';
+import { UserOutlined, FieldTimeOutlined, ContainerOutlined, OneToOneOutlined, LoadingOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import Modal from './components/Modal';
 import { message } from 'antd';
+import { chongXinJianCe, getXiangQingTable, not } from './api/TaskCenterXiangQing/XiangQingApi';
 const DasTypeStyle = {
     display: 'inline-block', 
     backgroundColor: 'rgb(177, 136, 229)', 
@@ -37,7 +37,7 @@ const options = [{key: "文章片段", value: 1},{key: "站点名称", value: 2}
 const options2 = [{key: "全部", value: "2"},{key: "未修改", value: "0"},{key: "已修改", value: "1"},{key: "无需修改", value: "null"}];
 const options3 = [{key: "默认排序", value: "id"},{key: "时间升序", value: "time"},{key: "时间降序", value: "time1"}];
 class TaskCenterXiangQing extends Component {
-    state = { smId:0, monitoringTitle:"", checkType:"", originator:"", createTime:"", siteChannelsJson:"", label:1, searchValue:"", page:1, pageSize: 10, total:0, mdId:[], modifyState:"2", errorType:"", paiXu:"id",data:[], postStartTime: "", postEndTime: "", open:false, open2: false, del:"", wait:true } 
+    state = { smId:0, monitoringTitle:"", checkType:"", originator:"", createTime:"", siteChannelsJson:"", label:1, searchValue:"", page:1, pageSize: 10, total:0, mdId:[], modifyState:"2", errorType:"", paiXu:"id",data:[], postStartTime: "", postEndTime: "", open:false, open2: false, del:"", wait:true, wait2: false } 
     componentDidMount() {
         const { location } = this.props.router;
         const { state } = location;
@@ -48,7 +48,7 @@ class TaskCenterXiangQing extends Component {
 		var page = 1;
 		var pageSize = 10;
 		var info = {smId, page, pageSize, errorType, modifyState, paiXu};
-		post('/monitoringDetails/list', info).then(res => {
+		getXiangQingTable(info).then(res => {
 			if (res.data.code === 200) {
 				this.setState({data: res.data.data, total:res.data.total, wait: false})
 			}
@@ -74,7 +74,7 @@ class TaskCenterXiangQing extends Component {
 			var searchWord = s;
 			var info = {smId, errorType, paiXu, modifyState, page: 1, pageSize, searchWord, searchType};
             this.setState({wait:true}, () => {
-                post('/monitoringDetails/list', info).then(res => {
+                getXiangQingTable(info).then(res => {
                     if (res.data.code === 200) {
                         this.setState({data: res.data.data, total:res.data.total, page: 1, wait:false})
                     }
@@ -91,7 +91,7 @@ class TaskCenterXiangQing extends Component {
 		var searchWord = searchValue;
 		var info = {smId, errorType, paiXu, modifyState, page, pageSize, searchWord, searchType};
         this.setState({wait: true}, () => {
-            post('/monitoringDetails/list', info).then(res => {
+            getXiangQingTable(info).then(res => {
                 if (res.data.code === 200) {
                     this.setState({data: res.data.data, total:res.data.total, page, pageSize, wait:false})
                 }
@@ -108,7 +108,7 @@ class TaskCenterXiangQing extends Component {
 		const { smId, errorType, paiXu, pageSize } = this.state;
 		var info = {smId, errorType, modifyState: value, paiXu, page: 1, pageSize};
         this.setState({wait: true}, () => {
-            post('/monitoringDetails/list', info).then((res) => {
+            getXiangQingTable(info).then((res) => {
 			    if (res.data.code === 200) {
 				    this.setState({data: res.data.data, total: res.data.total, page: 1, del:"", wait: false});
 			    }
@@ -127,7 +127,7 @@ class TaskCenterXiangQing extends Component {
 		const { smId, errorType, modifyState, pageSize } = this.state;
 		var info = {smId, errorType, modifyState, paiXu: value, page: 1, pageSize};
         this.setState({wait: true}, () => {
-            post('/monitoringDetails/list', info).then((res) => {
+            getXiangQingTable(info).then((res) => {
                 if (res.data.code === 200) {
                     this.setState({data: res.data.data, total: res.data.total, page: 1, del:"", wait: false});
                 }
@@ -139,7 +139,7 @@ class TaskCenterXiangQing extends Component {
     render() { 
         const { navigate } = this.props.router;
         const nav = navigate;
-        const { smId, monitoringTitle, checkType, originator, createTime, siteChannelsJson, page, total, data, pageSize, postStartTime, postEndTime, open, open2, del, wait } = this.state;
+        const { smId, monitoringTitle, checkType, originator, createTime, siteChannelsJson, page, total, data, pageSize, postStartTime, postEndTime, open, open2, del, wait, wait2 } = this.state;
         if (smId === 0) {
             // 直接通过地址访问
             return (
@@ -201,8 +201,9 @@ class TaskCenterXiangQing extends Component {
 						if (mdId.length <= 0) {
 							message.error("请先选择数据");
 						} else {
+                            this.setState({wait2: true});
 							// 确认将选中数据改为无需修改
-							put(`/monitoringDetails/${mdId}`).then((res) => {
+							not(mdId).then((res) => {
 								if (res.data.code === 200) {
 									message.success(res.data.msg);
 									this.setState({open: false, mdId: [], del:"chongZhi", page: 1});
@@ -214,7 +215,7 @@ class TaskCenterXiangQing extends Component {
 							})
 						}
 						
-					}} style={ {marginLeft: 2} }>确定</span> 
+					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
                 </div>
             </Modal>
 			<Modal open={open2} close={() => this.setState({open2:false})}>
@@ -227,11 +228,12 @@ class TaskCenterXiangQing extends Component {
 						if (mdId.length <= 0) {
 							message.error("请先选择数据");
 						} else {
+                            this.setState({wait2: true});
 							// 重新检测
-							post(`/monitoring/partialRetesting`, {mdIds: mdId}).then((res) => {
+							chongXinJianCe(mdId).then((res) => {
 								if (res.data.code === 200) {
 									message.success(res.data.msg);
-									this.setState({open2: false, mdId:[], del:"chongZhi", page: 1});
+									this.setState({open2: false, mdId:[], del:"chongZhi", page: 1, wait2: false});
                                     // 重新获取数据
                                     this.getPage(1, pageSize);
 								} else {
@@ -240,7 +242,7 @@ class TaskCenterXiangQing extends Component {
 							})
 						}
 						
-					}} style={ {marginLeft: 2} }>确定</span> 
+					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
                 </div>
             </Modal>
 			</>

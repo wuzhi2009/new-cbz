@@ -71,7 +71,7 @@ class XiangQingTable extends Component {
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
                     <col style={ {width: 240, textAlign: 'center'} } />
                     <col style={ {width: 70,minWidth: 70, textAlign: 'center'} } />
-                    <col style={ {width: 150, textAlign: 'center'} } />
+                    <col style={ {width: 150, minWidth: 100,textAlign: 'center'} } />
                     <col style={ {width: 100,minWidth: 100, textAlign: 'center'} } />
                     <col style={ {width: 100,minWidth: 100, textAlign: 'center'} } />
                     <col style={ {width: 110,minWidth: 110,textAlign: 'center'} } />

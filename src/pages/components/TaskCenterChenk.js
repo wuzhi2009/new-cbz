@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { withRouter } from "../../utils/withRouter";
 import React, { Component } from 'react';
-import { get } from '../../utils/reqUtil';
+import { getEinsList, getZweiList } from "../api/TaskCenter/TaskCenterApi";
 /**
  * 检测情况查看组件
  * 
@@ -12,13 +12,13 @@ class TaskCenterChenk extends Component {
     go = (path) => {
         const nav = this.props.router.navigate;
         if (path === '/taskCenter/zwei') {
-            this.getZweiList();
+            this.zweiList();
         } else {
-            this.getEinsList();
+            this.einsList();
         }
         nav(path);
     }
-    getEinsList = () => {
+    einsList = () => {
         const { pageSize } = this.props;
         // 返回给分页器总数信息
         var info2 = {};
@@ -27,7 +27,7 @@ class TaskCenterChenk extends Component {
         // 先发送等待信息
         this.props.sendAction({type:"getTask1List", data:[], wait: true});
         var status = [2, 3, 4];
-            get(`/monitoring/list?status=${status}&pageNum=1&pageSize=${pageSize}`).then(res => {
+            getEinsList(status, 1, pageSize, "").then(res => {
                 if (res.data.data.code === 200) {
                     var data = res.data.data.rows;
                     info2 = {total: res.data.data.total, page: 1};
@@ -38,7 +38,7 @@ class TaskCenterChenk extends Component {
                 }
             })
     }
-    getZweiList = () => {
+    zweiList = () => {
         const { pageSize } = this.props;
         // 返回给分页器总数信息
         var info2 = {};
@@ -47,7 +47,7 @@ class TaskCenterChenk extends Component {
         // 先发送等待信息
         this.props.sendAction({type:"getTask2List", data:[], wait: true});
         var status = [0, 1];
-            get(`/monitoring/list?status=${status}&pageNum=1&pageSize=${pageSize}`).then(res => {
+            getZweiList(status, 1, pageSize, "").then(res => {
                 if (res.data.data.code === 200) {
                     var data = res.data.data.rows;
                     info2 = {total: res.data.data.total, page: 1};
@@ -76,6 +76,17 @@ class TaskCenterChenk extends Component {
             this.setState({searchValue: s}, () => {this.onPropChange(pathname)});
         }
     }
+    componentDidMount() {
+        const { label, searchValue } = this.props;
+        const { pathname } = this.props.router.location;
+        if (label === 1 && searchValue === "空的里边是空的wuzhi") {
+            if (pathname === '/taskCenter/zwei') {
+                this.zweiList();
+            } else {
+                this.einsList();
+            }
+        }
+    }
     onPropChange(path) {
         const { searchValue } = this.state;
         const { page, pageSize } = this.props;
@@ -91,7 +102,7 @@ class TaskCenterChenk extends Component {
             // 先发送等待信息
             this.props.sendAction({type:"getTask2List", data:[], wait: true});
             status = [0, 1];
-            get(`/monitoring/list?status=${status}&pageNum=${page}&pageSize=${pageSize}&searchValue=${searchValue}`).then(res => {
+            getZweiList(status, page, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
                     var data = res.data.data.rows;
                     info2 = {total: res.data.data.total};
@@ -105,8 +116,7 @@ class TaskCenterChenk extends Component {
             // 先发送等待信息
             this.props.sendAction({type:"getTask1List", data:[], wait: true});
             status = [2, 3, 4];
-            get(`/monitoring/list?status=${status}&pageNum=${page}&pageSize=${pageSize}&searchValue=${searchValue}`).then(res => {
-                console.log('res :>> ', res);
+            getEinsList(status, page, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
                     var data = res.data.data.rows;
                     info2 = {total: res.data.data.total};
@@ -147,7 +157,6 @@ const setListData = (dispatch) => {
         }
     }
 }
-
 
 
 const getSearch = (search) => {

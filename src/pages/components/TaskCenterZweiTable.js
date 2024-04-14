@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import OpenUndClose from './OpenUndClose';
 import Modal from './Modal';
-import { Empty, Spin } from 'antd';
+import { Empty, message, Spin } from 'antd';
+import { stop } from '../api/TaskCenter/TaskCenterApi';
+import {LoadingOutlined } from '@ant-design/icons';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "状态", "操作"];
 /**
  * 正在检测表格
@@ -11,17 +13,28 @@ const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", 
  * @param data 数据
  */
 class TaskCenterZweiTable extends Component {
-    state = { open:false, id:-1 } 
+    state = { open:false, id:-1, wait2: false } 
     // 关闭模态框
     close = () => {
         this.setState({open: false});
     }
     // 确认删除
     ok = () => {
-        console.log("确认删除任务id:" + this.state.id);
+        const { id } = this.state;
+        this.setState({wait2: true});
+        stop(id).then(res => {
+            if (res.data.code === 200) {
+                message.success(res.data.msg);
+                // 刷新页面
+                this.props.sendAction({type: "search", label: "1", searchValue: ""});
+                this.setState({wait2: true, open: false});
+            } else {
+                message.error(res.data.msg);
+            }
+        })
     }
     render() { 
-        const { open } = this.state;
+        const { open, wait2 } = this.state;
         const { data, wait } = this.props;
         return (
             <Spin spinning={wait}>
@@ -81,7 +94,7 @@ class TaskCenterZweiTable extends Component {
                 <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您是否要取消此任务</div>
                 <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
                     <span className='DasButton' onClick={() => {this.close()}} >取消</span>
-                    <span className='grepButton' onClick={() => {this.ok()}} style={ {marginLeft: 2} }>确定</span> 
+                    <span className='grepButton' onClick={() => {this.ok()}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
                 </div>
             </Modal>
             </Spin>
@@ -92,4 +105,12 @@ class TaskCenterZweiTable extends Component {
 const getList = (task2List) => {
     return task2List;
 }
-export default connect(({task2List}) => getList(task2List))(TaskCenterZweiTable);
+
+const search = (dispatch) => {
+    return {
+        sendAction: (info) => {
+            dispatch(info)
+        }
+    }
+}
+export default connect(({task2List}) => getList(task2List), search)(TaskCenterZweiTable);

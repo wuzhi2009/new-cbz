@@ -8,7 +8,7 @@ import OpenUndClose from './components/OpenUndClose';
 import Search from './components/Search';
 import Pagination from './components/Pagination';
 import { connect } from 'react-redux';
-import { post } from '../utils/reqUtil';
+import { getSearchTable } from './api/SearchTable/SearchTableApi';
 const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误类型", "不规范表述", "规范表述", "文章标题", "片段", "数据类型", "引用页", "发布时间", "修改状态"];
 const options = [{ key: "文章片段", value: 1 }, { key: "站点名称", value: 2 }];
 const options2 = [{ key: "全部", value: "2" }, { key: "未修改", value: "0" }, { key: "已修改", value: "1" }, { key: "无需修改", value: "null" }];
@@ -43,7 +43,7 @@ class SearchDataTable extends Component {
             }
             const { errorType, modifyState, json, pageSize } = this.state;
             var newJson = {...json, pageNum: 1, pageSize, errorType, modifyState, searchType: label, searchWord: value }
-            post(`/monitoringDetails/byChannelList`, newJson).then(res => {
+            getSearchTable(newJson).then(res => {
                 if (res.data.code === 200) {
                     this.setState({total: res.data.data.total, data:res.data.data.records})
                 }
@@ -84,7 +84,7 @@ class SearchDataTable extends Component {
     changeZhuangTai = (value) => {
         const { errorType, pageSize, json } = this.state;
         var newJson = {...json, pageNum:1, pageSize, errorType, modifyState: value }
-        post(`/monitoringDetails/byChannelList`, newJson).then(res => {
+        getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
                 this.setState({total: res.data.data.total, data:res.data.data.records})
             }
@@ -94,7 +94,7 @@ class SearchDataTable extends Component {
     changeCuoWuType = (value) => {
         const { modifyState, pageSize, json } = this.state;
         var newJson = {...json, pageNum:1, pageSize, errorType: value, modifyState }
-        post(`/monitoringDetails/byChannelList`, newJson).then(res => {
+        getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
                 this.setState({total: res.data.data.total, data:res.data.data.records})
             }
@@ -104,7 +104,7 @@ class SearchDataTable extends Component {
     getPage = (page, pageSize) => {
         const { errorType, modifyState, json } = this.state;
         var newJson = {...json, pageNum: page, pageSize, errorType, modifyState }
-        post(`/monitoringDetails/byChannelList`, newJson).then(res => {
+        getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
                 this.setState({total: res.data.data.total, data:res.data.data.records})
             }

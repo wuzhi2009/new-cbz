@@ -25,6 +25,9 @@ httpService.interceptors.request.use(function (config) {
 // 添加响应拦截器
 httpService.interceptors.response.use(function (response) {
   // 对响应数据做点什么
+  if (response.data.code === 500) {
+    // 抽屉弹窗 业务报错
+  }
   return response;
 }, function (error) {
   // 对响应错误做点什么
@@ -99,10 +102,8 @@ export function put(url, params = {}) {
       method: 'put',
       data: params
     }).then(response => {
-      console.log(response)
       resolve(response);
     }).catch(error => {
-      console.log(error)
       reject(error);
     });
   });
