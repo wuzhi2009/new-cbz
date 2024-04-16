@@ -6,8 +6,8 @@ import OpenUndClose from './components/OpenUndClose';
 import { withRouter } from '../utils/withRouter';
 import { Outlet } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { get } from '../utils/reqUtil';
 import { Spin } from 'antd';
+import { getChannelList, getDeptList } from './api/Monitor/ChooseMonitorApi';
 const rightStyle = {
     cursor: 'pointer',
     textAlign: 'center',
@@ -27,7 +27,7 @@ const searchIco = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAAB
 class ChooseMonitor extends Component {
     state = { dpName: "", mediaType: 1, data: [], data2: [], checkVendor: "KPY", data3: [], postStartTime: "", postEndTime: "", choose: "", delDpName: "", open: true, modifyState: "-1", data4:[], wait: false }
     componentDidMount() {
-        get("/monitoring/getDeptList").then((res) => {
+        getDeptList().then((res) => {
             if (res.data.code === 200) {
                 var data = res.data.data[0].children;
                 this.setState({data, data2: data[0].children});
@@ -96,9 +96,9 @@ class ChooseMonitor extends Component {
     render() {
         const { data, data2, data3, dpName, mediaType, delDpName, open, data4, wait } = this.state;
         const { location, navigate } = this.props.router;
-        var dasStyle = { position: 'relative', height: 390 };
+        var dasStyle = { minHeight: 100 };
         if (!open) {
-            dasStyle = { ...dasStyle, height: 60, overflow: 'hidden' };
+            dasStyle = { ...dasStyle, height: 100, overflow: 'hidden' };
         }
         return (
             
@@ -110,7 +110,7 @@ class ChooseMonitor extends Component {
                     <MonitorItem title="平台" data={[{ id: 1, label: "网站" }, { id: 2, label: "新媒体" }]} en={true} change={(a, b, key) => { 
                         this.setState({wait:true}, () => {
                             if (dpName) {
-                                get(`/monitoring/getChannelByDpName?dpName=${dpName}&mediaType=${key}`).then((res) => {
+                                getChannelList(dpName, key).then((res) => {
                                     if (res.data.code === 200) {
                                         var dasData4 = res.data.data;
                                     this.setState({ mediaType: key, data4: dasData4, wait:false });   
@@ -124,7 +124,7 @@ class ChooseMonitor extends Component {
                     <MonitorItem title="单位" data={data2} en={false} change={(_, label) => {
                         // 等待状态
                         this.setState({wait: true}, () => {
-                            get(`/monitoring/getChannelByDpName?dpName=${label}&mediaType=${mediaType}`).then((res) => {
+                            getChannelList(label, mediaType).then((res) => {
                                 if (res.data.code === 200) {
                                     var dasData4 = res.data.data;
                                 this.setState({ dpName: label, data4: dasData4, wait:false });   

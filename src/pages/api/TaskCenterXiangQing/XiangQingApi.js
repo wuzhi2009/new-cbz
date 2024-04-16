@@ -17,7 +17,7 @@ import { post, put } from "../../../utils/reqUtil";
  * @returns 
  */
 export function getXiangQingTable(info) {
-    return post('/monitoringDetails/list', info);
+    return post('/sp/monitoringDetails/list', info);
 }
 
 /**
@@ -26,7 +26,7 @@ export function getXiangQingTable(info) {
  * @returns 
  */
 export function chongXinJianCe(mdIds) {
-    return post(`/monitoring/partialRetesting`, {mdIds});
+    return post(`/sp/monitoring/partialRetesting`, {mdIds});
 }
 
 /**
@@ -35,7 +35,7 @@ export function chongXinJianCe(mdIds) {
  * @returns 
  */
 export function not(mdIds) {
-    return put(`/monitoringDetails/${mdIds}`);
+    return put(`/sp/monitoringDetails/${mdIds}`);
 }
 
 const req = { getXiangQingTable, chongXinJianCe, not }

@@ -15,7 +15,7 @@ const httpService = axios.create({
 httpService.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // config.headers.token=window.sessionStorage.getItem('token');
-  config.headers.Authorization = '';
+  config.headers.Authorization = 'Bearer 95faac8e-5ca8-4b19-96e8-d4cc7befe2c2';
   return config;
 }, function (error) {
   // 对请求错误做些什么
@@ -56,17 +56,28 @@ function getCache(url) {
  * */
 export function get(url) {
   return new Promise((resolve, reject) => {
-    if (url === "/monitoring/getDeptList") {
+    // 栏目列表缓存
+    if (url === "/sp/monitoring/getDeptList") {
       const cacheData = getCache(url)
       if (cacheData) {
         return resolve(cacheData);
+      }
+    }
+    // 用户数据缓存
+    if (url === "/system/user/getInfo") {
+      const cacheData2 = getCache(url);
+      if (cacheData2) {
+        return resolve(cacheData2);
       }
     }
     httpService({
       url: url,
       method: 'get',
     }).then(response => {
-      if (url === "/monitoring/getDeptList") {
+      if (url === "/sp/monitoring/getDeptList") {
+        cache[url] = response;
+      }
+      if (url === "/system/user/getInfo") {
         cache[url] = response;
       }
       resolve(response);

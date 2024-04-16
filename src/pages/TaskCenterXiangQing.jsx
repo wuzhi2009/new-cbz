@@ -150,7 +150,7 @@ class TaskCenterXiangQing extends Component {
         }
         return (
 			<>
-            <div style={ {position: 'relative'} }>
+            <div style={ {position: 'relative', top: 10} }>
                 <div style={ {margin: '20px 21px', display: 'flex', flexDirection: 'column'} } className='xiangQing'>
                     <div style={ {display: 'flex', flexDirection: 'row'} }>
                         <p style={ {flex: 4} }>

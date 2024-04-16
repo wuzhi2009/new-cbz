@@ -40,7 +40,7 @@ import { post } from "../../../utils/reqUtil";
 }
  */
 export function getSearchTable(json) {
-   return post(`/monitoringDetails/byChannelList`, json);
+   return post(`/sp/monitoringDetails/byChannelList`, json);
 }
 const api = { getSearchTable }
 export default api;

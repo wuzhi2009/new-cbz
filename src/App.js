@@ -5,18 +5,24 @@ import { Outlet } from 'react-router-dom';
 import './css/app.css';
 import Kopf from './Kopf';
 import store from './utils/redux/store';
-import { get } from './utils/reqUtil';
+import { getDeptList, getUserInfo } from './pages/api/Monitor/ChooseMonitorApi';
 function App() {
-  const [data, setData] = useState([]);
   const [value, setValue] = useState(0);
+  // 判断是否获取用户
+  const [value2, setValue2] = useState(0);
   // 初始化缓存请求
   useEffect(() => {
     // 获取用户信息
+    getUserInfo().then(res => {
+      if (res.data.code === 200) {
+        setValue2(1);
+      }
+    })
     // 获取检测列表信息
-    get("/monitoring/getDeptList").then(res => {
+    getDeptList().then(res => {
+      
       if (res.data.code === 200) {
         setValue(100);
-        setData(res.data.data);
       }
     });
     const time = setInterval(() => {
@@ -29,12 +35,12 @@ function App() {
     }, 200);
     return () => clearInterval(time);
   }, []);
-  if (data.length > 0) {
+  if (value === 100 && value2 === 1) {
     return (
       <div className="app">
         <Provider store={store}>
         <Kopf />
-        <div>
+        <div style={ {marginTop: 95} }>
           <Outlet />
         </div>
         </Provider>

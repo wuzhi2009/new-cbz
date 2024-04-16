@@ -9,7 +9,7 @@ import { get, put } from '../../../utils/reqUtil'
  * @param {*} searchValue 搜索值
  */
 export function getEinsList(status, page, pageSize, searchValue) {
-    return get(`/monitoring/list?status=${status}&pageNum=${page}&pageSize=${pageSize}&searchValue=${searchValue}`);
+    return get(`/sp/monitoring/list?status=${status}&pageNum=${page}&pageSize=${pageSize}&searchValue=${searchValue}`);
 }
 
 /**
@@ -21,7 +21,7 @@ export function getEinsList(status, page, pageSize, searchValue) {
  * @param {*} searchValue 搜索值
  */
 export function getZweiList(status, page, pageSize, searchValue) {
-    return get(`/monitoring/list?status=${status}&pageNum=${page}&pageSize=${pageSize}&searchValue=${searchValue}`);
+    return get(`/sp/monitoring/list?status=${status}&pageNum=${page}&pageSize=${pageSize}&searchValue=${searchValue}`);
 }
 
 /**
@@ -31,7 +31,7 @@ export function getZweiList(status, page, pageSize, searchValue) {
  * @returns 
  */
 export function stop(id) {
-    return put(`/monitoring/stop/${id}`);
+    return put(`/sp/monitoring/stop/${id}`);
 }
 const req = { getEinsList, getZweiList, stop };
 export default req;

@@ -193,7 +193,7 @@ class Pagination extends Component{
     render(){
         const { defaultCurrent,total, style } = this.props;
         const { pageSize  } = this.state;
-        const localCurrent = parseInt(sessionStorage.getItem(`currentPage${this.state.url}`)) || 1;
+        const localCurrent = defaultCurrent || 1;
         const s = pageSize || 10;
         var pageTotal = Math.ceil(total / s);
         if (total <= 0) {

@@ -1,4 +1,4 @@
-import { Empty } from 'antd';
+import { Empty, Spin } from 'antd';
 import React, { Component } from 'react';
 import { withRouter } from '../../utils/withRouter';
 const tableKopf = ["操作时间", "已选条件", "操作人"];
@@ -7,6 +7,7 @@ const tableKopf = ["操作时间", "已选条件", "操作人"];
  * 
  * @author wuzhi
  * @param data 表数据
+ * @param wait 数据等待
  */
 class HistoricalTable extends Component {
     state = {}
@@ -17,8 +18,9 @@ class HistoricalTable extends Component {
         navigate('/searchDataTable', {state: json})
     }
     render() {
-        const { data } = this.props;
+        const { data, wait } = this.props;
         return (
+            <Spin spinning={wait}>
             <table style={ {borderSpacing: '0px 0px'} } width={'100%'}>
                 <colgroup>
                     <col style={{ width: 90, minWidth: 90, textAlign: 'center' }} />
@@ -56,6 +58,7 @@ class HistoricalTable extends Component {
                 })}
                 </thead>
             </table>
+            </Spin>
         );
     }
 }

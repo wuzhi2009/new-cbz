@@ -108,6 +108,7 @@ class XiangQingTable extends Component {
                     }
                         {data.map((item, key) => {
                             const { description, amendments, modifyState, mediaType, postUrl } = item;
+                            var newAmendments = JSON.parse(amendments);
                             var newDescription = description.replace(/yellow/g, "red");
                             var newModifyState = "";
                             switch (modifyState) {
@@ -155,7 +156,7 @@ class XiangQingTable extends Component {
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newMediaType}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.errorType}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399', color: 'red'} }>{item.errorDescription}</td>
-                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{amendments}</td>
+                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newAmendments[0]}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={item.articleTitle} is={false} /> </td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={newDescription} is={true} /></td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.doctype}</td>

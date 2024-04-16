@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LangText from './components/LangText';
-import { Empty, Tooltip } from 'antd';
+import { Empty, Tooltip, Spin } from 'antd';
 import { withRouter } from '../utils/withRouter';
 import XiaLaKuang from './components/XiaLaKuang';
 import { ContainerOutlined, OneToOneOutlined } from '@ant-design/icons';
@@ -18,21 +18,20 @@ const options2 = [{ key: "全部", value: "2" }, { key: "未修改", value: "0" 
  * @author wuzhi
  */
 class SearchDataTable extends Component {
-    state = { mdId: [], quanXuan: false, items: [], data: [], page: 1, pageSize: 10, total: 10, fanWei: [], startTime: "", endTime: "", modifyState: "", errorType: "", searchValue:"", label: "", json:{} }
+    state = { mdId: [], quanXuan: false, items: [], data: [], page: 1, pageSize: 10, total: 10, fanWei: [], startTime: "", endTime: "", modifyState: "2", errorType: "", searchValue:"", label: "", json:{}, wait: true }
     componentDidMount() {
         const { location } = this.props.router;
         const { state } = location;
         var json = JSON.parse(state);
-        // json.pageNum = 1;
-        // json.pageSize = 10;
-        // json.modifyState = "2";
-        // // 在此处将json传到后端 取到data数据
-        // post(`/monitoringDetails/byChannelList`, json).then(res => {
-        //     if (res.data.code === 200) {
-        //         this.setState({data: res.data.data.records, total: res.data.data.total})
-        //     }
-        // })
-        this.setState({ fanWei: json.siteChannels, startTime: json.startTime, endTime: json.endTime, json });
+        json.pageNum = 1;
+        json.pageSize = 10;
+        // 在此处将json传到后端 取到data数据
+        getSearchTable(json).then(res => {
+            if (res.data.code === 200) {
+                this.setState({data: res.data.data.records, total: res.data.data.total, wait: false});
+            }
+        })
+        this.setState({ modifyState: json.modifyState, fanWei: json.siteChannels, startTime: json.startTime, endTime: json.endTime, json });
     }
     componentDidUpdate(oldProps) {
         const { searchValue, label } = this.props;
@@ -42,10 +41,11 @@ class SearchDataTable extends Component {
                 value = ""
             }
             const { errorType, modifyState, json, pageSize } = this.state;
-            var newJson = {...json, pageNum: 1, pageSize, errorType, modifyState, searchType: label, searchWord: value }
+            var newJson = {...json, pageNum: 1, pageSize, errorType, modifyState, searchType: label, searchWord: value };
+            this.setState({wait: true});
             getSearchTable(newJson).then(res => {
                 if (res.data.code === 200) {
-                    this.setState({total: res.data.data.total, data:res.data.data.records})
+                    this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
                 }
             })
             this.setState({label, searchValue: value});
@@ -83,41 +83,44 @@ class SearchDataTable extends Component {
     }
     changeZhuangTai = (value) => {
         const { errorType, pageSize, json } = this.state;
-        var newJson = {...json, pageNum:1, pageSize, errorType, modifyState: value }
+        var newJson = {...json, pageNum:1, pageSize, errorType, modifyState: value };
+        this.setState({wait: true});
         getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
-                this.setState({total: res.data.data.total, data:res.data.data.records})
+                this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
             }
         })
         this.setState({ modifyState: value, json: newJson });
     }
     changeCuoWuType = (value) => {
         const { modifyState, pageSize, json } = this.state;
-        var newJson = {...json, pageNum:1, pageSize, errorType: value, modifyState }
+        var newJson = {...json, pageNum:1, pageSize, errorType: value, modifyState };
+        this.setState({wait: true});
         getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
-                this.setState({total: res.data.data.total, data:res.data.data.records})
+                this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
             }
         })
         this.setState({ errorType: value, jso: newJson });
     }
     getPage = (page, pageSize) => {
         const { errorType, modifyState, json } = this.state;
-        var newJson = {...json, pageNum: page, pageSize, errorType, modifyState }
+        var newJson = {...json, pageNum: page, pageSize, errorType, modifyState };
+        this.setState({wait: true});
         getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
-                this.setState({total: res.data.data.total, data:res.data.data.records})
+                this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
             }
         })
         this.setState({ page, pageSize, json: newJson });
     }
     render() {
         // 复选框是否全选
-        const { quanXuan, mdId, data, page, pageSize, fanWei, startTime, endTime, total } = this.state;
+        const { quanXuan, mdId, data, page, pageSize, fanWei, startTime, endTime, total, wait } = this.state;
         const { navigate } = this.props.router;
         return (
             <>
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative', top: 10 }}>
                     <div style={{ margin: '20px 21px', display: 'flex', flexDirection: 'column' }} className='xiangQing'>
                         <div style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
                             <p style={{ flex: 7 }}>
@@ -140,6 +143,7 @@ class SearchDataTable extends Component {
                         <div style={{ flex: 3 }}><Search options={options} /></div>
                     </div>
                 </div>
+                <Spin spinning={wait}>
                 <table style={{ margin: '20px 10px', borderSpacing: '0 0px' }} width="99%" >
                     <colgroup>
                         <col style={{ width: 50, minWidth: 50, textAlign: 'center' }} />
@@ -188,6 +192,7 @@ class SearchDataTable extends Component {
                         }
                         {data.map((item, key) => {
                             const { description, amendments, modifyState, mediaType, postUrl } = item;
+                            var newAmendments = JSON.parse(amendments);
                             var newDescription = description.replace(/yellow/g, "red");
                             var newModifyState = "";
                             switch (modifyState) {
@@ -235,7 +240,7 @@ class SearchDataTable extends Component {
                                     <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newMediaType}</td>
                                     <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.errorType}</td>
                                     <td style={{ textAlign: 'center', border: '1px solid #8F9399', color: 'red' }}>{item.errorDescription}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{amendments}</td>
+                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newAmendments[0]}</td>
                                     <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={item.articleTitle} is={false} /> </td>
                                     <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={newDescription} is={true} /></td>
                                     <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>正文</td>
@@ -247,6 +252,7 @@ class SearchDataTable extends Component {
                         })}
                     </thead>
                 </table>
+                </Spin>
                 <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => { this.getPage(page, pageSize) }} style={{ marginTop: 6, paddingTop: 15 }} />
             </>
         );

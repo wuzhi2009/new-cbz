@@ -1,10 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-/**
- * 头部无序表组件
- * 
- * @author wuzhi
- */
+
 
 const list = [
     {
@@ -33,6 +29,11 @@ const list = [
         key: '/library'
     }
 ];
+/**
+ * 头部无序表组件
+ * 
+ * @author wuzhi
+ */
 const KopfUl = () => {
     const { pathname } = useLocation();
     const nav = useNavigate();

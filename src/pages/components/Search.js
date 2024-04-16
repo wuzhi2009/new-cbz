@@ -17,14 +17,14 @@ class Search extends Component {
         }
         this.props.sendAction(info)
     }
-    componentDidMount() {
-        // 初始化的时候发送action到table触发更新
-        if (this.state.label === "" ) {
-            // 初始化下拉框值
-            var info = {label: this.props.options[0].value, searchValue: ""};
-        }
-        this.props.sendAction(info)
-    }
+    // componentDidMount() {
+    //     // 初始化的时候发送action到table触发更新
+    //     if (this.state.label === "" ) {
+    //         // 初始化下拉框值
+    //         var info = {label: this.props.options[0].value, searchValue: ""};
+    //     }
+    //     this.props.sendAction(info)
+    // }
     
     render() { 
         const options = this.props.options;
