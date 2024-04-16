@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import LangText from './components/LangText';
-import { Empty, Tooltip, Spin } from 'antd';
+import { Empty, Tooltip, Spin, message } from 'antd';
 import { withRouter } from '../utils/withRouter';
 import XiaLaKuang from './components/XiaLaKuang';
-import { ContainerOutlined, OneToOneOutlined } from '@ant-design/icons';
+import { ContainerOutlined, LoadingOutlined, OneToOneOutlined } from '@ant-design/icons';
 import OpenUndClose from './components/OpenUndClose';
 import Search from './components/Search';
 import Pagination from './components/Pagination';
 import { connect } from 'react-redux';
 import { getSearchTable } from './api/SearchTable/SearchTableApi';
+import Modal from './components/Modal';
+import { chongXinJianCe } from './api/TaskCenterXiangQing/XiangQingApi';
 const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误类型", "不规范表述", "规范表述", "文章标题", "片段", "数据类型", "引用页", "发布时间", "修改状态"];
 const options = [{ key: "文章片段", value: 1 }, { key: "站点名称", value: 2 }];
 const options2 = [{ key: "全部", value: "2" }, { key: "未修改", value: "0" }, { key: "已修改", value: "1" }, { key: "无需修改", value: "null" }];
@@ -18,7 +20,7 @@ const options2 = [{ key: "全部", value: "2" }, { key: "未修改", value: "0" 
  * @author wuzhi
  */
 class SearchDataTable extends Component {
-    state = { mdId: [], quanXuan: false, items: [], data: [], page: 1, pageSize: 10, total: 10, fanWei: [], startTime: "", endTime: "", modifyState: "2", errorType: "", searchValue:"", label: "", json:{}, wait: true }
+    state = { mdId: [], quanXuan: false, items: [], data: [], page: 1, pageSize: 10, total: 10, fanWei: [], startTime: "", endTime: "", modifyState: "2", errorType: "", searchValue:"", label: "", json:{}, wait: true, wait2: false, open2:false }
     componentDidMount() {
         const { location } = this.props.router;
         const { state } = location;
@@ -55,30 +57,26 @@ class SearchDataTable extends Component {
         var mdId = [];
         if (e.target.checked) {
             // 选中全部
-            this.props.data.map(item => {
+            this.state.data.map(item => {
                 return mdId.push(item.id);
             })
         }
-        this.props.changeMdId(mdId);
         this.setState({ quanXuan: e.target.checked, mdId });
     }
     xuanZhe = (e, DasMdId) => {
-        const { mdId } = this.state;
-        const { data } = this.props;
+        const { mdId, data } = this.state;
         var q = false;
         if (e.target.checked) {
             if (mdId.length === data.length - 1) {
                 q = true;
             }
             this.setState({ mdId: [...mdId, DasMdId], quanXuan: q });
-            this.props.changeMdId([...mdId, DasMdId]);
         } else {
             var index = mdId.indexOf(DasMdId);
             if (index !== -1) {
                 mdId.splice(index, 1);
             }
             this.setState({ mdId, quanXuan: q });
-            this.props.changeMdId(mdId);
         }
     }
     changeZhuangTai = (value) => {
@@ -116,7 +114,7 @@ class SearchDataTable extends Component {
     }
     render() {
         // 复选框是否全选
-        const { quanXuan, mdId, data, page, pageSize, fanWei, startTime, endTime, total, wait } = this.state;
+        const { quanXuan, mdId, data, page, pageSize, fanWei, startTime, endTime, total, wait, wait2, open2 } = this.state;
         const { navigate } = this.props.router;
         return (
             <>
@@ -131,7 +129,14 @@ class SearchDataTable extends Component {
                             </p>
                             <div style={{ flex: 7 }}>
                                 <span style={{ position: 'absolute', right: 10 }}>
-                                    <span className='YellowButton' onClick={() => { }} style={{ background: '#B188E5', width: 130, marginRight: 6 }}><span>部分重新检测</span></span>
+                                    <span className='YellowButton' onClick={() => { 
+                                        const { mdId } = this.state;
+                                        if (mdId.length <= 0) {
+                                            message.warning("请选择数据！！");
+                                        } else {
+                                            this.setState({open2: true});
+                                        }
+                                    }} style={{ background: '#B188E5', width: 130, marginRight: 6 }}><span>部分重新检测</span></span>
                                     <span className='YellowButton' onClick={() => { navigate("/choose/searchData") }}><span>返 回</span></span>
                                 </span>
                             </div>
@@ -254,6 +259,29 @@ class SearchDataTable extends Component {
                 </table>
                 </Spin>
                 <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => { this.getPage(page, pageSize) }} style={{ marginTop: 6, paddingTop: 15 }} />
+			<Modal open={open2} close={() => this.setState({open2:false})}>
+                <div style={ {marginBottom: 20, position: 'absolute', top: 34} }>提示：</div>
+                <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认重新检测</div>
+                <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
+                    <span className='DasButton' onClick={() => {this.setState({open2: false})}} >取消</span>
+                    <span className='grepButton' onClick={() => {
+						const { mdId } = this.state;
+                            this.setState({wait2: true});
+							// 重新检测
+							chongXinJianCe(mdId).then((res) => {
+								if (res.data.code === 200) {
+									message.success(res.data.msg);
+									this.setState({open2: false, mdId:[], del:"chongZhi", page: 1, wait2: false});
+                                    // 重新获取数据
+                                    this.getPage(1, pageSize);
+								} else {
+									message.error(res.data.msg);
+								}
+							})
+						
+					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
+                </div>
+            </Modal>
             </>
         );
     }

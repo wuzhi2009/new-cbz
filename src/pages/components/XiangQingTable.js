@@ -16,15 +16,15 @@ const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误�
 class XiangQingTable extends Component {
     state = { mdId:[],quanXuan: false, items:[] } 
     xuanAll = (e) => {
-        var mdId = [];
+        var mdIds = [];
         if (e.target.checked) {
             // 选中全部
             this.props.data.map(item => {
-                return mdId.push(item.id);
+                return mdIds.push(item.id);
             })
         }
-        this.props.changeMdId(mdId);
-        this.setState({quanXuan: e.target.checked, mdId});
+        this.props.changeMdId(mdIds);
+        this.setState({quanXuan: e.target.checked, mdId:mdIds});
     }
     xuanZhe = (e, DasMdId) => {
         const { mdId } = this.state;

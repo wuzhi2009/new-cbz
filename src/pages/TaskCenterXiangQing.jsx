@@ -137,6 +137,9 @@ class TaskCenterXiangQing extends Component {
 		this.setState({paiXu:value});
 	}
     render() { 
+        message.config({
+            zIndex: 1000
+        })
         const { navigate } = this.props.router;
         const nav = navigate;
         const { smId, monitoringTitle, checkType, originator, createTime, siteChannelsJson, page, total, data, pageSize, postStartTime, postEndTime, open, open2, del, wait, wait2 } = this.state;
@@ -173,9 +176,23 @@ class TaskCenterXiangQing extends Component {
                         </p>
                         <div style={ {flex: 7} }>
                             <span style={ {position: 'absolute', right: 10} }>
-                                <span className='YellowButton' onClick={() => {this.setState({open: true, del:""})}} style={ {background: '#62D862', marginRight: 6} }><span>无需修改</span></span>
-                                <span className='YellowButton' onClick={() => {this.setState({open2: true, del:""})}} style={ {background: '#B188E5', width: 130, marginRight: 6} }><span>部分重新检测</span></span>
-                                <span className='YellowButton' onClick={() => {nav("/taskCenter/eins")}}><span>返 回</span></span>
+                                <span className='YellowButton heikuang' onClick={() => {
+                                    const { mdId } = this.state;
+                                    if (mdId.length <= 0) {
+                                        message.warning("请先选择数据！！");
+                                    } else {
+                                      this.setState({open: true, del:""})  
+                                    } 
+                                }} style={ {background: '#62D862', marginRight: 6} }><span>无需修改</span></span>
+                                <span className='YellowButton heikuang' onClick={() => {
+                                    const { mdId } = this.state;
+                                    if (mdId.length <= 0) {
+                                        message.warning("请先选择数据！！");
+                                    } else {
+                                      this.setState({open2: true, del:""})  
+                                    } 
+                                }} style={ {background: '#B188E5', width: 130, marginRight: 6} }><span>部分重新检测</span></span>
+                                <span className='YellowButton heikuang' onClick={() => {nav("/taskCenter/eins")}}><span>返 回</span></span>
                             </span>
                         </div>
                     </div>
@@ -198,9 +215,6 @@ class TaskCenterXiangQing extends Component {
                     <span className='DasButton' onClick={() => {this.setState({open: false})}} >取消</span>
                     <span className='grepButton' onClick={() => {
 						const { mdId } = this.state;
-						if (mdId.length <= 0) {
-							message.error("请先选择数据");
-						} else {
                             this.setState({wait2: true});
 							// 确认将选中数据改为无需修改
 							not(mdId).then((res) => {
@@ -213,8 +227,6 @@ class TaskCenterXiangQing extends Component {
 									message.error(res.data.msg);
 								}
 							})
-						}
-						
 					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
                 </div>
             </Modal>
@@ -225,9 +237,6 @@ class TaskCenterXiangQing extends Component {
                     <span className='DasButton' onClick={() => {this.setState({open2: false})}} >取消</span>
                     <span className='grepButton' onClick={() => {
 						const { mdId } = this.state;
-						if (mdId.length <= 0) {
-							message.error("请先选择数据");
-						} else {
                             this.setState({wait2: true});
 							// 重新检测
 							chongXinJianCe(mdId).then((res) => {
@@ -240,7 +249,6 @@ class TaskCenterXiangQing extends Component {
 									message.error(res.data.msg);
 								}
 							})
-						}
 						
 					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
                 </div>

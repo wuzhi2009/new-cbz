@@ -45,9 +45,13 @@ class TaskCenterEinsTable extends Component {
                     </tr>: <></>
                 }
                 { data.map((item, key) => {
+                    var das = <>{item.checkType}</>;
+                    if (item.checkType === "月常") {
+                        das = <span className='DasButton' style={ {color: 'white', backgroundColor: '#FCA427', width: 64, height: 25, display: 'inline-block', fontWeight: 600} }>{item.checkType}</span>
+                    }
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 45} }>
-                        <td style={ {textAlign: 'center'} }>{item.checkType}</td>
+                        <td style={ {textAlign: 'center'} }>{das}</td>
                         <td>{item.monitoringTitle}</td>
                         <td style={ {textAlign: 'center'} }>{item.originator}</td>
                         <td style={ {textAlign: 'center'} }>{item.createTime}</td>
