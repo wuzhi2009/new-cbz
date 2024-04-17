@@ -20,7 +20,7 @@ const options2 = [{ key: "全部", value: "2" }, { key: "未修改", value: "0" 
  * @author wuzhi
  */
 class SearchDataTable extends Component {
-    state = { mdId: [], quanXuan: false, items: [], data: [], page: 1, pageSize: 10, total: 10, fanWei: [], startTime: "", endTime: "", modifyState: "2", errorType: "", searchValue:"", label: "", json:{}, wait: true, wait2: false, open2:false }
+    state = { mdId: [], quanXuan: false, items: [], data: [], page: 1, pageSize: 10, total: 10, fanWei: [], startTime: "", endTime: "", modifyState: "2", errorType: "", searchValue: "", label: "", json: {}, wait: true, wait2: false, open2: false }
     componentDidMount() {
         const { location } = this.props.router;
         const { state } = location;
@@ -30,7 +30,7 @@ class SearchDataTable extends Component {
         // 在此处将json传到后端 取到data数据
         getSearchTable(json).then(res => {
             if (res.data.code === 200) {
-                this.setState({data: res.data.data.records, total: res.data.data.total, wait: false});
+                this.setState({ data: res.data.data.records, total: res.data.data.total, wait: false });
             }
         })
         this.setState({ modifyState: json.modifyState, fanWei: json.siteChannels, startTime: json.startTime, endTime: json.endTime, json });
@@ -43,32 +43,61 @@ class SearchDataTable extends Component {
                 value = ""
             }
             const { errorType, modifyState, json, pageSize } = this.state;
-            var newJson = {...json, pageNum: 1, pageSize, errorType, modifyState, searchType: label, searchWord: value };
-            this.setState({wait: true});
+            var newJson = { ...json, pageNum: 1, pageSize, errorType, modifyState, searchType: label, searchWord: value };
+            this.setState({ wait: true });
             getSearchTable(newJson).then(res => {
                 if (res.data.code === 200) {
-                    this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
+                    this.setState({ total: res.data.data.total, data: res.data.data.records, wait: false })
                 }
             })
-            this.setState({label, searchValue: value});
+            this.setState({ label, searchValue: value });
         }
     }
     xuanAll = (e) => {
-        var mdId = [];
+        const { mdId, data } = this.state;
+        var mdIds = mdId;
         if (e.target.checked) {
             // 选中全部
-            this.state.data.map(item => {
-                return mdId.push(item.id);
+            data.map(item => {
+                var index = mdIds.indexOf(item.id);
+                if (index === -1) {
+                    // 当且仅当没选取
+                    return mdIds.push(item.id);
+                }
+                return null;
+            })
+        } else {
+            // 取消全选 如果是第一页和第二页都全选了 只取消其中一页的全选
+            data.forEach(item => {
+                var index = mdIds.indexOf(item.id);
+                if (index !== -1) {
+                    mdIds.splice(index, 1);
+                }
             })
         }
-        this.setState({ quanXuan: e.target.checked, mdId });
+        this.setState({ quanXuan: e.target.checked, mdId: mdIds });
     }
     xuanZhe = (e, DasMdId) => {
         const { mdId, data } = this.state;
-        var q = false;
+        var q = true;
         if (e.target.checked) {
-            if (mdId.length === data.length - 1) {
-                q = true;
+            // 选取 // 当元素是该页最后一个被选取的时候 同时选取表头的选项
+            try {
+                data.forEach(item => {
+                    if (item.id !== DasMdId && !mdId.includes(item.id)) {
+                        // 所选择的mdId中 没有包含现在数据的id
+                        // 停止forEach
+                        throw new Error("stop");
+                    } else {
+                        // 有存在的元素 继续下一个判断
+                        q = true;
+                    }
+                })
+            } catch (error) {
+                if (error.message !== "stop") {
+                    throw error;
+                }
+                q = false;
             }
             this.setState({ mdId: [...mdId, DasMdId], quanXuan: q });
         } else {
@@ -76,38 +105,58 @@ class SearchDataTable extends Component {
             if (index !== -1) {
                 mdId.splice(index, 1);
             }
-            this.setState({ mdId, quanXuan: q });
+            this.setState({ mdId, quanXuan: false });
         }
     }
     changeZhuangTai = (value) => {
         const { errorType, pageSize, json } = this.state;
-        var newJson = {...json, pageNum:1, pageSize, errorType, modifyState: value };
-        this.setState({wait: true});
+        var newJson = { ...json, pageNum: 1, pageSize, errorType, modifyState: value };
+        this.setState({ wait: true });
         getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
-                this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
+                this.setState({ total: res.data.data.total, data: res.data.data.records, wait: false })
             }
         })
         this.setState({ modifyState: value, json: newJson });
     }
     changeCuoWuType = (value) => {
         const { modifyState, pageSize, json } = this.state;
-        var newJson = {...json, pageNum:1, pageSize, errorType: value, modifyState };
-        this.setState({wait: true});
+        var newJson = { ...json, pageNum: 1, pageSize, errorType: value, modifyState };
+        this.setState({ wait: true });
         getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
-                this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
+                this.setState({ total: res.data.data.total, data: res.data.data.records, wait: false })
             }
         })
         this.setState({ errorType: value, jso: newJson });
     }
     getPage = (page, pageSize) => {
-        const { errorType, modifyState, json } = this.state;
-        var newJson = {...json, pageNum: page, pageSize, errorType, modifyState };
-        this.setState({wait: true});
+        const { errorType, modifyState, json, mdId } = this.state;
+        var newJson = { ...json, pageNum: page, pageSize, errorType, modifyState };
+        this.setState({ wait: true });
         getSearchTable(newJson).then(res => {
             if (res.data.code === 200) {
-                this.setState({total: res.data.data.total, data:res.data.data.records, wait: false})
+                var q = true;
+                var data = res.data.data.records;
+                // 切换数据判断是否全选
+                try {
+                    data.forEach(item => {
+                        if (!mdId.includes(item.id)) {
+                            // 所选择的mdId中 没有包含现在数据的id
+                            // 停止forEach
+                            throw new Error("stop");
+                        } else {
+                            // 有存在的元素 继续下一个判断
+                            q = true;
+                        }
+                    })
+                } catch (error) {
+                    if (error.message !== "stop") {
+                        throw error;
+                    }
+                    q = false;
+                }
+                this.setState({ total: res.data.data.total, data: res.data.data.records, wait: false, quanXuan: q })
             }
         })
         this.setState({ page, pageSize, json: newJson });
@@ -129,12 +178,12 @@ class SearchDataTable extends Component {
                             </p>
                             <div style={{ flex: 7 }}>
                                 <span style={{ position: 'absolute', right: 10 }}>
-                                    <span className='YellowButton' onClick={() => { 
+                                    <span className='YellowButton' onClick={() => {
                                         const { mdId } = this.state;
                                         if (mdId.length <= 0) {
                                             message.warning("请选择数据！！");
                                         } else {
-                                            this.setState({open2: true});
+                                            this.setState({ open2: true });
                                         }
                                     }} style={{ background: '#B188E5', width: 130, marginRight: 6 }}><span>部分重新检测</span></span>
                                     <span className='YellowButton' onClick={() => { navigate("/choose/searchData") }}><span>返 回</span></span>
@@ -149,142 +198,142 @@ class SearchDataTable extends Component {
                     </div>
                 </div>
                 <Spin spinning={wait}>
-                <table style={{ margin: '20px 10px', borderSpacing: '0 0px' }} width="99%" >
-                    <colgroup>
-                        <col style={{ width: 50, minWidth: 50, textAlign: 'center' }} />
-                        <col style={{ width: 60, minWidth: 60, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ width: 60, minWidth: 80, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ minWidth: 150, textAlign: 'center'}} />
-                        <col style={{ width: 70, minWidth: 70, textAlign: 'center' }} />
-                        <col style={{ width: 130, minWidth: 130, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                        <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                    </colgroup>
-                    <thead>
+                    <table style={{ margin: '20px 10px', borderSpacing: '0 0px' }} width="99%" >
+                        <colgroup>
+                            <col style={{ width: 50, minWidth: 50, textAlign: 'center' }} />
+                            <col style={{ width: 60, minWidth: 60, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 60, minWidth: 80, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ minWidth: 150, textAlign: 'center' }} />
+                            <col style={{ width: 70, minWidth: 70, textAlign: 'center' }} />
+                            <col style={{ width: 130, minWidth: 130, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                        </colgroup>
+                        <thead>
 
-                        <tr>
-                            <th style={{ backgroundColor: '#ECF2F8', height: 50, border: '1px solid #8F9399' }}>
-                                <input type='checkbox' style={{ width: 20, height: 20 }} onChange={(e) => { this.xuanAll(e) }} checked={quanXuan} />
-                            </th>
-                            {tableKopf.map((item, key) => {
+                            <tr>
+                                <th style={{ backgroundColor: '#ECF2F8', height: 50, border: '1px solid #8F9399' }}>
+                                    <input type='checkbox' style={{ width: 20, height: 20 }} onChange={(e) => { this.xuanAll(e) }} checked={quanXuan} />
+                                </th>
+                                {tableKopf.map((item, key) => {
+                                    return (
+                                        <th key={key} style={{ backgroundColor: '#ECF2F8', height: 70, border: '1px solid #8F9399' }}>{item}</th>
+                                    )
+                                })}
+                            </tr>
+                            {data.length === 0 ? <tr>
+                                <td style={{ textAlign: 'center' }} />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td style={{ textAlign: 'center', width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                            </tr> : <></>
+                            }
+                            {data.map((item, key) => {
+                                const { description, amendments, modifyState, mediaType, postUrl } = item;
+                                var newAmendments = JSON.parse(amendments);
+                                var newDescription = description.replace(/yellow/g, "red");
+                                var newModifyState = "";
+                                switch (modifyState) {
+                                    case 0:
+                                        newModifyState = "未修改";
+                                        break;
+                                    case 1:
+                                        newModifyState = "已修改";
+                                        break;
+                                    case null:
+                                        newModifyState = "无需修改";
+                                        break;
+                                    default:
+                                        // eslint-disable-next-line no-unused-vars
+                                        newModifyState = "";
+                                        break;
+                                }
+                                var newMediaType = "";
+                                switch (mediaType) {
+                                    case "1":
+                                        newMediaType = "网站";
+                                        break;
+                                    case "2":
+                                        newMediaType = "手机app";
+                                        break;
+                                    case "3":
+                                        newMediaType = "微信";
+                                        break;
+                                    case "4":
+                                        newMediaType = "微博";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                var newPostUrl = postUrl;
+                                if (postUrl.length > 37) {
+                                    newPostUrl = postUrl.substring(0, 37) + "...";
+                                }
                                 return (
-                                    <th key={key} style={{ backgroundColor: '#ECF2F8', height: 70, border: '1px solid #8F9399' }}>{item}</th>
+                                    <tr key={key} style={mdId.includes(item.id) ? { background: '#F0FAFF', maxHeight: 40 } : { maxHeight: 40 }}>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><input type='checkbox' style={{ width: 20, height: 20 }} onChange={(e) => { this.xuanZhe(e, item.id) }} checked={mdId.includes(item.id)} /></td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{(key + 1) + ((page - 1) * pageSize)}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.deptName}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.siteName}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newMediaType}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.errorType}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399', color: 'red' }}>{item.errorDescription}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newAmendments[0]}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={item.articleTitle} is={false} /> </td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={newDescription} is={true} /></td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>正文</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><Tooltip title={item.postUrl}><a href={item.postUrl}>{newPostUrl}</a></Tooltip></td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.postTime}</td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newModifyState}</td>
+                                    </tr>
                                 )
                             })}
-                        </tr>
-                        {data.length === 0 ? <tr>
-                            <td style={{ textAlign: 'center' }} />
-                            <td />
-                            <td />
-                            <td />
-                            <td />
-                            <td />
-                            <td />
-                            <td />
-                            <td />
-                            <td style={{ textAlign: 'center', width: '100%' }}><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
-                            <td />
-                            <td />
-                            <td />
-                            <td />
-                        </tr> : <></>
-                        }
-                        {data.map((item, key) => {
-                            const { description, amendments, modifyState, mediaType, postUrl } = item;
-                            var newAmendments = JSON.parse(amendments);
-                            var newDescription = description.replace(/yellow/g, "red");
-                            var newModifyState = "";
-                            switch (modifyState) {
-                                case 0:
-                                    newModifyState = "未修改";
-                                    break;
-                                case 1:
-                                    newModifyState = "已修改";
-                                    break;
-                                case null:
-                                    newModifyState = "无需修改";
-                                    break;
-                                default:
-                                    // eslint-disable-next-line no-unused-vars
-                                    newModifyState = "";
-                                    break;
-                            }
-                            var newMediaType = "";
-                            switch (mediaType) {
-                                case "1":
-                                    newMediaType = "网站";
-                                    break;
-                                case "2":
-                                    newMediaType = "手机app";
-                                    break;
-                                case "3":
-                                    newMediaType = "微信";
-                                    break;
-                                case "4":
-                                    newMediaType = "微博";
-                                    break;
-                                default:
-                                    break;
-                            }
-                            var newPostUrl = postUrl;
-                            if (postUrl.length > 37) {
-                                newPostUrl = postUrl.substring(0, 37) + "...";
-                            }
-                            return (
-                                <tr key={key} style={mdId.includes(item.id) ? { background: '#F0FAFF', maxHeight: 40 } : { maxHeight: 40 }}>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><input type='checkbox' style={{ width: 20, height: 20 }} onChange={(e) => { this.xuanZhe(e, item.id) }} checked={mdId.includes(item.id)} /></td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{(key + 1) + ((page - 1) * pageSize)}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.deptName}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.siteName}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newMediaType}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.errorType}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399', color: 'red' }}>{item.errorDescription}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newAmendments[0]}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={item.articleTitle} is={false} /> </td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={newDescription} is={true} /></td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>正文</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><Tooltip title={item.postUrl}><a href={item.postUrl}>{newPostUrl}</a></Tooltip></td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.postTime}</td>
-                                    <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newModifyState}</td>
-                                </tr>
-                            )
-                        })}
-                    </thead>
-                </table>
+                        </thead>
+                    </table>
                 </Spin>
                 <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => { this.getPage(page, pageSize) }} style={{ marginTop: 6, paddingTop: 15 }} />
-			<Modal open={open2} close={() => this.setState({open2:false})}>
-                <div style={ {marginBottom: 20, position: 'absolute', top: 34} }>提示：</div>
-                <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认重新检测</div>
-                <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
-                    <span className='DasButton' onClick={() => {this.setState({open2: false})}} >取消</span>
-                    <span className='grepButton' onClick={() => {
-						const { mdId } = this.state;
-                            this.setState({wait2: true});
-							// 重新检测
-							chongXinJianCe(mdId).then((res) => {
-								if (res.data.code === 200) {
-									message.success(res.data.msg);
-									this.setState({open2: false, mdId:[], del:"chongZhi", page: 1, wait2: false});
+                <Modal open={open2} close={() => this.setState({ open2: false })}>
+                    <div style={{ marginBottom: 20, position: 'absolute', top: 34 }}>提示：</div>
+                    <div style={{ margin: 30 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认重新检测</div>
+                    <div style={{ marginLeft: '50%', marginTop: 16 }} className='zweiTable'>
+                        <span className='DasButton' onClick={() => { this.setState({ open2: false }) }} >取消</span>
+                        <span className='grepButton' onClick={() => {
+                            const { mdId } = this.state;
+                            this.setState({ wait2: true });
+                            // 重新检测
+                            chongXinJianCe(mdId).then((res) => {
+                                if (res.data.code === 200) {
+                                    message.success(res.data.msg);
+                                    this.setState({ open2: false, mdId: [], del: "chongZhi", page: 1, wait2: false });
                                     // 重新获取数据
                                     this.getPage(1, pageSize);
-								} else {
-									message.error(res.data.msg);
-								}
-							})
-						
-					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
-                </div>
-            </Modal>
+                                } else {
+                                    message.error(res.data.msg);
+                                }
+                            })
+
+                        }} style={{ marginLeft: 2 }}>{wait2 ? <LoadingOutlined style={{ marginRight: 2 }} /> : <></>}确定</span>
+                    </div>
+                </Modal>
             </>
         );
     }
 }
 
-export default withRouter(connect(({search}) => {return search})(SearchDataTable));
+export default withRouter(connect(({ search }) => { return search })(SearchDataTable));

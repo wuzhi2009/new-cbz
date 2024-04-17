@@ -151,8 +151,6 @@ class Pagination extends Component{
         this.setState({
             currentPage
         })
-        // 缓存当前页码
-        sessionStorage.setItem(`currentPage${this.state.url}`, encodeURIComponent(currentPage));
         //将当前页码返回父组件
         onChange(currentPage, pageSize);
     }
@@ -176,7 +174,6 @@ class Pagination extends Component{
     }
     // 重新加载组件需要删除页数缓存
     componentDidMount() {
-        window.sessionStorage.removeItem(`currentPage${this.state.url}`);
         const {currentPage} = this.state;
         if (currentPage !== 1) {
             this.setState({currentPage: 1});

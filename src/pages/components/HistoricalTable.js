@@ -13,7 +13,6 @@ class HistoricalTable extends Component {
     state = {}
     // 套用模板进行查询
     taoYong = (json) => {
-        console.log(json);
         const { navigate } = this.props.router;
         navigate('/searchDataTable', {state: json})
     }

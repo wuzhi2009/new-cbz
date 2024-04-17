@@ -52,12 +52,6 @@ class MonitorItemZwei extends Component {
         var endDate = new Date();
         switch (i) {
             case 1:
-                startDate.setHours(0);
-                startDate.setMinutes(0);
-                startDate.setSeconds(0);
-                endDate.setHours(23);
-                endDate.setMinutes(59);
-                endDate.setSeconds(59);
                 break;
             case 2:
                 startDate.setDate(endDate.getDate() - 7);
@@ -71,6 +65,12 @@ class MonitorItemZwei extends Component {
             default:
                 break;
         }
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
         startDate = fDate(startDate);
         endDate = fDate(endDate);
         this.setState({startDate, endDate, key: i});
@@ -98,11 +98,12 @@ class MonitorItemZwei extends Component {
     }
     render() {
         const { startDate, endDate, key } = this.state;
-        var sDate = startDate;
-        var eDate = endDate;
+        
+        var sDate = dayjs(startDate);
+        var eDate = dayjs(endDate);
         if (startDate === "" || endDate === "") {
-            sDate = fDate(new Date());
-            eDate = fDate(new Date());
+            sDate = "";
+            eDate = "";
         }
         return (
             <ul style={ ulStyle }>
@@ -116,11 +117,19 @@ class MonitorItemZwei extends Component {
                         <RangePicker placeholder={["开始日期", "结束日期"]} 
                             suffixIcon={<img src={icon} alt='' />} 
                             onChange={(_, value) => {
-                                var einsDate = value[0] + " 00:00:00";
-                                var zweiDate = value[1] + " 23:59:59";
-                                this.setState({startDate: einsDate, endDate: zweiDate, key: 0});this.props.onChange(einsDate, zweiDate);
+                                if (value[0] && value[1]) {
+                                    var einsDate = value[0] + " 00:00:00";
+                                    var zweiDate = value[1] + " 23:59:59";
+                                    this.setState({startDate: einsDate, endDate: zweiDate, key: 0});
+                                    this.props.onChange(einsDate, zweiDate);
+                                } else {
+                                    this.setState({startDate: "", endDate: "", key: 0});
+                                    this.props.onChange("", "");
+                                }
+                                
                             }} 
-                            value={[dayjs(sDate), dayjs(eDate)]} 
+                            value={[sDate, eDate]} 
+                            inputReadOnly={true}
                          />
                     </span>
                 </div>

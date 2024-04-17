@@ -16,11 +16,25 @@ const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误�
 class XiangQingTable extends Component {
     state = { mdId:[],quanXuan: false, items:[] } 
     xuanAll = (e) => {
-        var mdIds = [];
+        const { mdId } = this.state;
+        var mdIds = mdId;
         if (e.target.checked) {
             // 选中全部
             this.props.data.map(item => {
-                return mdIds.push(item.id);
+                var index = mdIds.indexOf(item.id);
+                if (index === -1) {
+                    // 当且仅当没选取
+                    return mdIds.push(item.id);
+                }
+                return null;
+            })
+        } else {
+            // 取消全选 如果是第一页和第二页都全选了 只取消其中一页的全选
+            this.props.data.forEach(item => {
+                var index = mdIds.indexOf(item.id);
+                if (index !== -1) {
+                   mdIds.splice(index, 1);
+                }
             })
         }
         this.props.changeMdId(mdIds);
@@ -29,27 +43,67 @@ class XiangQingTable extends Component {
     xuanZhe = (e, DasMdId) => {
         const { mdId } = this.state;
         const { data } = this.props;
-        var q = false;
+        var q = true;
         if (e.target.checked) {
-            if (mdId.length === data.length - 1) {
-                q = true;
+            // 选取 // 当元素是该页最后一个被选取的时候 同时选取表头的选项
+            try {
+                data.forEach(item => {
+                    if (item.id !== DasMdId && !mdId.includes(item.id)) {
+                        // 所选择的mdId中 没有包含现在数据的id
+                        // 停止forEach
+                        throw new Error("stop");
+                    } else {
+                        // 有存在的元素 继续下一个判断
+                        q = true;
+                    }
+                }) 
+            } catch (error) {
+                if (error.message !== "stop") {
+                    throw error;
+                }
+                q = false;
             }
             this.setState({mdId:[...mdId, DasMdId], quanXuan: q});
             this.props.changeMdId([...mdId, DasMdId]);
         } else {
+            // 取消选取
             var index = mdId.indexOf(DasMdId);
             if (index !== -1) {
                 mdId.splice(index, 1);
             }
-            this.setState({mdId, quanXuan: q});
+            this.setState({mdId, quanXuan: false});
             this.props.changeMdId(mdId);
         }
     }
     componentDidUpdate(oldProps) {
-        const { del } = this.props;
+        const { del, data } = this.props;
+        const { mdId } = this.state;
         const del2 = oldProps.del;
+        const data2 = oldProps.data;
         if (del && del === "chongZhi" && del !== del2) {
             this.setState({mdId: [], quanXuan: false, items:[]})
+        }
+        if (data !== data2) {
+            var q = true;
+            // 切换数据判断是否全选
+            try {
+                data.forEach(item => {
+                    if (!mdId.includes(item.id)) {
+                        // 所选择的mdId中 没有包含现在数据的id
+                        // 停止forEach
+                        throw new Error("stop");
+                    } else {
+                        // 有存在的元素 继续下一个判断
+                        q = true;
+                    }
+                }) 
+            } catch (error) {
+                if (error.message !== "stop") {
+                    throw error;
+                }
+                q = false;
+            }
+            this.setState({quanXuan: q});
         }
     }
     render() { 
