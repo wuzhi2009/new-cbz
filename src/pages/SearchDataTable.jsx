@@ -24,7 +24,11 @@ class SearchDataTable extends Component {
     componentDidMount() {
         const { location } = this.props.router;
         const { state } = location;
-        var json = JSON.parse(state);
+        var json = state;
+        if (!(json instanceof Object)) {
+            // 当且仅当不是字符串的时候转换
+            json = JSON.parse(state);
+        }
         json.pageNum = 1;
         json.pageSize = 10;
         // 在此处将json传到后端 取到data数据
@@ -178,7 +182,7 @@ class SearchDataTable extends Component {
                             </p>
                             <div style={{ flex: 7 }}>
                                 <span style={{ position: 'absolute', right: 10 }}>
-                                    <span className='YellowButton' onClick={() => {
+                                    <span className='YellowButton heikuang' onClick={() => {
                                         const { mdId } = this.state;
                                         if (mdId.length <= 0) {
                                             message.warning("请选择数据！！");
@@ -186,7 +190,7 @@ class SearchDataTable extends Component {
                                             this.setState({ open2: true });
                                         }
                                     }} style={{ background: '#B188E5', width: 130, marginRight: 6 }}><span>部分重新检测</span></span>
-                                    <span className='YellowButton' onClick={() => { navigate("/choose/searchData") }}><span>返 回</span></span>
+                                    <span className='YellowButton heikuang' onClick={() => { navigate("/choose/searchData") }}><span>返 回</span></span>
                                 </span>
                             </div>
                         </div>

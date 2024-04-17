@@ -50,7 +50,7 @@ class Historical extends Component {
                         <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => {
                             const { con } = this.state;
                             this.setState({wait: true});
-                            getHistoricalList(con, page, pageSize).then(res => {
+                            getHistoricalList(page, pageSize, con).then(res => {
                                 if (res.data.code === 200) {
                                     this.setState({total: res.data.total, data: res.data.data, wait: false});
                                 }

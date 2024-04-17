@@ -8,6 +8,7 @@ import { Outlet } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import { getChannelList, getDeptList } from './api/Monitor/ChooseMonitorApi';
+import { setHistorical } from './api/Historical/HistoricalApi';
 const rightStyle = {
     cursor: 'pointer',
     textAlign: 'center',
@@ -82,7 +83,24 @@ class ChooseMonitor extends Component {
         this.setState({ data3: newData3, delDpName: dpName }, () => { this.getChoose() });
     }
     chaXun = () => {
-        console.log("查询");
+        const { choose, modifyState, postEndTime, postStartTime, data3, checkVendor } = this.state;
+        // 检查单位拼接
+        var checkUnit = [];
+        // 所选栏目
+        var siteChannels = [];
+        data3.map((item) => {
+            siteChannels.push(...item.list);
+            return checkUnit.push(item.dpName);
+        })
+        var info = {checkUnit, checkVendor, choseMsg: choose, endTime: postEndTime, modifyState, siteChannels, startTime: postStartTime};
+        this.setState({wait:true});
+        setHistorical(info).then(res => {
+            if (res.data.code === 200) {
+                // 操作成功带参数跳转
+                const { navigate } = this.props.router;
+                navigate('/searchDataTable', {state: {...info}});
+            }
+        })
     }
     jianCe = () => {
         console.log('检测 :>> ');

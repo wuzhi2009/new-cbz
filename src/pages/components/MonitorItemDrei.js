@@ -91,8 +91,7 @@ class MonittorItemDrei extends Component {
                     var d = this.state.data.filter((item) => {return item.dpName !== dpName});
                     this.setState({list: l, data: d});
                     onChange(d)
-                    }} style={ {marginLeft: 11} }>清空</span></> : <></>}
-                
+                    }} style={ {marginLeft: 11} }>清空</span>
                 <Tree
                     checkable={true}
                     onCheck={(key, e) => {this.onCheck(key, e)}}
@@ -102,7 +101,8 @@ class MonittorItemDrei extends Component {
                     checkedKeys={dasKey}
                     treeData={data} 
                     style={ {marginLeft: 55, marginTop: 10} }
-                />
+                /></> : <></>
+                }
             </ul>
         );
     }

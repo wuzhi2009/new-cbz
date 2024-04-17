@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
+import { withRouter } from '../utils/withRouter';
+import { getUserInfo } from './api/Monitor/ChooseMonitorApi';
 /**
  * 未登录页面
  * 
  * @author wuzhi
  */
 class Login extends Component {
-    state = {  } 
+    state = {  }
+    componentDidMount() {
+       const { navigate } = this.props.router; 
+       getUserInfo().then(res => {
+            if (res.data.code === 200) {
+                navigate("/taskCenter/eins");
+            }
+        }) 
+    } 
     render() { 
         return (
-            <div style={ {fontSize: 32, lineHeight: 5, fontWeight: 700, textAlign: 'center', padding: '2em', color: '#595959'} }>
-                401 Page
-            </div>
+            <div style={ {fontSize: 32, lineHeight: 5, fontWeight: 700, textAlign: 'center', padding: '2em', color: '#595959'} }>401 Page</div>
         );
     }
 }
  
-export default Login;
+export default withRouter(Login);
