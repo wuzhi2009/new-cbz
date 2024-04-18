@@ -5,7 +5,7 @@ import XiaLaKuang from './components/XiaLaKuang';
 import XiangQingTable from './components/XiangQingTable';
 import Pagination from './components/Pagination';
 import Search from './components/Search';
-import { UserOutlined, FieldTimeOutlined, ContainerOutlined, OneToOneOutlined, LoadingOutlined } from '@ant-design/icons';
+import { UserOutlined, FieldTimeOutlined, ContainerOutlined, OneToOneOutlined, LoadingOutlined, ReadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import Modal from './components/Modal';
 import { message } from 'antd';
@@ -43,7 +43,7 @@ class TaskCenterXiangQing extends Component {
         const { state } = location;
 		const { errorType, modifyState, paiXu } = this.state;
         this.setState(state);
-		this.setState({smId: state.id});
+		this.setState({smId: state.id, size: state.size});
 		var smId = state.id;
 		var page = 1;
 		var pageSize = 10;
@@ -142,12 +142,12 @@ class TaskCenterXiangQing extends Component {
         })
         const { navigate } = this.props.router;
         const nav = navigate;
-        const { smId, monitoringTitle, checkType, originator, createTime, siteChannelsJson, page, total, data, pageSize, postStartTime, postEndTime, open, open2, del, wait, wait2 } = this.state;
+        const { smId, monitoringTitle, checkType, originator, createTime, siteChannelsJson, page, total, data, pageSize, postStartTime, postEndTime, open, open2, del, wait, wait2, size } = this.state;
         if (smId === 0) {
             // 直接通过地址访问
             return (
                 <>
-                啥也没有
+                啥也没有<span className='YellowButton heikuang' onClick={() => {nav("/taskCenter/eins")}}><span>返 回</span></span>
                 </>
             );
         }
@@ -195,6 +195,11 @@ class TaskCenterXiangQing extends Component {
                                 <span className='YellowButton heikuang' onClick={() => {nav("/taskCenter/eins")}}><span>返 回</span></span>
                             </span>
                         </div>
+                    </div>
+                    <div style={ {flex: 7} }>
+                        <p style={ {marginTop: 19} }>
+                            <span className='xiangQingText'><ReadOutlined style={ {marginRight: 5} } />检测文章数：</span><span>{size}</span>
+                        </p>
                     </div>
                 </div>
                 <div style={ {display: 'flex', flexDirection: 'row', marginTop: 20, marginLeft: 20} }>

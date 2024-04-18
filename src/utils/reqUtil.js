@@ -31,8 +31,7 @@ httpService.interceptors.response.use(function (response) {
     // 抽屉弹窗 业务报错
     notification.open({
       message: '系统错误',
-      description:
-        "系统接口500异常 请联系管理员！！",
+      description: response.data.msg,
       icon:<CloseCircleTwoTone twoToneColor="red" />,
       maxCount:3
     });
@@ -64,7 +63,8 @@ httpService.interceptors.response.use(function (response) {
       window.location.href = "/login";
     }
   }
-  return Promise.reject(error);
+  error.data={code: 500, msg:"系统错误！！"}
+  return error
 });
 
 /**

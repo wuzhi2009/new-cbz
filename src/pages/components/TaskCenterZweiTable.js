@@ -77,7 +77,7 @@ class TaskCenterZweiTable extends Component {
                         <td>{item.monitoringTitle}</td>
                         <td style={ {textAlign: 'center'} }>{item.originator}</td>
                         <td style={ {textAlign: 'center'} }>{item.createTime}</td>
-                        <td style={ {textAlign: 'center'} }><OpenUndClose text={ item.siteChannelsJson } /></td>
+                        <td style={ {textAlign: 'center'} }><OpenUndClose text={ JSON.parse(item.siteChannelsJson) } /></td>
                         <td style={ {textAlign: 'center'} }>{item.status === 0 ? <div style={ {color: '#FF9854'} }>等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
                         <td style={ {textAlign: 'center'} }>
                             <div style={ {display: 'inlineBlock',width: 120,height: 26, textAlign: 'center',backgroundColor: 'red',color: '#fff', cursor: 'pointer'} } onClick={() => {this.setState({open: true, id:item.id})}}>

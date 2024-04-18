@@ -83,7 +83,7 @@ class XiangQingTable extends Component {
         if (del && del === "chongZhi" && del !== del2) {
             this.setState({mdId: [], quanXuan: false, items:[]})
         }
-        if (data !== data2) {
+        if (data.length > 0 && data !== data2) {
             var q = true;
             // 切换数据判断是否全选
             try {

@@ -6,12 +6,14 @@ import OpenUndClose from './components/OpenUndClose';
 import { withRouter } from '../utils/withRouter';
 import { Outlet } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Spin, message, Modal } from 'antd';
-import { getChannelList, getDeptList } from './api/Monitor/ChooseMonitorApi';
+import { Spin, message, Modal, Progress } from 'antd';
+import { add, getChannelList, getDeptList } from './api/Monitor/ChooseMonitorApi';
 import { setHistorical } from './api/Historical/HistoricalApi';
 import Cz from '../imgs/004重置.01894080.png';
 import Jc from '../imgs/005检测.cab9c870.png';
 import Cx from '../imgs/015查询图标.81216bac.png';
+import ChengGong from '../imgs/chengGong_20240418204522.png';
+import ShiBai from '../imgs/shiBai_20240418215613.png';
 const rightStyle = {
     cursor: 'pointer',
     textAlign: 'center',
@@ -32,7 +34,8 @@ const chaXunIco = Cx;
 const jianCeIco = Jc;
 const searchIco = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAABzklEQVQ4jZ3US4hPYRgG8N/8R4oibNRsJBpiOwqZpiwkNooFsWEhSbKwwEKSS00kNi6lKLltWMjCLRGxsLCQexYWkktNI7lM6K331Ol0zvzNPHXqXL7vOc/7fs/7dPQs36kNWpiD2ZiCATzL62/d1jHD8E3CdqxHF37iOyaiE+9xDCfwrbyx1UC4FK+wAcdT6bhUOhY9OIco8ynmtyNdg2u4im7sw/NSqX/wBLswK0lvY3ET6TycwX5srJZVg89YhQu4gmkF6Xjcwgycxk3sqSFYhm0170P5JrzEqYL0B6Ym2Vw8zj5W0YuVDYqH8lCXRLWt/FM0fHr+ZHeTVdrgXvZ+RWGpOJhLGMQBvBsFqWxjX9mnq0dJVMbb6P1w5q9DrJ9ceT+QLSzQajJ/HYbS5F8r19bS2pi8TyNR2p8DUcWL0vMiPKqSbsbFVFLFYE5SE8KOC7CjWn547dAI1BfowJH0+P06pdfxIKfrfxET2JdKdXZ195b3vcl4O4pfeNhmECKxDpci8kYdaSCIPuJgTEdaJobhd2lNZO06nMfCvL9cfGw6/ZO4k2WdzVB+nVVMwMy8j0zdiw/lzcNZKkjWYkuGSWRnKPySAX63NhrxD60DaMh7x31CAAAAAElFTkSuQmCC";
 class ChooseMonitor extends Component {
-    state = { dpName: "", mediaType: 1, data: [], data2: [], checkVendor: "KPY", data3: [], postStartTime: "", postEndTime: "", choose: "", delDpName: "", open: true, modifyState: "-1", data4:[], wait: false, monitoringTitle: "", open2:false, warning:"" }
+    state = { dpName: "", mediaType: 1, data: [], data2: [], checkVendor: "KPY", data3: [], postStartTime: "", postEndTime: "", choose: "", delDpName: "", open: true, modifyState: "-1", data4:[], wait: false, monitoringTitle: "", open2:false, warning:"", open3: false, cG: false, jinDu: 0, daoJiShi: 5 }
+    time2 = null;
     componentDidMount() {
         getDeptList().then((res) => {
             if (res.data.code === 200) {
@@ -43,9 +46,23 @@ class ChooseMonitor extends Component {
     }
     componentDidUpdate(oldProps) {
         const { modifyState } = this.props;
+        const { navigate } = this.props.router;
+        const { daoJiShi, cG } = this.state;
         const dasStatus = oldProps.modifyState;
         if (modifyState && modifyState !== dasStatus) {
             this.setState({ modifyState: modifyState });
+        }
+        if (daoJiShi === 0) {
+            // 删除定时器
+            clearInterval(this.time2);
+            if (cG) {
+                // 倒计时归零 并且接口访问成功并且跳转
+                navigate("/taskCenter/zwei");  
+            } else {
+                // 倒计时归零 但是接口访问失败
+                this.setState({daoJiShi: 5, open3: false});
+            }
+            
         }
     }
     // 改变选择的栏目
@@ -133,15 +150,39 @@ class ChooseMonitor extends Component {
             return;
         }
         // 检查单位拼接
-        var checkUnit = [];
+        var checkUnit = "";
+        var unit = [];
         // 所选栏目
         var siteChannels = [];
         data3.map((item) => {
             siteChannels.push(...item.list);
-            return checkUnit.push(item.dpName);
+            return unit.push(item.dpName);
         })
-        var info = {checkUnit, checkVendor, choseMsg: choose, postEndTime, siteChannels, postStartTime, monitoringTitle};
-        console.log('info :>> ', info);
+        checkUnit = unit.join(",");
+        var info = {checkUnit, checkVendor, choseMsg: choose, postEndTime, siteChannels, postStartTime, monitoringTitle, checkType: "自定义"};
+        this.setState({open3: true});
+        // 创建进度条定时器
+        const time = setInterval(() => {
+            const { jinDu } = this.state;
+            if (jinDu < 95) {
+                this.setState({jinDu: jinDu + 2})
+            }
+        }, 100);
+        add(info).then(res => {
+            if (res.data.code === 200) {
+                // 请求成功 卸载定时器
+                clearInterval(time);
+                this.setState({cG: true, jinDu: 100, open3: true});
+                // 创建跳转的倒计时
+                this.time2 = setInterval(() => {
+                    const { daoJiShi } = this.state;
+                    this.setState({daoJiShi: daoJiShi - 1})
+                }, 1000)
+            } else {
+                clearInterval(time);
+                this.setState({cG: false, jinDu: 100, open3: true})
+            }
+        })
     }
     chongZhi = () => {
         this.setState({ delDpName: "chongZhi", data3: [], choose: "" });
@@ -169,11 +210,19 @@ class ChooseMonitor extends Component {
         }
     }
     render() {
-        const { data, data2, data3, dpName, mediaType, delDpName, open, data4, wait, open2, warning, monitoringTitle } = this.state;
+        const { data, data2, data3, dpName, mediaType, delDpName, open, data4, wait, open2, warning, monitoringTitle, open3, cG, jinDu, daoJiShi } = this.state;
         const { location, navigate } = this.props.router;
+        const bianKuangStyle = {width: 260, height: 32, outline: 'none', border: '1px solid #DCDCDC',color: '#050505', fontSize: 18};
+        var inputStyle = bianKuangStyle;
         var dasStyle = { minHeight: 100 };
         if (!open) {
             dasStyle = { ...dasStyle, height: 100, overflow: 'hidden' };
+        }
+        if (warning) {
+            // 存在警告 说明边框要变红
+            inputStyle.border = 0;
+            inputStyle.outline = 0;
+            inputStyle.border = 'solid 1px red';
         }
         return (
             
@@ -203,6 +252,8 @@ class ChooseMonitor extends Component {
                                 if (res.data.code === 200) {
                                     var dasData4 = res.data.data;
                                 this.setState({ dpName: label, data4: dasData4, wait:false });   
+                                } else {
+                                    this.setState({wait: false});
                                 }
                             })    
                         })
@@ -253,7 +304,7 @@ class ChooseMonitor extends Component {
                     </div>
                 </Spin>    
                 </div>
-               <Modal open={open2} centered={true} title={<div >确认新增检测</div>} width={420} onOk={() => {
+               <Modal open={open2} centered={true} title={<div>确认新增检测</div>} width={420} onOk={() => {
                     if (!monitoringTitle) {
                         this.setState({warning:"请输入检测标题！！"})
                     } else {
@@ -264,7 +315,7 @@ class ChooseMonitor extends Component {
                         <div style={ {borderBottom: '1px dotted black', borderTop: '1px dotted black'} }>
                             <label style={ {fontSize: 16} }>
                                 <span style={ {color: 'red', lineHeight: 10, fontSize: 22} }>*</span> <span>检测标题：</span>
-                                <input style={ {width: 260, height: 32, outline: 'none', border: '1px solid #DCDCDC',color: '#050505', fontSize: 18} } placeholder='请输入检测标题' 
+                                <input style={ inputStyle } placeholder='请输入检测标题' 
                                     onChange={(e) => {this.iput(e)}} 
                                     onCompositionStart={(e) => {this.zhongWenOr(e)}}
                                     onCompositionEnd={(e) => {this.zhongWenOr(e)}}
@@ -272,6 +323,17 @@ class ChooseMonitor extends Component {
                             </label>
                             <div style={ {color: 'red', minHeight: 22, position: 'absolute', top: 180, left: 120} }>{warning}</div>
                         </div>
+               </Modal>
+               <Modal open={open3} footer={null} centered={true} maskClosable={true} closable={false}>
+                    {jinDu === 100 ? (cG ? <div style={ {paddingTop: 42.5, marginBottom: 30} }><img src={ChengGong} alt='' style={ {marginLeft: 151.5} } />
+                        <div style={ {marginLeft: 120.5} }>发起检测成功！！还有{daoJiShi}秒关闭当前窗口</div>
+                    </div> : <div style={ {paddingTop: 42.5, marginBottom: 35} }><img src={ShiBai} alt='' style={ {marginLeft: 151.5} } />
+                        <div style={ {marginLeft: 120.5} }>发起检测失败！！还有{daoJiShi}秒关闭当前窗口</div>
+                    </div>)
+                    :
+                    <div style={ {height: 260, width: 280, margin: 'auto'} }>
+                        <Progress strokeLinecap="round" percent={jinDu} showInfo={false} strokeColor="#FCB200" size={"small"} style={ {marginTop: 130} } />
+                    </div>}
                </Modal>
             </div>
             

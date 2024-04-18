@@ -18,9 +18,9 @@ class Kopf extends Component {
                 <div className="eins" />
                 <div className="zwei"><KopfUl /></div>
                 <div className="drei">
-                    <div style={ {display: 'inline-block', marginTop: 10} }>
+                    <div style={ {display: 'inline-block', marginTop: 10, minWidth: 115} }>
                     <Avatar size={64} icon={<img alt='' src={touXiang} />} />
-                    <span style={ {lineHeight: 4, marginLeft: 5, color: 'white'} }>{name}</span>
+                    <span style={ {lineHeight: 4, marginLeft: 10, color: 'white', display:'inline-block'} }>{name}</span>
                 </div>
                 </div>
             </div>
