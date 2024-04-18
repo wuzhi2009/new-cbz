@@ -10,9 +10,9 @@ import '../../css/modal.css';
 class Modal extends Component {
     state = {  } 
     render() { 
-        const {open, close} = this.props;
+        const { open, close } = this.props;
         if (!open) {
-            return null;
+            return <></>;
         }
         return (
             <div className="modal-overlay">

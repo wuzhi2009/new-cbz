@@ -10,6 +10,8 @@ import SearchData from "../pages/SearchData";
 import SearchDataTable from "../pages/SearchDataTable";
 import TaskCenter from "../pages/TaskCenter";
 import TaskCenterXiangQing from "../pages/TaskCenterXiangQing";
+import CountData from "../pages/CountData";
+import Library from "../pages/Library";
 
 const routers = createBrowserRouter([
     {
@@ -72,6 +74,14 @@ const routers = createBrowserRouter([
             {
                 path: 'searchDataTable',
                 element: <SearchDataTable />
+            },
+            {
+                path: 'countData',
+                element: <CountData />
+            },
+            {
+                path: 'library',
+                element: <Library />
             }
             
         ]

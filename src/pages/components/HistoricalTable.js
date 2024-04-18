@@ -44,8 +44,8 @@ class HistoricalTable extends Component {
                     { data.map((item, key) => {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 10} }>
-                        <td style={ {textAlign: 'center', borderBottom: '1px dotted black'} }>{item.createTime}</td>
-                        <td style={ {textAlign: 'center', lineHeight: 1.5, borderBottom: '1px dotted black'} }>
+                        <td style={ {textAlign: 'center', lineHeight: 1.5, borderBottom: '1px dotted black'} }>{item.createTime}</td>
+                        <td style={ {textAlign: 'center', lineHeight: 1.5, borderBottom: '1px dotted black', padding: '2px 10px'} }>
                             {item.choseMsg}
                             <span style={ {display: 'inline-block', background: '#E1E9F2', width: 45, height: 32, color: '#61A3FF', userSelect: 'none', cursor: 'pointer'} } onClick={() => {this.taoYong(item.choseJson)}}>
                                 套用

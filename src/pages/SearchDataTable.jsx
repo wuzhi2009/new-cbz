@@ -197,8 +197,8 @@ class SearchDataTable extends Component {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
                         <div style={{ flex: 3 }}><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
-                        <div style={{ flex: 8 }}><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
-                        <div style={{ flex: 3 }}><Search options={options} /></div>
+                        <div style={{ flex: 6 }}><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
+                        <div style={{ flex: 5 }}><Search options={options} /></div>
                     </div>
                 </div>
                 <Spin spinning={wait}>
@@ -327,13 +327,12 @@ class SearchDataTable extends Component {
                                     this.setState({ open2: false, mdId: [], del: "chongZhi", page: 1, wait2: false });
                                     // 重新获取数据
                                     this.getPage(1, pageSize);
-                                } else {
-                                    message.error(res.data.msg);
                                 }
                             })
 
                         }} style={{ marginLeft: 2 }}>{wait2 ? <LoadingOutlined style={{ marginRight: 2 }} /> : <></>}确定</span>
                     </div>
+                    
                 </Modal>
             </>
         );

@@ -6,9 +6,12 @@ import OpenUndClose from './components/OpenUndClose';
 import { withRouter } from '../utils/withRouter';
 import { Outlet } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Spin } from 'antd';
+import { Spin, message, Modal } from 'antd';
 import { getChannelList, getDeptList } from './api/Monitor/ChooseMonitorApi';
 import { setHistorical } from './api/Historical/HistoricalApi';
+import Cz from '../imgs/004重置.01894080.png';
+import Jc from '../imgs/005检测.cab9c870.png';
+import Cx from '../imgs/015查询图标.81216bac.png';
 const rightStyle = {
     cursor: 'pointer',
     textAlign: 'center',
@@ -21,12 +24,15 @@ const lineStyle = {
     borderTop: 'dotted #595959 2px',
     margin: '0 10px'
 };
-const chongZhiIco = "http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/004%E9%87%8D%E7%BD%AE.01894080.png";
-const chaXunIco = "http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/015%E6%9F%A5%E8%AF%A2%E5%9B%BE%E6%A0%87.81216bac.png";
-const jianCeIco = "http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/005%E6%A3%80%E6%B5%8B.cab9c870.png";
+var zhongWen = false;
+// 判断是否为谷歌浏览器
+const isChrome = navigator.userAgent.indexOf('Chrome') > -1;
+const chongZhiIco = Cz;
+const chaXunIco = Cx;
+const jianCeIco = Jc;
 const searchIco = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAABzklEQVQ4jZ3US4hPYRgG8N/8R4oibNRsJBpiOwqZpiwkNooFsWEhSbKwwEKSS00kNi6lKLltWMjCLRGxsLCQexYWkktNI7lM6K331Ol0zvzNPHXqXL7vOc/7fs/7dPQs36kNWpiD2ZiCATzL62/d1jHD8E3CdqxHF37iOyaiE+9xDCfwrbyx1UC4FK+wAcdT6bhUOhY9OIco8ynmtyNdg2u4im7sw/NSqX/wBLswK0lvY3ET6TycwX5srJZVg89YhQu4gmkF6Xjcwgycxk3sqSFYhm0170P5JrzEqYL0B6Ym2Vw8zj5W0YuVDYqH8lCXRLWt/FM0fHr+ZHeTVdrgXvZ+RWGpOJhLGMQBvBsFqWxjX9mnq0dJVMbb6P1w5q9DrJ9ceT+QLSzQajJ/HYbS5F8r19bS2pi8TyNR2p8DUcWL0vMiPKqSbsbFVFLFYE5SE8KOC7CjWn547dAI1BfowJH0+P06pdfxIKfrfxET2JdKdXZ195b3vcl4O4pfeNhmECKxDpci8kYdaSCIPuJgTEdaJobhd2lNZO06nMfCvL9cfGw6/ZO4k2WdzVB+nVVMwMy8j0zdiw/lzcNZKkjWYkuGSWRnKPySAX63NhrxD60DaMh7x31CAAAAAElFTkSuQmCC";
 class ChooseMonitor extends Component {
-    state = { dpName: "", mediaType: 1, data: [], data2: [], checkVendor: "KPY", data3: [], postStartTime: "", postEndTime: "", choose: "", delDpName: "", open: true, modifyState: "-1", data4:[], wait: false }
+    state = { dpName: "", mediaType: 1, data: [], data2: [], checkVendor: "KPY", data3: [], postStartTime: "", postEndTime: "", choose: "", delDpName: "", open: true, modifyState: "-1", data4:[], wait: false, monitoringTitle: "", open2:false, warning:"" }
     componentDidMount() {
         getDeptList().then((res) => {
             if (res.data.code === 200) {
@@ -84,6 +90,19 @@ class ChooseMonitor extends Component {
     }
     chaXun = () => {
         const { choose, modifyState, postEndTime, postStartTime, data3, checkVendor } = this.state;
+        if (data3.length === 0) {
+            // 没有选择栏目
+            message.warning("请选择栏目！！");
+            return;
+        }
+        if (!(postEndTime || postStartTime)) {
+            message.warning("请选择时间！！");
+            return;
+        }
+        if (modifyState === "-1") {
+            message.warning("请选择状态！！");
+            return;
+        }
         // 检查单位拼接
         var checkUnit = [];
         // 所选栏目
@@ -102,8 +121,27 @@ class ChooseMonitor extends Component {
             }
         })
     }
-    jianCe = () => {
-        console.log('检测 :>> ');
+    jianCe = (monitoringTitle) => {
+        const { choose, postEndTime, postStartTime, data3, checkVendor } = this.state;
+        if (data3.length === 0) {
+            // 没有选择栏目
+            message.warning("请选择栏目！！");
+            return;
+        }
+        if (!(postEndTime || postStartTime)) {
+            message.warning("请选择时间！！");
+            return;
+        }
+        // 检查单位拼接
+        var checkUnit = [];
+        // 所选栏目
+        var siteChannels = [];
+        data3.map((item) => {
+            siteChannels.push(...item.list);
+            return checkUnit.push(item.dpName);
+        })
+        var info = {checkUnit, checkVendor, choseMsg: choose, postEndTime, siteChannels, postStartTime, monitoringTitle};
+        console.log('info :>> ', info);
     }
     chongZhi = () => {
         this.setState({ delDpName: "chongZhi", data3: [], choose: "" });
@@ -111,8 +149,27 @@ class ChooseMonitor extends Component {
     getStatus = (modifyState) => {
         this.setState({ modifyState });
     }
+    // 防止输入中文产生的抖动
+    iput = (e) => {
+        if (!zhongWen) {
+            this.setState({
+                monitoringTitle: e.target.value
+            })
+        }
+    }
+    // 判断是否为中文输入状态
+    zhongWenOr(e) {
+        if (e.type === 'compositionend') {
+            zhongWen = false;
+            if (!zhongWen && isChrome) {
+                this.iput(e);
+            }
+        } else {
+            zhongWen = true;
+        }
+    }
     render() {
-        const { data, data2, data3, dpName, mediaType, delDpName, open, data4, wait } = this.state;
+        const { data, data2, data3, dpName, mediaType, delDpName, open, data4, wait, open2, warning, monitoringTitle } = this.state;
         const { location, navigate } = this.props.router;
         var dasStyle = { minHeight: 100 };
         if (!open) {
@@ -173,18 +230,49 @@ class ChooseMonitor extends Component {
                                 <div style={rightStyle} onClick={() => { this.setState({ open: true }) }}><span style={lineStyle} />展开∨<span style={lineStyle} /></div>
                         }
                     </div>
-                    <div style={{ paddingLeft: '50%', transform: 'translate(-15%)', position: 'absolute', bottom: -70 }}>
+                    <div style={{ paddingLeft: '50%', transform: 'translate(-19%)', position: 'absolute', bottom: -70 }}>
                         <div style={{ background: `url('${chongZhiIco}')`, height: 60, width: 188, display: 'inline-block', cursor: 'pointer', marginRight: 10 }} onClick={() => { this.chongZhi() }} />
                         {
                         location.pathname === '/choose/monitor' ?
-                            <div style={{ background: `url('${jianCeIco}')`, height: 60, width: 188, display: 'inline-block', cursor: 'pointer', marginLeft: 10 }} onClick={() => { this.jianCe() }} />
+                            <div style={{ background: `url('${jianCeIco}')`, height: 60, width: 188, display: 'inline-block', cursor: 'pointer', marginLeft: 10 }} onClick={() => { 
+                                const { postEndTime, postStartTime, data3 } = this.state;
+                                    if (data3.length === 0) {
+                                        // 没有选择栏目
+                                        message.warning("请选择栏目！！");
+                                        return;
+                                    }
+                                    if (!(postEndTime || postStartTime)) {
+                                        message.warning("请选择时间！！");
+                                        return;
+                                    }
+                                    this.setState({open2: true});
+                            }} />
                             :
                             <div style={{ background: `url('${chaXunIco}')`, height: 60, width: 188, display: 'inline-block', cursor: 'pointer', marginLeft: 10 }} onClick={() => { this.chaXun() }} />
                         }
                     </div>
                 </Spin>    
                 </div>
-               
+               <Modal open={open2} centered={true} title={<div >确认新增检测</div>} width={420} onOk={() => {
+                    if (!monitoringTitle) {
+                        this.setState({warning:"请输入检测标题！！"})
+                    } else {
+                        this.setState({warning: "", open2: false})
+                        this.jianCe(monitoringTitle);
+                    }
+               }} onCancel={() => {this.setState({open2: false, warning: ""})}}>
+                        <div style={ {borderBottom: '1px dotted black', borderTop: '1px dotted black'} }>
+                            <label style={ {fontSize: 16} }>
+                                <span style={ {color: 'red', lineHeight: 10, fontSize: 22} }>*</span> <span>检测标题：</span>
+                                <input style={ {width: 260, height: 32, outline: 'none', border: '1px solid #DCDCDC',color: '#050505', fontSize: 18} } placeholder='请输入检测标题' 
+                                    onChange={(e) => {this.iput(e)}} 
+                                    onCompositionStart={(e) => {this.zhongWenOr(e)}}
+                                    onCompositionEnd={(e) => {this.zhongWenOr(e)}}
+                                />
+                            </label>
+                            <div style={ {color: 'red', minHeight: 22, position: 'absolute', top: 180, left: 120} }>{warning}</div>
+                        </div>
+               </Modal>
             </div>
             
         );

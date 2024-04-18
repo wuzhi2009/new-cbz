@@ -1,5 +1,7 @@
 // 引入axios
 import axios from 'axios';
+import { notification } from 'antd';
+import { CloseCircleTwoTone } from '@ant-design/icons'
 const baseUrl='';
 // 创建axios实例
 const httpService = axios.create({
@@ -15,7 +17,7 @@ const httpService = axios.create({
 httpService.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // config.headers.token=window.sessionStorage.getItem('token');
-  config.headers.Authorization = 'Bearer 95faac8e-5ca8-4b19-96e8-d4cc7befe2c2';
+  config.headers.Authorization = 'Bearer 18f84156-52a2-4858-8ecd-3c50439b5959';
   return config;
 }, function (error) {
   // 对请求错误做些什么
@@ -27,14 +29,40 @@ httpService.interceptors.response.use(function (response) {
   // 对响应数据做点什么
   if (response.data.code === 500) {
     // 抽屉弹窗 业务报错
+    notification.open({
+      message: '系统错误',
+      description:
+        "系统接口500异常 请联系管理员！！",
+      icon:<CloseCircleTwoTone twoToneColor="red" />,
+      maxCount:3
+    });
+  }
+  if (response.data.code === 404) {
+    notification.open({
+      message: '服务器找不到',
+      description:
+        "接口404错误 请联系管理员！！",
+      icon:<CloseCircleTwoTone twoToneColor="red" />,
+      maxCount:3
+    });
   }
   return response;
 }, function (error) {
   // 对响应错误做点什么
   // 抽屉弹框
+
   if (error.response.status === 401) {
-    // 权限已过期 删除token缓存
-    window.location.href = "/login";
+    notification.open({
+        message: '登录失效',
+        description:
+          "系统接口401异常！！",
+        icon:<CloseCircleTwoTone twoToneColor="red" />,
+        maxCount:3
+      });
+    if (window.location.pathname !== "/login") {
+      // 权限已过期 删除token缓存
+      window.location.href = "/login";
+    }
   }
   return Promise.reject(error);
 });

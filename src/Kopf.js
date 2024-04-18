@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {Avatar} from 'antd';
 import KopfUl from './pages/components/KopfUl';
 import { getUserInfo } from './pages/api/Monitor/ChooseMonitorApi';
-const touXiang = "https://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/avatar.2eac4a7a.png";
+import Img from "./imgs/touXiang.png"
+const touXiang = Img;
 class Kopf extends Component {
     state = { name:"" }
     componentDidMount() {

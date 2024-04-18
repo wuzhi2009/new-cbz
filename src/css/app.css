@@ -17,14 +17,14 @@
   /* 左侧图标 */
   width: 491px;
   margin-right: 20px;
-  background: url('http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/1-logo.409e15ee.png');
+  background: url('../../public/KopfImg.png');
   background-repeat: no-repeat;
   background-position: 0% 50%;
   margin-left: 50px;
 }
 .app .Kopf .zwei {
   /* 中间ul表样式 */
-  flex: 8;
+  flex: 10;
   display: flex;
   flex-direction: row;
 }
@@ -55,7 +55,7 @@
 }
 .app .Kopf .drei {
   /* 右侧用户样式 */
-  flex: 1;
+  flex: 2;
   display: flex;
 }
 .app .a {
@@ -133,13 +133,11 @@
   text-align: center;
   background-color: #479CFF;
   color: #fff;
-  position: absolute;
   transition: background-color 0.2s ease-in-out;
 }
 .app .search .DasButton span {
   user-select: none;
-  position: relative;
-  top: 20%;
+  line-height: 32px;
 }
 .app .search .DasButton:hover {
   background-color: #66BDFF;

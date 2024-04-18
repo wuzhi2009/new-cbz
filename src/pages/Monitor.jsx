@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 class Monitor extends Component {
     state = {  } 
     componentDidMount() {
-        this.props.sendAction({modifyState: -1});
+        this.props.sendAction({modifyState: "-1"});
     }
     render() { 
         return (

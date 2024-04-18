@@ -14,7 +14,9 @@ class Login extends Component {
             if (res.data.code === 200) {
                 navigate("/taskCenter/eins");
             }
-        }) 
+        }).catch(error => {
+            
+        })
     } 
     render() { 
         return (

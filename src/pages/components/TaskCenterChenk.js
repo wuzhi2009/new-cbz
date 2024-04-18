@@ -2,6 +2,10 @@ import { connect } from "react-redux";
 import { withRouter } from "../../utils/withRouter";
 import React, { Component } from 'react';
 import { getEinsList, getZweiList } from "../api/TaskCenter/TaskCenterApi";
+import Img from '../../imgs/result-active.3d1dfdc0.png';
+import Img2 from '../../imgs/waiting.c7343f38.png';
+import Img3 from '../../imgs/result.93cc4c77.png';
+import Img4 from '../../imgs/waiting-active.0658a338.png';
 /**
  * 检测情况查看组件
  * 
@@ -132,13 +136,13 @@ class TaskCenterChenk extends Component {
             <>
             { pathname === '/taskCenter/eins' ? 
             <>
-            <span style={ {cursor: 'pointer'} }><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result-active.3d1dfdc0.png' /><span className="count">{total > 100 ? "99+" : total}</span></span>
-            <span style={ {cursor: 'pointer'} }><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting.c7343f38.png" alt="" onClick={ () => {this.go('/taskCenter/zwei')} } /></span>
+            <span style={ {cursor: 'pointer'} }><img alt='' src={Img} /><span className="count">{total > 100 ? "99+" : total}</span></span>
+            <span style={ {cursor: 'pointer'} }><img src={Img2} alt="" onClick={ () => {this.go('/taskCenter/zwei')} } /></span>
             </> 
             : 
             <>
-            <span style={ {cursor: 'pointer'} }><img alt='' src='http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/result.93cc4c77.png' onClick={ () => {this.go('/taskCenter/eins')} }/></span> 
-            <span style={ {cursor: 'pointer'} }><img src="http://ht.dsjfzj.gxzf.gov.cn/nrgf-jc/img/waiting-active.0658a338.png" alt=""  /><span style={ {position: 'absolute', top: 153, left: 395, fontSize: 12, fontWeight: 100, color: '#F56460', userSelect: 'none'} }>有{total}次检测正在队列中</span></span>
+            <span style={ {cursor: 'pointer'} }><img alt='' src={Img3} onClick={ () => {this.go('/taskCenter/eins')} }/></span> 
+            <span style={ {cursor: 'pointer'} }><img src={Img4} alt=""  /><span style={ {position: 'absolute', top: 153, left: 395, fontSize: 12, fontWeight: 100, color: '#F56460', userSelect: 'none'} }>有{total}次检测正在队列中</span></span>
             </> 
             }
         </>
