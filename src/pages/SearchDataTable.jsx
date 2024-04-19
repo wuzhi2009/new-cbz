@@ -317,6 +317,8 @@ class SearchDataTable extends Component {
                     <div style={{ margin: 30 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认重新检测</div>
                     <div style={{ marginLeft: '50%', marginTop: 16 }} className='zweiTable'>
                         <span className='DasButton' onClick={() => { this.setState({ open2: false }) }} >取消</span>
+                        {wait2 ? <span className='grepButton' style={{ marginLeft: 2 }}><LoadingOutlined style={{ marginRight: 2 }} />确定</span> 
+                        :
                         <span className='grepButton' onClick={() => {
                             const { mdId } = this.state;
                             this.setState({ wait2: true });
@@ -330,7 +332,7 @@ class SearchDataTable extends Component {
                                 }
                             })
 
-                        }} style={{ marginLeft: 2 }}>{wait2 ? <LoadingOutlined style={{ marginRight: 2 }} /> : <></>}确定</span>
+                        }} style={{ marginLeft: 2 }}>确定</span>}
                     </div>
                     
                 </Modal>

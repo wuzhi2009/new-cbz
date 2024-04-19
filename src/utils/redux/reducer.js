@@ -1,4 +1,8 @@
-const DasState = {search:{label:"", searchValue:""}, task1List:{data:[], wait:true}, task2List: {data:[], wait:true}, pageAndSize:{page:0, total:0}, status:{}}
+const DasState = {search:{label:"", searchValue:""},
+    task1List:{data:[], wait:true}, task2List: {data:[], wait:true},
+    pageAndSize:{page:0, total:0}, status:{},
+    wortList:{data:[], wait:true, page: 1, pageSize: 10},
+    whiteList:{data:[], wait:true, page: 1, pageSize: 10}};
 const reducer = (state, action) => {
     switch (action.type) {
         case "search":
@@ -37,6 +41,30 @@ const reducer = (state, action) => {
                 ...DasState,
                 status:{
                     modifyState: action.modifyState
+                }
+            }
+            return state;
+        case "getWortList":
+                // 获取词库列表
+            state = {
+                ...DasState,
+                wortList: {
+                    data: action.data,
+                    wait: action.wait,
+                    page: action.page,
+                    pageSize: action.pageSize
+                }
+            }
+            return state;
+        case "getWhiteList":
+                // 获取词库列表
+            state = {
+                ...DasState,
+                whiteList: {
+                    data: action.data,
+                    wait: action.wait,
+                    page: action.page,
+                    pageSize: action.pageSize
                 }
             }
             return state;

@@ -15,6 +15,13 @@ const selectStyle = {
     fontSize: 16,
     color: '#616161'
 }
+/**
+ * 下拉框组件
+ * 
+ * @author wuzhi
+ * @param options[] [{key, value}]
+ * @param title 前边的标题 如果不需要则不传
+ */
 class XiaLaKuang extends Component {
     state = {  } 
     render() { 
@@ -22,7 +29,7 @@ class XiaLaKuang extends Component {
         return (
             <>
                 <div>
-                    {title}：
+                    {title ? title + "：" : null}
                     <select style={ selectStyle } onChange={ (event) => {change(event.target.value)} }>
                         {options.map((item, key) => {
                             return (

@@ -24,6 +24,7 @@ class TaskCenterChenk extends Component {
     }
     einsList = () => {
         const { pageSize } = this.props;
+        const { searchValue } = this.state;
         // 返回给分页器总数信息
         var info2 = {};
         // 发送到表的信息
@@ -31,7 +32,7 @@ class TaskCenterChenk extends Component {
         // 先发送等待信息
         this.props.sendAction({type:"getTask1List", data:[], wait: true});
         var status = [2, 3, 4];
-            getEinsList(status, 1, pageSize, "").then(res => {
+            getEinsList(status, 1, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
                     var data = res.data.data.rows;
                     info2 = {total: res.data.data.total, page: 1};
@@ -44,6 +45,7 @@ class TaskCenterChenk extends Component {
     }
     zweiList = () => {
         const { pageSize } = this.props;
+        const { searchValue } = this.state;
         // 返回给分页器总数信息
         var info2 = {};
         // 发送到表的信息
@@ -51,7 +53,7 @@ class TaskCenterChenk extends Component {
         // 先发送等待信息
         this.props.sendAction({type:"getTask2List", data:[], wait: true});
         var status = [0, 1];
-            getZweiList(status, 1, pageSize, "").then(res => {
+            getZweiList(status, 1, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
                     var data = res.data.data.rows;
                     info2 = {total: res.data.data.total, page: 1};

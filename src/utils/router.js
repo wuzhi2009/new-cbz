@@ -12,6 +12,8 @@ import TaskCenter from "../pages/TaskCenter";
 import TaskCenterXiangQing from "../pages/TaskCenterXiangQing";
 import CountData from "../pages/CountData";
 import Library from "../pages/Library";
+import LibraryTableEins from "../pages/components/LibraryTableEins";
+import LibraryTableZwei from "../pages/components/LibraryTableZwei";
 
 const routers = createBrowserRouter([
     {
@@ -81,7 +83,21 @@ const routers = createBrowserRouter([
             },
             {
                 path: 'library',
-                element: <Library />
+                element: <Library />,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="/library/eins" replace />
+                    },
+                    {
+                        path: 'eins',
+                        element: <LibraryTableEins />
+                    },
+                    {
+                        path: 'zwei',
+                        element: <LibraryTableZwei />
+                    }
+                ]
             }
             
         ]

@@ -165,7 +165,7 @@ class ChooseMonitor extends Component {
         const time = setInterval(() => {
             const { jinDu } = this.state;
             if (jinDu < 95) {
-                this.setState({jinDu: jinDu + 2})
+                this.setState({jinDu: jinDu + 4});
             }
         }, 100);
         add(info).then(res => {

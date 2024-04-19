@@ -218,6 +218,8 @@ class TaskCenterXiangQing extends Component {
                 <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改选中数据为无需修改</div>
                 <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
                     <span className='DasButton' onClick={() => {this.setState({open: false})}} >取消</span>
+                    {wait2 ? <span className='grepButton' style={ {marginLeft: 2} }><LoadingOutlined style={ {marginRight: 2} } />确定</span> 
+                    : 
                     <span className='grepButton' onClick={() => {
 						const { mdId } = this.state;
                             this.setState({wait2: true});
@@ -225,14 +227,14 @@ class TaskCenterXiangQing extends Component {
 							not(mdId).then((res) => {
 								if (res.data.code === 200) {
 									message.success(res.data.msg);
-									this.setState({open: false, mdId: [], del:"chongZhi", page: 1});
+									this.setState({open: false, mdId: [], del:"chongZhi", page: 1, wait2: false});
                                     // 重新获取数据
                                     this.getPage(1, pageSize);
 								} else {
 									message.error(res.data.msg);
 								}
 							})
-					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
+					}} style={ {marginLeft: 2} }>确定</span>}
                 </div>
             </Modal>
 			<Modal open={open2} close={() => this.setState({open2:false})}>
@@ -240,6 +242,8 @@ class TaskCenterXiangQing extends Component {
                 <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认重新检测</div>
                 <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
                     <span className='DasButton' onClick={() => {this.setState({open2: false})}} >取消</span>
+                    {wait2 ? <span className='grepButton' style={ {marginLeft: 2} }> <LoadingOutlined style={ {marginRight: 2} } />确定</span>
+                     : 
                     <span className='grepButton' onClick={() => {
 						const { mdId } = this.state;
                             this.setState({wait2: true});
@@ -255,7 +259,7 @@ class TaskCenterXiangQing extends Component {
 								}
 							})
 						
-					}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
+					}} style={ {marginLeft: 2} }>确定</span>}
                 </div>
             </Modal>
 			</>

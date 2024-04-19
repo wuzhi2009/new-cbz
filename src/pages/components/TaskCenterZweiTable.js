@@ -78,7 +78,7 @@ class TaskCenterZweiTable extends Component {
                         <td style={ {textAlign: 'center'} }>{item.originator}</td>
                         <td style={ {textAlign: 'center'} }>{item.createTime}</td>
                         <td style={ {textAlign: 'center'} }><OpenUndClose text={ JSON.parse(item.siteChannelsJson) } /></td>
-                        <td style={ {textAlign: 'center'} }>{item.status === 0 ? <div style={ {color: '#FF9854'} }>等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
+                        <td style={ {textAlign: 'center'} }>{item.status === 1 ? <div style={ {color: '#FF9854'} }>等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
                         <td style={ {textAlign: 'center'} }>
                             <div style={ {display: 'inlineBlock',width: 120,height: 26, textAlign: 'center',backgroundColor: 'red',color: '#fff', cursor: 'pointer'} } onClick={() => {this.setState({open: true, id:item.id})}}>
                                 <span style={ { userSelect: 'none', position: 'relative', top: '15%', fontWeight: 600} }>取消</span>
@@ -94,7 +94,7 @@ class TaskCenterZweiTable extends Component {
                 <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您是否要取消此任务</div>
                 <div style={ {marginLeft: '50%', marginTop: 16} } className='zweiTable'>
                     <span className='DasButton' onClick={() => {this.close()}} >取消</span>
-                    <span className='grepButton' onClick={() => {this.ok()}} style={ {marginLeft: 2} }>{wait2 ? <LoadingOutlined style={ {marginRight: 2} } /> : <></>}确定</span> 
+                    {wait2 ? <span className='grepButton' style={ {marginLeft: 2} }> <LoadingOutlined style={ {marginRight: 2} } /> 确定</span> : <span className='grepButton' onClick={() => {this.ok()}} style={ {marginLeft: 2} }>确定</span>}
                 </div>
             </Modal>
             </Spin>
