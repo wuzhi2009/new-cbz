@@ -283,7 +283,7 @@ class Library extends Component {
             //     console.log('object :>> ', file.uid);
             // }, 
             withCredentials: true,
-            headers: {Authorization: "Bearer 60ce6582-5290-4ecc-b32c-0ad0f83ffbc8"}
+            headers: {Authorization: ""}
         }
         return (
             <div style={{ margin: 18, marginTop: 110 }}>

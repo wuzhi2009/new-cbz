@@ -17,7 +17,7 @@ const httpService = axios.create({
 httpService.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // config.headers.token=window.sessionStorage.getItem('token');
-  config.headers.Authorization = 'Bearer 60ce6582-5290-4ecc-b32c-0ad0f83ffbc8';
+  config.headers.Authorization = '';
   return config;
 }, function (error) {
   // 对请求错误做些什么
