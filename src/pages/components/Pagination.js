@@ -7,7 +7,8 @@ const selectStyle = {
     border: '1px solid #DCDCDC',
     fontSize: 16,
     color: '#616161',
-    margin: '0px 20px'
+    margin: '0px 20px',
+    boxShadow: '1px 1px 3px 1px #8F9399'
 }
 /**
  * 分页
@@ -106,7 +107,7 @@ class Pagination extends Component{
         pages.push(<span key={5050} style={ {marginRight: 20} }>共{totalPage}页</span>)
         pages.push(
             <span style={ {marginRight: 10} } key={7777}>前往
-                <input type='text' style={ {margin: '0 5px', width: 40, height: 28, color: '#050505', fontSize: 16, outline: 'none'} } onKeyDown={(e) => {
+                <input type='text' style={ {margin: '0 5px', width: 40, height: 28, color: '#050505', fontSize: 16, outline: 'none', boxShadow: '1px 1px 3px 1px #8F9399'} } onKeyDown={(e) => {
                     if (e.keyCode === 13 && Number(e.target.value)) {
                         // 回车触发
                         var value = parseInt(e.target.value);

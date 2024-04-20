@@ -11,19 +11,32 @@ const tableKopf = ["序号", "词汇", "添加时间", "最后更新时间", "�
  * @param wait 等待
  */
 class LibraryTableZwei extends Component {
-    state = {  } 
+    state = { data: [], page: 1, pageSize: 10 } 
     componentDidUpdate(oldProps) {
+        const { data, page, pageSize } = this.props;
+        if (data && data !== oldProps.data) {
+            this.setState({data, page, pageSize})
+        }
     }
     render() { 
         const { wait, data, page, pageSize } = this.props;
+        var nowData = data;
+        var nowPage = page;
+        var nowPageSize = pageSize;
+        if (!data) {
+            // 传过来的data不存在 说明是因为点击编辑而发送回来的
+            nowData = this.state.data;
+            nowPage = this.state.page;
+            nowPageSize = this.state.pageSize;
+        }
         return (
             <Spin spinning={wait}>
             <table style={ {margin: '20px 10px', borderSpacing: '0 0px', width: '99%'} }>
                 <colgroup>
                     <col style={ {width: 40,minWidth: 40,textAlign: 'center'} }/>
-                    <col style={ {width: 170,minWidth: 170, textAlign: 'center'} } />
-                    <col style={ {width: 147,minWidth: 147, textAlign: 'center'} } />
-                    <col style={ {width: 147,minWidth: 147, textAlign: 'center'} }  />
+                    <col style={ {width: 400,minWidth: 400, textAlign: 'center'} } />
+                    <col style={ {width: 160,minWidth: 160, textAlign: 'center'} } />
+                    <col style={ {width: 160,minWidth: 160, textAlign: 'center'} }  />
                     <col style={ {width: 150,minWidth: 150, textAlign: 'center'} } />
                 </colgroup>
                 <thead>
@@ -34,7 +47,7 @@ class LibraryTableZwei extends Component {
                         )
                     })}
                 </tr>
-                {data.length === 0 ?
+                {nowData.length === 0 ?
                     <tr>
                         <td style={ {backgroundColor: 'white'} } />
                         <td style={ {backgroundColor: 'white'} } />
@@ -43,16 +56,21 @@ class LibraryTableZwei extends Component {
                         <td style={ {backgroundColor: 'white'} } />
                     </tr>: <></>
                 }
-                { data.map((item, key) => {
+                { nowData.map((item, key) => {
                     return (
                     <tr key={ key } style={ {backgroundColor: 'white', height: 45} }>
-                        <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{(key + 1) + ((page - 1) * pageSize)}</td>
+                        <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{(key + 1) + ((nowPage - 1) * nowPageSize)}</td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={1} is={false} text={item.wort} /></td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.createTime}</td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.updateTime}</td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} } className='aaaa'>
-                            <div className='DasButton' style={ {cursor: 'pointer', width: 65} } onClick={() => {}}><span>修改</span></div>
-                            <div className='DasButton' style={ {cursor: 'pointer', backgroundColor: 'red', width: 65, marginLeft: 10} }><span>移除</span></div>
+                            <div className='DasButton' style={ {cursor: 'pointer', width: 65} } onClick={() => {
+                                this.props.sendAction({type: "wortItem", form: item});
+                            }}><span>修 改</span></div>
+                            <div className='DasButton' style={ {cursor: 'pointer', backgroundColor: 'red', width: 65, marginLeft: 10} }
+                                onClick={() => {this.props.sendAction({type: "delWort", id: item.id})}}>
+                                <span>移 除</span>
+                                </div>
                         </td>
                     </tr>
                     )
@@ -64,4 +82,11 @@ class LibraryTableZwei extends Component {
     }
 }
  
-export default connect(({whiteList}) => {return whiteList})(LibraryTableZwei);
+const setItem = (dispatch) => {
+    return {
+        sendAction: (info) => {
+            dispatch(info)
+        }
+    }
+}
+export default connect(({whiteList}) => {return whiteList}, setItem)(LibraryTableZwei);

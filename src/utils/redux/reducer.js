@@ -1,8 +1,11 @@
 const DasState = {search:{label:"", searchValue:""},
     task1List:{data:[], wait:true}, task2List: {data:[], wait:true},
     pageAndSize:{page:0, total:0}, status:{},
-    wortList:{data:[], wait:true, page: 1, pageSize: 10},
-    whiteList:{data:[], wait:true, page: 1, pageSize: 10}};
+    wortList:{data:[], wait:false, page: 1, pageSize: 10},
+    whiteList:{data:[], wait:false, page: 1, pageSize: 10},
+    wortItem:{form:{},
+    delWort:{delId:""}}
+};
 const reducer = (state, action) => {
     switch (action.type) {
         case "search":
@@ -65,6 +68,28 @@ const reducer = (state, action) => {
                     wait: action.wait,
                     page: action.page,
                     pageSize: action.pageSize
+                }
+            }
+            return state;
+        case "wortItem":
+        // 词库白名单修改回显
+            state = {
+                ...DasState,
+                wortList:{wait: false},
+                whiteList: {wait: false},
+                wortItem: {
+                    form: action.form
+                }
+            }
+            return state;
+        case "delWort":
+            // 删除词库中的词
+            state = {
+                ...DasState,
+                wortList:{wait: false},
+                whiteList: {wait: false},
+                delWort: {
+                    delId:action.id
                 }
             }
             return state;

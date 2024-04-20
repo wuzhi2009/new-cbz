@@ -17,7 +17,7 @@ const httpService = axios.create({
 httpService.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // config.headers.token=window.sessionStorage.getItem('token');
-  config.headers.Authorization = '';
+  config.headers.Authorization = 'Bearer 60ce6582-5290-4ecc-b32c-0ad0f83ffbc8';
   return config;
 }, function (error) {
   // 对请求错误做些什么
@@ -49,8 +49,7 @@ httpService.interceptors.response.use(function (response) {
 }, function (error) {
   // 对响应错误做点什么
   // 抽屉弹框
-
-  if (error.response.status === 401) {
+  if (error.response && error.response.status === 401) {
     notification.open({
         message: '登录失效',
         description:
@@ -168,8 +167,49 @@ export function fileUpload(url, params = {}) {
   });
 }
 
+/**
+ * excel下载 get
+ * 
+ * @param {*} url 
+ * @returns 
+ */
+export function excelExport(url) {
+  return new Promise((resolve, reject) => {
+    httpService({
+      url: url,
+      method: 'get',
+      responseType: 'blob'
+    }).then(response => {
+      resolve(response);
+    }).catch(error => {
+      reject(error);
+    });
+  });
+}
+
+/**
+ * excel下载 post
+ * 
+ * @param {*} url 
+ * @returns 
+ */
+export function excelExportPost(url, params = {}) {
+  return new Promise((resolve, reject) => {
+    httpService({
+      url: url,
+      method: 'post',
+      data: params,
+      responseType: 'blob'
+    }).then(response => {
+      resolve(response);
+    }).catch(error => {
+      reject(error);
+    });
+  });
+}
+
 export function getBaseUrl(url, params = {}) {
   return baseUrl;
 }
-const req = {get, post, put, fileUpload, getBaseUrl};
+const req = {get, post, put, fileUpload, getBaseUrl, excelExport, excelExportPost};
 export default req;

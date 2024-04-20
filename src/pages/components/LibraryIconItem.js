@@ -15,7 +15,7 @@ class LibraryIconItem extends Component {
             <span style={ {
                 display: 'inline-block', padding: '2px 10px 3px',
                 borderRadius: 5, marginLeft: 10, cursor: 'pointer', height: 25, border: '1px solid #4B83F0', lineHeight: 1.5} } onClick={this.props.onClick} >
-                <img alt='' src={icon} style={ {marginRight: 18, width: 16, position: 'relative', top: 2.5} } />{title}
+                <img alt='' src={icon} style={ {marginRight: 18, width: 16, position: 'relative', top: 2.5} } /><span style={ {color: '#4B83F0'} }>{title}</span>
             </span>
         );
     }

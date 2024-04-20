@@ -1,4 +1,4 @@
-import { post, put } from "../../../utils/reqUtil";
+import { excelExportPost, post, put } from "../../../utils/reqUtil";
 
 /**
  * 获取详情表接口
@@ -38,5 +38,9 @@ export function not(mdIds) {
     return put(`/sp/monitoringDetails/${mdIds}`);
 }
 
-const req = { getXiangQingTable, chongXinJianCe, not }
+export function excel(mdIds, smId) {
+    return excelExportPost("/sp/monitoringDetails/Excel", {mdIds, smId});
+}
+
+const req = { getXiangQingTable, chongXinJianCe, not, excel }
 export default req;

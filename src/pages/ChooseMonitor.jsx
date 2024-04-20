@@ -232,17 +232,17 @@ class ChooseMonitor extends Component {
                 <div style={{ position: 'absolute', left: '50%', top: 60, transform: 'translate(-50%)' }}>
                     <Spin spinning={wait}>
                     <MonitorItem title="平台" data={[{ id: 1, label: "网站" }, { id: 2, label: "新媒体" }]} en={true} change={(a, b, key) => { 
+                       if (dpName) { 
                         this.setState({wait:true}, () => {
-                            if (dpName) {
+                            
                                 getChannelList(dpName, key).then((res) => {
                                     if (res.data.code === 200) {
                                         var dasData4 = res.data.data;
                                     this.setState({ mediaType: key, data4: dasData4, wait:false });   
                                     }
                                 })   
-                            }
                         })
-                        
+                        }
                         }} />
                     <MonitorItem title="区域" data={data} en={true} change={(children) => { this.setState({ data2: children, data4:[] }) }} />
                     <MonitorItem title="单位" data={data2} en={false} change={(_, label) => {
@@ -251,7 +251,7 @@ class ChooseMonitor extends Component {
                             getChannelList(label, mediaType).then((res) => {
                                 if (res.data.code === 200) {
                                     var dasData4 = res.data.data;
-                                this.setState({ dpName: label, data4: dasData4, wait:false });   
+                                    this.setState({ dpName: label, data4: dasData4, wait:false });   
                                 } else {
                                     this.setState({wait: false});
                                 }
@@ -319,12 +319,13 @@ class ChooseMonitor extends Component {
                                     onChange={(e) => {this.iput(e)}} 
                                     onCompositionStart={(e) => {this.zhongWenOr(e)}}
                                     onCompositionEnd={(e) => {this.zhongWenOr(e)}}
+                                    onClick={() => {this.setState({warning: ""})}}
                                 />
                             </label>
                             <div style={ {color: 'red', minHeight: 22, position: 'absolute', top: 180, left: 120} }>{warning}</div>
                         </div>
                </Modal>
-               <Modal open={open3} footer={null} centered={true} maskClosable={true} closable={false}>
+               <Modal open={open3} footer={null} centered={true} maskClosable={true} closable={false} onCancel={() => {this.setState({open3: false})}}>
                     {jinDu === 100 ? (cG ? <div style={ {paddingTop: 42.5, marginBottom: 30} }><img src={ChengGong} alt='' style={ {marginLeft: 151.5} } />
                         <div style={ {marginLeft: 120.5} }>发起检测成功！！还有{daoJiShi}秒关闭当前窗口</div>
                     </div> : <div style={ {paddingTop: 42.5, marginBottom: 35} }><img src={ShiBai} alt='' style={ {marginLeft: 151.5} } />

@@ -33,5 +33,7 @@ export function getZweiList(status, page, pageSize, searchValue) {
 export function stop(id) {
     return put(`/sp/monitoring/stop/${id}`);
 }
+
+
 const req = { getEinsList, getZweiList, stop };
 export default req;

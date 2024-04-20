@@ -277,5 +277,5 @@
 }
 /* 鼠标指上去会有黑色边框 */
 .heikuang:hover {
-  border: 1px solid black;
+  border: 1px solid #BCD6CE;
 }

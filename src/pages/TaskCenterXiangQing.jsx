@@ -5,11 +5,11 @@ import XiaLaKuang from './components/XiaLaKuang';
 import XiangQingTable from './components/XiangQingTable';
 import Pagination from './components/Pagination';
 import Search from './components/Search';
-import { UserOutlined, FieldTimeOutlined, ContainerOutlined, OneToOneOutlined, LoadingOutlined, ReadOutlined } from '@ant-design/icons';
+import { UserOutlined, FieldTimeOutlined, ContainerOutlined, OneToOneOutlined, LoadingOutlined, ReadOutlined, DownloadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import Modal from './components/Modal';
 import { message } from 'antd';
-import { chongXinJianCe, getXiangQingTable, not } from './api/TaskCenterXiangQing/XiangQingApi';
+import { chongXinJianCe, getXiangQingTable, not, excel } from './api/TaskCenterXiangQing/XiangQingApi';
 const DasTypeStyle = {
     display: 'inline-block', 
     backgroundColor: 'rgb(177, 136, 229)', 
@@ -136,6 +136,22 @@ class TaskCenterXiangQing extends Component {
 		
 		this.setState({paiXu:value});
 	}
+    // 导出检测excel
+    exportExcel = (smId, mdIds, title) => {
+        excel(mdIds, smId).then(res => {
+            const blob = new Blob([res.data], { type: 'application/vnd.ms-excel;charset=utf-8' })
+            const blobURL = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = blobURL;
+            a.download = `${title}.xlsx`;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            a.parentNode.removeChild(a);
+            window.URL.revokeObjectURL(blobURL);
+            this.setState({wait2: false});
+        })
+    }
     render() { 
         message.config({
             zIndex: 1000
@@ -210,7 +226,18 @@ class TaskCenterXiangQing extends Component {
                 </div>
                 <div>
                     <XiangQingTable style={ {margin: '20px 10px', borderSpacing: '0 0px', width: '99%'} } data={data} page={page} pageSize={pageSize} changeMdId={this.changeMdId.bind(this)} del={del} wait={wait} />
-					<Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => {this.getPage(page, pageSize)}} style={ {marginTop: 6, paddingTop: 15} } />
+					{wait2 ? <span className='YellowButton heikuang' style={ {maxWidth: 150, minWidth: 150,backgroundColor: '#3ea6ff', margin: 20, display: 'inline-block'} }>
+                        <LoadingOutlined style={ {marginRight: 8} } /> <span>导出Excel表格</span>
+                        </span>
+                     : 
+                    <span className='YellowButton heikuang' style={ {maxWidth: 150, minWidth: 150,backgroundColor: '#3ea6ff', margin: 20, display: 'inline-block'} } onClick={() => {
+                        const { mdId, smId, monitoringTitle } = this.state;
+                        this.exportExcel(smId, mdId, monitoringTitle);
+                        this.setState({wait2: true});
+                    }}>
+                        <DownloadOutlined style={ {marginRight: 8} } /><span>导出Excel表格</span>
+                    </span>}
+                    <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => {this.getPage(page, pageSize)}} style={ {marginTop: 6, paddingTop: 15, display: 'inline-block', float: 'right'} } />
                 </div>
             </div>
 			<Modal open={open} close={() => this.setState({open:false})}>
