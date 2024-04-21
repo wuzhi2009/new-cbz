@@ -12,7 +12,7 @@ import Img4 from '../../imgs/waiting-active.0658a338.png';
  * @author wuzhi
  */
 class TaskCenterChenk extends Component {
-    state = { searchValue:"", total:0, dasData:[] } 
+    state = { searchValue:"", total:0, dasData:[], dasData2:[] } 
     go = (path) => {
         const nav = this.props.router.navigate;
         if (path === '/taskCenter/zwei') {
@@ -31,6 +31,8 @@ class TaskCenterChenk extends Component {
         var info = {};
         // 先发送等待信息
         this.props.sendAction({type:"getTask1List", data:[], wait: true});
+        // 先发送请求 防止二次请求
+        this.props.change({page:1});
         var status = [2, 3, 4];
             getEinsList(status, 1, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
@@ -52,6 +54,8 @@ class TaskCenterChenk extends Component {
         var info = {};
         // 先发送等待信息
         this.props.sendAction({type:"getTask2List", data:[], wait: true});
+        // 先发送请求 防止二次请求
+        this.props.change({page:1});
         var status = [0, 1];
             getZweiList(status, 1, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
@@ -60,7 +64,7 @@ class TaskCenterChenk extends Component {
                     info = {type: "getTask2List", data: data, wait: false};
                     this.props.change(info2);
                     this.props.sendAction(info);
-                    this.setState({total: res.data.data.total, dasData: res.data.data.rows});
+                    this.setState({total: res.data.data.total, dasData2: res.data.data.rows});
                 }
             })
     }
@@ -91,7 +95,7 @@ class TaskCenterChenk extends Component {
             }
     }
     onPropChange(path) {
-        const { searchValue, dasData } = this.state;
+        const { searchValue, dasData, dasData2 } = this.state;
         const { page, pageSize } = this.props;
         // 返回给分页器总数信息
         var info2 = {};
@@ -99,7 +103,6 @@ class TaskCenterChenk extends Component {
         var info = {};
         // 需要请求的状态
         var status = [];
-        
         // 根据props变化执行的操作
         if (path === '/taskCenter/zwei') {
             // 先发送等待信息
@@ -117,7 +120,7 @@ class TaskCenterChenk extends Component {
             })
         } else {
             // 先发送等待信息
-            this.props.sendAction({type:"getTask1List", data:dasData, wait: true});
+            this.props.sendAction({type:"getTask1List", data:dasData2, wait: true});
             status = [2, 3, 4];
             getEinsList(status, page, pageSize, searchValue).then(res => {
                 if (res.data.data.code === 200) {
@@ -126,7 +129,7 @@ class TaskCenterChenk extends Component {
                     info = {type: "getTask1List", data: data, wait: false};
                     this.props.change(info2);
                     this.props.sendAction(info);
-                    this.setState({total: res.data.data.total, dasData:res.data.data.rows});
+                    this.setState({total: res.data.data.total, dasData2:res.data.data.rows});
                 }
             })
         }

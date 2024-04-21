@@ -36,17 +36,22 @@ const getCookieValue = (cookieName) => {
 httpService.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // config.headers.token=window.sessionStorage.getItem('token');
-  var oldControl = requests.get(config.url + config.method)
+  // get请求url中会携带参数 这里需要进行删掉
+  var url = config.url;
+  if (config.url.indexOf("?") !== -1) {
+    url = config.url.slice(0, config.url.indexOf("?"));
+  }
+  var oldControl = requests.get(url + config.method)
   // 判断是否有请求未处理
   if (oldControl) {
     // 存在 取消上一次请求
       oldControl.abort();
-      requests.delete(config.url + config.method);
+      requests.delete(url + config.method);
   }
   const control = new AbortController();
   config.signal = control.signal;
   // 添加本次的请求
-  requests.set(config.url + config.method, control);
+  requests.set(url + config.method, control);
   const token = getCookieValue("Admin-Token");
   config.headers.Authorization = `Bearer ${token}`;
   return config;
@@ -58,8 +63,13 @@ httpService.interceptors.request.use(function (config) {
 // 添加响应拦截器
 httpService.interceptors.response.use(function (response) {
   // 对响应数据做点什么
+  // get请求url中会携带参数 这里需要进行删掉
+  var url = response.config.url;
+  if (response.config.url.indexOf("?") !== -1) {
+    url = response.config.url.slice(0, response.config.url.indexOf("?"));
+  }
   // 删掉请求请求map
-  requests.delete(response.config.url + response.config.method);
+  requests.delete(url + response.config.method);
   if (response.data.code === 500) {
     // 抽屉弹窗 业务报错
     notification.open({
