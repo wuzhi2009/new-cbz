@@ -58,17 +58,6 @@ class TaskCenterZweiTable extends Component {
                         )
                     }) }
                 </tr>
-                {data.length === 0 ?
-                    <tr>
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={ {} } /></td>
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                    </tr> : <></>
-                }
                 {data.map((item, key) => {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 45} }>
@@ -89,6 +78,9 @@ class TaskCenterZweiTable extends Component {
                 })}
             </thead>
             </table>
+            {data.length === 0 ?
+                    <Empty image={<div style={ {lineHeight: 13} }>{Empty.PRESENTED_IMAGE_SIMPLE}</div>} style={ {backgroundColor: '#FFFFFF', height: 168, margin: '10px 24px'} } />: <></>
+                }
             <Modal open={open} close={this.close.bind(this)}>
                 <div style={ {marginBottom: 20, position: 'absolute', top: 34} }>提示：</div>
                 <div style={ {margin: 30} }>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您是否要取消此任务</div>

@@ -40,7 +40,7 @@ function App() {
       <div className="app">
         <Provider store={store}>
         <Kopf />
-        <div style={ {marginTop: 95} }>
+        <div>
           <Outlet />
         </div>
         </Provider>

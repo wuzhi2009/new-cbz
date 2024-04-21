@@ -295,7 +295,7 @@ class Library extends Component {
             fileList: fileIds
         }
         return (
-            <div style={{ margin: 18, marginTop: 110 }}>
+            <div style={{ margin: 18}}>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ flex: 4, minWidth: 190 }}><span style={key === 1 ? DasTypeStyle : spanStyle} onClick={() => { if (key !== 1) { this.go("/library/eins") } }}>词库</span>
                         <span style={key === 2 ? DasTypeStyle : spanStyle} onClick={() => { if (key !== 2) { this.go("/library/zwei") } }}>白名单</span>

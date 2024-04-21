@@ -3,12 +3,12 @@
     .Kopf {
         /* 头部样式 */
         background: linear-gradient(270deg,#4aa6ff,#3563ff);
-        position: fixed;
+        position: sticky;
         top: 0;
         display: flex;
         flex-direction: row;
         height: 90px;
-        width: 100%;
+        width: max(100%, 1210px);
         z-index: 999;
         .eins {
             /* 左侧图标 */
@@ -59,7 +59,6 @@
     .a {
         min-width: 1410px;
         margin: 18px;
-        margin-top: 108px;
         display: flex;
         flex-direction: column;
         background-color: #EAF5FF;
@@ -302,5 +301,5 @@
 }
 /* 鼠标指上去会有黑色边框 */
 .heikuang:hover {
-    border: 1px solid black;
+    border: 1px solid #66BDFF;
 }

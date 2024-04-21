@@ -1,5 +1,5 @@
 const DasState = {search:{label:"", searchValue:""},
-    task1List:{data:[], wait:true}, task2List: {data:[], wait:true},
+    task1List:{data:[], wait:false}, task2List: {data:[], wait:false},
     pageAndSize:{page:0, total:0}, status:{},
     wortList:{data:[], wait:false, page: 1, pageSize: 10},
     whiteList:{data:[], wait:false, page: 1, pageSize: 10},

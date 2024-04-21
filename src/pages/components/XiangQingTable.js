@@ -142,24 +142,6 @@ class XiangQingTable extends Component {
                             )
                         })}
                     </tr>
-                    {data.length === 0 ? <tr>
-                    <td style={ {textAlign: 'center'} } />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td style={ {textAlign: 'center', width: '100%'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                                    <td />
-                    </tr> : <></>
-                    }
                         {data.map((item, key) => {
                             const { description, amendments, modifyState, mediaType, postUrl } = item;
                             var newAmendments = JSON.parse(amendments);
@@ -228,6 +210,9 @@ class XiangQingTable extends Component {
                         })}
                 </thead>
             </table>
+            {data.length === 0 ?
+                    <Empty image={<div style={ {lineHeight: 13} }>{Empty.PRESENTED_IMAGE_SIMPLE}</div>} style={ {backgroundColor: '#FFFFFF', height: 168, margin: '10px 24px'} } />: <></>
+                }
             </Spin>
         );
     }

@@ -45,7 +45,7 @@ class Historical extends Component {
         const { page, total, data, wait } = this.state;
         return (
             <>
-            <div style={ {margin: '100px 10px 15px max(calc(100% - 600px), 880px)', minWidth: 600} }>
+            <div style={ {margin: '10px 10px 15px max(calc(100% - 600px), 880px)', minWidth: 600} }>
                 <div style={ {display: 'inline-block', marginRight: 40} }><Search options={options} /></div>
                 <div style={ {cursor: 'pointer', display: 'inline-block'} } onClick={() => {navigate('/choose/searchData')}} ><img alt='' src={searchIco} style= { {marginRight: 10} } />查询记录</div>
             </div>

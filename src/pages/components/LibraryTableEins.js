@@ -47,16 +47,6 @@ class LibraryTableEins extends Component {
                         )
                     })}
                 </tr>
-                {nowData.length === 0 ?
-                    <tr>
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} } />
-                    </tr>: <></>
-                }
                 { nowData.map((item, key) => {
                     return (
                     <tr key={ key } style={ {backgroundColor: 'white', height: 45} }>
@@ -76,6 +66,9 @@ class LibraryTableEins extends Component {
                 })}
                 </thead>
                 </table>
+                {nowData.length === 0 ?
+                    <Empty image={<div style={ {lineHeight: 13} }>{Empty.PRESENTED_IMAGE_SIMPLE}</div>} style={ {backgroundColor: '#FFFFFF', height: 168, margin: '10px 24px'} } />: <></>
+                }
             </Spin>
         );
     }

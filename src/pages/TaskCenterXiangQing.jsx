@@ -175,7 +175,7 @@ class TaskCenterXiangQing extends Component {
         return (
 			<>
             <div style={ {position: 'relative', top: 10} }>
-                <div style={ {margin: '20px 21px', display: 'flex', flexDirection: 'column', minWidth: 1430} } className='xiangQing'>
+                <div style={ {margin: '20px 21px', display: 'flex', flexDirection: 'column', minWidth: 1630} } className='xiangQing'>
                     <div style={ {display: 'flex', flexDirection: 'row'} }>
                         <p style={ {flex: 4} }>
                         <span style={ DasTypeStyle }><span style={ fontStyle }>{checkType}</span></span>
@@ -229,7 +229,7 @@ class TaskCenterXiangQing extends Component {
                     <div style={ {display: 'inline-block', marginLeft: 12} }><XiaLaKuang title="排序" options={options3} change={this.changePaiXu.bind(this)} /></div>
                     <div style={ {display: 'inline-block', float: 'right', marginRight: 20} }><Search options={options} /></div>
                 </div>
-                <div style={ {minWidth: 1430} }>
+                <div style={ {minWidth: 1530} }>
                     <XiangQingTable style={ {margin: '20px 10px', borderSpacing: '0 0px', width: '99%'} } data={data} page={page} pageSize={pageSize} changeMdId={this.changeMdId.bind(this)} del={del} wait={wait} />
 					{wait2 ? <span className='YellowButton heikuang' style={ {maxWidth: 150, minWidth: 150,backgroundColor: '#3ea6ff', margin: 20, display: 'inline-block'} }>
                         <LoadingOutlined style={ {marginRight: 8} } /> <span>导出Excel表格</span>

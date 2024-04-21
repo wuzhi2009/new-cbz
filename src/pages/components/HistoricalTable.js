@@ -34,13 +34,6 @@ class HistoricalTable extends Component {
                             )
                         })}
                     </tr>
-                    {data.length === 0 ?
-                    <tr>
-                        <td style={ {backgroundColor: 'white'} } />
-                        <td style={ {backgroundColor: 'white'} }><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /></td>
-                        <td style={ {backgroundColor: 'white'} } />
-                    </tr> : <></>
-                    }
                     { data.map((item, key) => {
                     return (
                     <tr key={ key + 100 } style={ {backgroundColor: 'white', height: 10} }>
@@ -57,6 +50,9 @@ class HistoricalTable extends Component {
                 })}
                 </thead>
             </table>
+            {data.length === 0 ?
+                    <Empty image={<div style={ {lineHeight: 13} }>{Empty.PRESENTED_IMAGE_SIMPLE}</div>} style={ {backgroundColor: '#FFFFFF', height: 168, margin: '10px 24px'} } />: <></>
+                }
             </Spin>
         );
     }

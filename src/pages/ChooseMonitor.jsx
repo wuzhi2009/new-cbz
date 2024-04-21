@@ -232,7 +232,7 @@ class ChooseMonitor extends Component {
         return (
             
             <div style={{width: 1497, margin: 'auto'}}>
-                <div style={ {marginTop: 130, marginLeft: 20} }>
+                <div style={ {marginTop: 50, marginLeft: 20} }>
                     {location.pathname === '/choose/searchData' ? <div style={{ cursor: 'pointer', marginBottom: 20, width: 100, marginLeft: 1400 }} onClick={() => { navigate('/searchData') }} ><img alt='' src={searchIco} style={{ marginRight: 10 }} />查询记录</div> : <></>}
                     <Spin spinning={wait}>
                     <MonitorItem title="平台" data={[{ id: 1, label: "网站" }, { id: 2, label: "新媒体" }]} en={true} change={(a, b, key) => { 
