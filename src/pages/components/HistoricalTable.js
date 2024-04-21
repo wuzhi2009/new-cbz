@@ -20,10 +20,10 @@ class HistoricalTable extends Component {
         const { data, wait } = this.props;
         return (
             <Spin spinning={wait}>
-            <table style={ {borderSpacing: '0px 0px'} } width={'100%'}>
+            <table style={ {borderSpacing: '0px 0px', minWidth: '100%'} }>
                 <colgroup>
                     <col style={{ width: 90, minWidth: 90, textAlign: 'center' }} />
-                    <col style={{ minWidth: 300, textAlign: 'center' }} />
+                    <col style={{ minWidth: 1300, textAlign: 'center' }} />
                     <col style={{ width: 60, minWidth: 60, textAlign: 'center' }} />
                 </colgroup>
                 <thead>

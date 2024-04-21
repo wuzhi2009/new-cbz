@@ -36,6 +36,11 @@ const fontStyle = {
 const options = [{key: "文章片段", value: 1},{key: "站点名称", value: 2}];
 const options2 = [{key: "全部", value: "2"},{key: "未修改", value: "0"},{key: "已修改", value: "1"},{key: "无需修改", value: "null"}];
 const options3 = [{key: "默认排序", value: "id"},{key: "时间升序", value: "time"},{key: "时间降序", value: "time1"}];
+/**
+ * 检测结果
+ * 
+ * @author wuzhi
+ */
 class TaskCenterXiangQing extends Component {
     state = { smId:0, monitoringTitle:"", checkType:"", originator:"", createTime:"", siteChannelsJson:"", label:1, searchValue:"", page:1, pageSize: 10, total:0, mdId:[], modifyState:"2", errorType:"", paiXu:"id",data:[], postStartTime: "", postEndTime: "", open:false, open2: false, del:"", wait:true, wait2: false } 
     componentDidMount() {
@@ -170,7 +175,7 @@ class TaskCenterXiangQing extends Component {
         return (
 			<>
             <div style={ {position: 'relative', top: 10} }>
-                <div style={ {margin: '20px 21px', display: 'flex', flexDirection: 'column'} } className='xiangQing'>
+                <div style={ {margin: '20px 21px', display: 'flex', flexDirection: 'column', minWidth: 1430} } className='xiangQing'>
                     <div style={ {display: 'flex', flexDirection: 'row'} }>
                         <p style={ {flex: 4} }>
                         <span style={ DasTypeStyle }><span style={ fontStyle }>{checkType}</span></span>
@@ -191,7 +196,7 @@ class TaskCenterXiangQing extends Component {
                             <span className='xiangQingText'><OneToOneOutlined style={ {marginRight: 5} } />检测时间范围：</span><span>{postStartTime}~{postEndTime}</span>
                         </p>
                         <div style={ {flex: 7} }>
-                            <span style={ {position: 'absolute', right: 10} }>
+                            <span style={ {float: 'right', display: 'inline-block', minWidth: 340 } }>
                                 <span className='YellowButton heikuang' onClick={() => {
                                     const { mdId } = this.state;
                                     if (mdId.length <= 0) {
@@ -218,13 +223,13 @@ class TaskCenterXiangQing extends Component {
                         </p>
                     </div>
                 </div>
-                <div style={ {display: 'flex', flexDirection: 'row', marginTop: 20, marginLeft: 20} }>
-                    <div style={ {flex:3} }><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
-                    <div style={ {flex:3} }><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
-                    <div style={ {flex:3} }><XiaLaKuang title="排序" options={options3} change={this.changePaiXu.bind(this)} /></div>
-                    <div style={ {flex:5} }><Search options={options} /></div>
+                <div style={ {marginTop: 20, marginLeft: 20, minWidth: 1430} }>
+                    <div style={ {display: 'inline-block'} }><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
+                    <div style={ {display: 'inline-block', marginLeft: 12} }><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
+                    <div style={ {display: 'inline-block', marginLeft: 12} }><XiaLaKuang title="排序" options={options3} change={this.changePaiXu.bind(this)} /></div>
+                    <div style={ {display: 'inline-block', float: 'right', marginRight: 20} }><Search options={options} /></div>
                 </div>
-                <div>
+                <div style={ {minWidth: 1430} }>
                     <XiangQingTable style={ {margin: '20px 10px', borderSpacing: '0 0px', width: '99%'} } data={data} page={page} pageSize={pageSize} changeMdId={this.changeMdId.bind(this)} del={del} wait={wait} />
 					{wait2 ? <span className='YellowButton heikuang' style={ {maxWidth: 150, minWidth: 150,backgroundColor: '#3ea6ff', margin: 20, display: 'inline-block'} }>
                         <LoadingOutlined style={ {marginRight: 8} } /> <span>导出Excel表格</span>

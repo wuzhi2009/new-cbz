@@ -2,6 +2,7 @@ import { excelExportPost, post, put } from "../../../utils/reqUtil";
 
 /**
  * 获取详情表接口
+ * 
  * @param {*} info 
  * 请求示例
  * {
@@ -22,6 +23,7 @@ export function getXiangQingTable(info) {
 
 /**
  * 重新检测接口
+ * 
  * @param {*} mdIds mdId数组
  * @returns 
  */
@@ -31,6 +33,7 @@ export function chongXinJianCe(mdIds) {
 
 /**
  * 无需检测接口
+ * 
  * @param {*} mdIds mdId数组
  * @returns 
  */
@@ -38,6 +41,13 @@ export function not(mdIds) {
     return put(`/sp/monitoringDetails/${mdIds}`);
 }
 
+/**
+ * 检测详情excel导出
+ * 
+ * @param {*} mdIds 
+ * @param {*} smId 
+ * @returns 
+ */
 export function excel(mdIds, smId) {
     return excelExportPost("/sp/monitoringDetails/Excel", {mdIds, smId});
 }

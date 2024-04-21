@@ -4,6 +4,11 @@ import OpenUndClose from './OpenUndClose';
 import { withRouter } from '../../utils/withRouter';
 import { Empty, Spin } from 'antd';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "操作"];
+/**
+ * 检测完成表格
+ * 
+ * @author wuzhi
+ */
 class TaskCenterEinsTable extends Component {
     state = { } 
     // 跳转到检测详情页面

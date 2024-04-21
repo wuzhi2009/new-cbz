@@ -172,7 +172,7 @@ class SearchDataTable extends Component {
         return (
             <>
                 <div style={{ position: 'relative', top: 10 }}>
-                    <div style={{ margin: '20px 21px', display: 'flex', flexDirection: 'column' }} className='xiangQing'>
+                    <div style={{ margin: '20px 21px', display: 'flex', flexDirection: 'column', minWidth: 1430 }} className='xiangQing'>
                         <div style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
                             <p style={{ flex: 7 }}>
                                 <span className='xiangQingText'><ContainerOutlined style={{ marginRight: 5 }} />检测范围：</span><span><OpenUndClose text={fanWei} /></span>
@@ -181,7 +181,7 @@ class SearchDataTable extends Component {
                                 <span className='xiangQingText'><OneToOneOutlined style={{ marginRight: 5 }} />检测时间范围：</span><span>{startTime}~{endTime}</span>
                             </p>
                             <div style={{ flex: 7 }}>
-                                <span style={{ position: 'absolute', right: 10 }}>
+                                <span style={{ float: 'right', display: 'inline-block', minWidth: 280 }}>
                                     <span className='YellowButton heikuang' onClick={() => {
                                         const { mdId } = this.state;
                                         if (mdId.length <= 0) {
@@ -195,29 +195,29 @@ class SearchDataTable extends Component {
                             </div>
                         </div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-                        <div style={{ flex: 3 }}><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
-                        <div style={{ flex: 6 }}><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
-                        <div style={{ flex: 5 }}><Search options={options} /></div>
+                    <div style={{ marginTop: 20, marginLeft: 20, minWidth: 1430 }}>
+                        <div style={{ display: 'inline-block' }}><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
+                        <div style={{ display: 'inline-block', marginLeft: 12 }}><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
+                        <div style={{ display: 'inline-block', float: 'right', marginRight: 20 }}><Search options={options} /></div>
                     </div>
                 </div>
                 <Spin spinning={wait}>
                     <table style={{ margin: '20px 10px', borderSpacing: '0 0px' }} width="99%" >
                         <colgroup>
-                            <col style={{ width: 50, minWidth: 50, textAlign: 'center' }} />
-                            <col style={{ width: 60, minWidth: 60, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ width: 60, minWidth: 80, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ minWidth: 150, textAlign: 'center' }} />
-                            <col style={{ width: 70, minWidth: 70, textAlign: 'center' }} />
-                            <col style={{ width: 130, minWidth: 130, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
-                            <col style={{ width: 120, minWidth: 120, textAlign: 'center' }} />
+                            <col style={{ width: 50, minWidth: 50, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 60, minWidth: 60, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 60, minWidth: 80, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ minWidth: 300, width: 300, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 70, minWidth: 70, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 130, minWidth: 130, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
+                            <col style={{ width: 120, minWidth: 120, textAlign: 'center', minHeight: 70 }} />
                         </colgroup>
                         <thead>
 
@@ -299,7 +299,7 @@ class SearchDataTable extends Component {
                                         <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{item.errorType}</td>
                                         <td style={{ textAlign: 'center', border: '1px solid #8F9399', color: 'red' }}>{item.errorDescription}</td>
                                         <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>{newAmendments[0]}</td>
-                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={item.articleTitle} is={false} /> </td>
+                                        <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={<span style={ {fontSize: 12} }>{item.articleTitle}</span>} is={false} /> </td>
                                         <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><LangText col={3} text={newDescription} is={true} /></td>
                                         <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}>正文</td>
                                         <td style={{ textAlign: 'center', border: '1px solid #8F9399' }}><Tooltip title={item.postUrl}><a href={item.postUrl}>{newPostUrl}</a></Tooltip></td>
@@ -311,7 +311,9 @@ class SearchDataTable extends Component {
                         </thead>
                     </table>
                 </Spin>
-                <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => { this.getPage(page, pageSize) }} style={{ marginTop: 6, paddingTop: 15 }} />
+                <div style={ {minWidth: 1600} }>
+                    <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => { this.getPage(page, pageSize) }} style={{ marginTop: 6, paddingTop: 15, minWidth: 800, marginRight: 15 }} />
+                </div>
                 <Modal open={open2} close={() => this.setState({ open2: false })}>
                     <div style={{ marginBottom: 20, position: 'absolute', top: 34 }}>提示：</div>
                     <div style={{ margin: 30 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认重新检测</div>

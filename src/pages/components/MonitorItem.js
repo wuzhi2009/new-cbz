@@ -27,7 +27,7 @@ const ulStyle = {
     paddingBottom: 10, 
     marginBottom: 10, 
     position: 'relative', 
-    width: 1350, 
+    width: 1480, 
     minHeight: 40
 }
 /**

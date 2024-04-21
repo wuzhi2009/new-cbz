@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+/**
+ * 统计页面
+ * 
+ * @author wuzhi
+ */
 class CountData extends Component {
     state = {  } 
     render() { 

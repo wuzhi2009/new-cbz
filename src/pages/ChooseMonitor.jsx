@@ -33,6 +33,11 @@ const chongZhiIco = Cz;
 const chaXunIco = Cx;
 const jianCeIco = Jc;
 const searchIco = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAABzklEQVQ4jZ3US4hPYRgG8N/8R4oibNRsJBpiOwqZpiwkNooFsWEhSbKwwEKSS00kNi6lKLltWMjCLRGxsLCQexYWkktNI7lM6K331Ol0zvzNPHXqXL7vOc/7fs/7dPQs36kNWpiD2ZiCATzL62/d1jHD8E3CdqxHF37iOyaiE+9xDCfwrbyx1UC4FK+wAcdT6bhUOhY9OIco8ynmtyNdg2u4im7sw/NSqX/wBLswK0lvY3ET6TycwX5srJZVg89YhQu4gmkF6Xjcwgycxk3sqSFYhm0170P5JrzEqYL0B6Ym2Vw8zj5W0YuVDYqH8lCXRLWt/FM0fHr+ZHeTVdrgXvZ+RWGpOJhLGMQBvBsFqWxjX9mnq0dJVMbb6P1w5q9DrJ9ceT+QLSzQajJ/HYbS5F8r19bS2pi8TyNR2p8DUcWL0vMiPKqSbsbFVFLFYE5SE8KOC7CjWn547dAI1BfowJH0+P06pdfxIKfrfxET2JdKdXZ195b3vcl4O4pfeNhmECKxDpci8kYdaSCIPuJgTEdaJobhd2lNZO06nMfCvL9cfGw6/ZO4k2WdzVB+nVVMwMy8j0zdiw/lzcNZKkjWYkuGSWRnKPySAX63NhrxD60DaMh7x31CAAAAAElFTkSuQmCC";
+/**
+ * 检测页面
+ * 
+ * @author wuzhi
+ */
 class ChooseMonitor extends Component {
     state = { dpName: "", mediaType: 1, data: [], data2: [], checkVendor: "KPY", data3: [], postStartTime: "", postEndTime: "", choose: "", delDpName: "", open: true, modifyState: "-1", data4:[], wait: false, monitoringTitle: "", open2:false, warning:"", open3: false, cG: false, jinDu: 0, daoJiShi: 5 }
     time2 = null;
@@ -214,9 +219,9 @@ class ChooseMonitor extends Component {
         const { location, navigate } = this.props.router;
         const bianKuangStyle = {width: 260, height: 32, outline: 'none', border: '1px solid #DCDCDC',color: '#050505', fontSize: 18};
         var inputStyle = bianKuangStyle;
-        var dasStyle = { minHeight: 100 };
+        var dasStyle = { minHeight: 300 };
         if (!open) {
-            dasStyle = { ...dasStyle, height: 100, overflow: 'hidden' };
+            dasStyle = { ...dasStyle, minHeight: 100, height: 100, overflow: 'hidden' };
         }
         if (warning) {
             // 存在警告 说明边框要变红
@@ -226,10 +231,9 @@ class ChooseMonitor extends Component {
         }
         return (
             
-            <div style={{ position: 'relative', height: '100%' }}>
-                {location.pathname === '/choose/searchData' ? <div style={{ position: 'absolute', right: '50%', cursor: 'pointer', top: 20, transform: 'translate(700%)' }} onClick={() => { navigate('/searchData') }} ><img alt='' src={searchIco} style={{ marginRight: 10 }} />查询记录</div> : <></>}
-                
-                <div style={{ position: 'absolute', left: '50%', top: 60, transform: 'translate(-50%)' }}>
+            <div style={{width: 1497, margin: 'auto'}}>
+                <div style={ {marginTop: 130, marginLeft: 20} }>
+                    {location.pathname === '/choose/searchData' ? <div style={{ cursor: 'pointer', marginBottom: 20, width: 100, marginLeft: 1400 }} onClick={() => { navigate('/searchData') }} ><img alt='' src={searchIco} style={{ marginRight: 10 }} />查询记录</div> : <></>}
                     <Spin spinning={wait}>
                     <MonitorItem title="平台" data={[{ id: 1, label: "网站" }, { id: 2, label: "新媒体" }]} en={true} change={(a, b, key) => { 
                        if (dpName) { 
@@ -263,7 +267,7 @@ class ChooseMonitor extends Component {
                     <MonitorItemZwei onChange={(sDate, eDate) => { this.setState({ postStartTime: sDate, postEndTime: eDate, delDpName: "" }, () => { this.getChoose() }) }} del={delDpName} />
                     <Outlet />
                     <div style={dasStyle}>
-                        <div style={{ color: '#4B83F0', display: 'inline-block', marginRight: 20 }}>已选择</div>
+                        <div style={{ color: '#4B83F0', display: 'inline-block', marginRight: 20, userSelect: 'none' }}>已选择</div>
                         {data3.map((item, key) => {
                             return (
                                 <div style={{ backgroundColor: '#E8ECF2', minHeight: 24, display: 'inline-block', padding: 5, marginLeft: 10, marginTop: 5 }} key={key}>
@@ -281,7 +285,8 @@ class ChooseMonitor extends Component {
                                 <div style={rightStyle} onClick={() => { this.setState({ open: true }) }}><span style={lineStyle} />展开∨<span style={lineStyle} /></div>
                         }
                     </div>
-                    <div style={{ paddingLeft: '50%', transform: 'translate(-19%)', position: 'absolute', bottom: -70 }}>
+                    <div>
+                        <div style={ {margin: '0 auto', minWidth: 400, maxWidth: 400} }>
                         <div style={{ background: `url('${chongZhiIco}')`, height: 60, width: 188, display: 'inline-block', cursor: 'pointer', marginRight: 10 }} onClick={() => { this.chongZhi() }} />
                         {
                         location.pathname === '/choose/monitor' ?
@@ -301,6 +306,7 @@ class ChooseMonitor extends Component {
                             :
                             <div style={{ background: `url('${chaXunIco}')`, height: 60, width: 188, display: 'inline-block', cursor: 'pointer', marginLeft: 10 }} onClick={() => { this.chaXun() }} />
                         }
+                        </div>
                     </div>
                 </Spin>    
                 </div>

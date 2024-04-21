@@ -114,21 +114,21 @@ class XiangQingTable extends Component {
             <Spin spinning={wait}>
             <table style={ this.props.style }>
                 <colgroup>
-                    <col style={ {width: 50,minWidth: 50,textAlign: 'center'} }/>
-                    <col style={ {width: 60,minWidth: 60, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 140,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 60,minWidth: 80, textAlign: 'center'} }  />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 120,minWidth: 120, textAlign: 'center'} } />
-                    <col style={ {width: 240, textAlign: 'center'} } />
-                    <col style={ {width: 70,minWidth: 70, textAlign: 'center'} } />
-                    <col style={ {width: 150, minWidth: 100,textAlign: 'center'} } />
-                    <col style={ {width: 100,minWidth: 100, textAlign: 'center'} } />
-                    <col style={ {width: 100,minWidth: 100, textAlign: 'center'} } />
-                    <col style={ {width: 110,minWidth: 110,textAlign: 'center'} } />
+                    <col style={ {width: 50,minWidth: 50,textAlign: 'center', minHeight: 70} }/>
+                    <col style={ {width: 60,minWidth: 60, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 120,minWidth: 120, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 140,minWidth: 120, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 60,minWidth: 80, textAlign: 'center', minHeight: 70} }  />
+                    <col style={ {width: 120,minWidth: 120, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 120,minWidth: 120, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 120,minWidth: 120, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 120,minWidth: 120, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 300, minWidth: 300,textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 70,minWidth: 70, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 150, minWidth: 100,textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 100,minWidth: 100, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 100,minWidth: 100, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 110,minWidth: 110,textAlign: 'center', minHeight: 70} } />
                 </colgroup>
                 <thead>
                     
@@ -211,7 +211,7 @@ class XiangQingTable extends Component {
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.errorType}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399', color: 'red'} }>{item.errorDescription}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newAmendments[0]}</td>
-                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={item.articleTitle} is={false} /> </td>
+                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={<span style={ {fontSize: 12} }>{item.articleTitle}</span>} is={false} /> </td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={newDescription} is={true} /></td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.doctype}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><Tooltip title={item.postUrl}><a href={item.postUrl}>{newPostUrl}</a></Tooltip></td>

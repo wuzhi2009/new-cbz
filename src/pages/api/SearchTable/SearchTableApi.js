@@ -1,6 +1,7 @@
 import { post } from "../../../utils/reqUtil";
 
 /**
+ * 查询历史记录
  * 
  * @param {*} json 
  * 

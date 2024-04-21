@@ -8,7 +8,7 @@ const ulStyle = {
     marginBottom: 10, 
     marginTop: 15,
     position: 'relative', 
-    width: 1350, 
+    width: 1480, 
     minHeight: 30
 };
 const titleStyle = {

@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+/**
+ * 发起检测
+ * 
+ * @author wuzhi
+ */
 class Monitor extends Component {
     state = {  } 
     componentDidMount() {

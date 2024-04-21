@@ -11,13 +11,31 @@ const httpService = axios.create({
   // 请求超时时间
   // timeout: 20000 // 需自定义
 });
+/**
+ * 获取cookie
+ * 
+ * @param {*} cookieName cookie的key
+ * @returns value
+ */
+const getCookieValue = (cookieName) => {
+  const cookieArray = document.cookie.split(';');
+  for (let i = 0; i < cookieArray.length; i++) {
+    const cookiePair = cookieArray[i].split('=');
+    const key = cookiePair[0].trim();
+    if (key === cookieName) {
+      return cookiePair[1];
+    }
+  }
+  return null;
+};
 
 //添加请求和响应拦截器
 // 添加请求拦截器
 httpService.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // config.headers.token=window.sessionStorage.getItem('token');
-  config.headers.Authorization = '';
+  const token = getCookieValue("Admin-Token");
+  config.headers.Authorization = `Bearer ${token}`;
   return config;
 }, function (error) {
   // 对请求错误做些什么
@@ -61,6 +79,15 @@ httpService.interceptors.response.use(function (response) {
       // 权限已过期 删除token缓存
       window.location.href = "/login";
     }
+  }
+  if (error.response && error.response.status === 500) {
+    notification.open({
+      message: '系统错误',
+      description:
+        "系统错误，请联系管理员！！",
+      icon:<CloseCircleTwoTone twoToneColor="red" />,
+      maxCount:3
+    });
   }
   error.data={code: 500, msg:"系统错误！！"}
   return error
@@ -208,8 +235,20 @@ export function excelExportPost(url, params = {}) {
   });
 }
 
+export function getCookie(cookieKey) {
+  const cookieArray = document.cookie.split(';');
+  for (let i = 0; i < cookieArray.length; i++) {
+    const cookiePair = cookieArray[i].split('=');
+    const key = cookiePair[0].trim();
+    if (key === cookieKey) {
+      return cookiePair[1];
+    }
+  }
+  return null;
+}
+
 export function getBaseUrl(url, params = {}) {
   return baseUrl;
 }
-const req = {get, post, put, fileUpload, getBaseUrl, excelExport, excelExportPost};
+const req = {get, post, put, fileUpload, getBaseUrl, excelExport, excelExportPost, getCookie};
 export default req;

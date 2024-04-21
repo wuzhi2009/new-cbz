@@ -26,34 +26,80 @@ export function getWhiteList(page, pageSize, level, con) {
     return get(`/sp/wort/white/list?page=${page}&pageSize=${pageSize}&level=${level}&con=${con}`);
 }
 
+/**
+ * 添加词库
+ * 
+ * @param {*} info 
+ * @returns 
+ */
 export function addWort(info) {
     return post("/sp/wort/add", info);
 }
 
+/**
+ * 添加白名单
+ * 
+ * @param {*} info 
+ * @returns 
+ */
 export function addWhiteList(info) {
     return post("/sp/wort/white/add", info);
 }
 
+/**
+ * 更新词库
+ * 
+ * @param {*} item 
+ * @returns 
+ */
 export function updateWort(item) {
     return put("/sp/wort/change", item);
 }
 
+/**
+ * 更新白名单
+ * 
+ * @param {*} item 
+ * @returns 
+ */
 export function updateWhiteList(item) {
     return put("/sp/wort/white/change", item);
 }
 
+/**
+ * 删除词
+ * 
+ * @param {*} id 
+ * @returns 
+ */
 export function delWort(id) {
     return post(`/sp/wort/del/${id}`);
 }
 
+/**
+ * 删除白名单
+ * 
+ * @param {*} id 
+ * @returns 
+ */
 export function delWhiteList(id) {
     return post(`/sp/wort/white/del/${id}`);
 }
 
+/**
+ * 导出词库
+ * 
+ * @returns 
+ */
 export function exportWort() {
     return excelExport("/sp/wort/Excel");
 }
 
+/**
+ * 导出白名单
+ * 
+ * @returns 
+ */
 export function exportWhiteList() {
     return excelExport("/sp/wort/white/Excel");
 }
@@ -100,10 +146,22 @@ export function exportWhiteListMod() {
     return null;
 }
 
+/**
+ * 确认导入词库
+ * 
+ * @param {*} index 导入文件id数组 后端返回
+ * @returns 
+ */
 export function exportWortOk(index) {
     return put(`/sp/wort/importWortYes/${index}`);
 }
 
+/**
+ * 确认导入白名单
+ * 
+ * @param {*} index 导入文件id数组 后端返回
+ * @returns 
+ */
 export function exportWhiteOk(index) {
     return put(`/sp/wort/importWhiteListYes/${index}`);
 }

@@ -11,6 +11,7 @@ import { Button, Form, Input, message, Modal, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { LoadingOutlined, QuestionCircleTwoTone, InboxOutlined } from '@ant-design/icons';
 import Dragger from 'antd/es/upload/Dragger';
+import { getBaseUrl, getCookie } from '../utils/reqUtil';
 const DasTypeStyle = {
     display: 'inline-block',
     backgroundColor: '#838EEF',
@@ -28,15 +29,20 @@ const icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAATCAYAAAB/TkaL
 const icon2 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABYUlEQVQ4jdXUv0tVYRzH8deVm9J0N4OMwEC0CMKGlv6EG+kSjeKkaQrVn2CDCS2JewU5iBJBUISTKA6Cgji1iIoi6CBJREUUD3zPIufca9fJDxw45/t9nvf313meUnXsCCr4gV+KtYWrBd59vMJEGZdjcQmbmMc7LJ7YNIpLBcDbGMPFBNxDFR24iXsYDPAwvsamDzWyT/qLgab4+IIpPIqyHuIaVtBbB5RpHa1NOY4UaQbdWMAs7p8SKg+Y6Vtk9wlvceWswKQ/6MdPTIatFD1vbgSYdIjn6MF19OFjDDAXmEUs5/g/4wXe4zse42X0dbUI2BkR7+T4lzCCNfzGUNhHispJwAs1yk8/a1cErITtaZyMQmA9bcdgbkVr3tRan9e3Im3EU1OnyfC/dD6AR/HefkZWG47TUHawjPEIsNsA7AaeYDqb8oO4YV43mF26oebwLAOmrO5G2i0NAI9xAP8AVINCQA8CXTIAAAAASUVORK5CYII=";
 const icon3 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAATCAYAAACdkl3yAAABL0lEQVQ4ja3UvyvFURjH8de9bgYpKaVkMCozo5RdGVw2kwmLxWA1IANlUdSVJH8AC5mMRpPIIkokMkh+derc2+3e77193XzqqXM+9by/z/ec5zmZ/MoL9GMNA8hJp2ssoiAmdeIYpxjFe0rQELbxgKMAGsMb8vhMCQk6QQ+mAiiLLtz8EVLUBTrCOoAyDQCqlE3wdvBTJ+6TQEk3tIDdOh9/TAu6jfEnJYG60VvhfeMcr7XgSaBVjCf4s9io8J5jJB72RLzJyqiEBG1ipBYojQqxGUtqFDSJvv8AVSntpDdjGS1l3kw8n9Ck67mUMxYqb0VbmRf27fhCUwBdYToOX2LXxqclTHlRoYolHBaNANrHHM6wh4+yhCdspfn3AAqJg5jHcCy5qLsaoANclnb4BfAKPQupJlRgAAAAAElFTkSuQmCC";
 /**
- * 词库页面
+ * 词库白名单
  * 
  * @author wuzhi
  */
 class Library extends Component {
     formRef = React.createRef();
-    state = { data: [], con: "", level: "", errSay: "", wort: "", page: 1, pageSize: 10, key: 1, total: 0, data2: [], open: false, loading: false, form: {}, delId: "", open2: false, tiShi: "", open3: false, fileIds:[] }
+    state = { data: [], con: "", level: "", errSay: "", wort: "", page: 1, pageSize: 10, key: 1, total: 0, data2: [], open: false, loading: false, form: {}, delId: "", open2: false, tiShi: "", open3: false, fileIds:[], token: "", baseUrl: "" }
     componentDidMount() {
         const { pathname } = this.props.router.location;
+        // 拿token
+        const token = "Bearer " + getCookie("Admin-Token");
+        // 拿服务器地址
+        var baseUrl = getBaseUrl();
+        this.setState({token, baseUrl});
         if (pathname === '/library/zwei') {
             this.whiteList();
             this.setState({ key: 2 });
@@ -97,11 +103,9 @@ class Library extends Component {
     go = (path) => {
         const { navigate } = this.props.router;
         if (path === "/library/eins") {
-            this.setState({ key: 1, form: {} });
-            this.wortList();
+            this.setState({ key: 1, form: {}, fileIds: [], page: 1 }, () => {this.wortList()});
         } else {
-            this.setState({ key: 2, form: {} });
-            this.whiteList();
+            this.setState({ key: 2, form: {}, fileIds: [], page: 1 }, () => {this.whiteList()});
         }
         navigate(path);
     }
@@ -199,8 +203,8 @@ class Library extends Component {
             delWort(id).then(res => {
                 if (res.data.code === 200) {
                     message.success(res.data.msg);
-                    this.onPropChange(pathname);
-                    this.setState({ open2: false, loading: false, page: 1, delId: "" })
+                    this.setState({page: 1}, () => {this.onPropChange(pathname)})
+                    this.setState({ open2: false, loading: false, delId: "" })
                 } else {
                     this.setState({ loading: false });
                 }
@@ -256,7 +260,7 @@ class Library extends Component {
         
     }
     render() {
-        const { key, page, total, open, loading, form, open2, tiShi, open3, fileIds } = this.state;
+        const { key, page, total, open, loading, form, open2, tiShi, open3, fileIds, token, baseUrl } = this.state;
         const { pathname } = this.props.router.location;
         var spanStyle = { ...DasTypeStyle, backgroundColor: '#EDEDED', color: 'black' };
         var _this = this;
@@ -264,13 +268,15 @@ class Library extends Component {
         const props = {
             name: 'file',
             multiple: true,
-            action: pathname === '' ? '/sp/wort/importWort' : '/sp/wort/importWhiteList',
+            action: pathname === '/library/eins' ? `${baseUrl}/sp/wort/importWort` : `${baseUrl}/sp/wort/importWhiteList`,
             onChange(info) {
               const { status } = info.file;
+              _this.setState({fileIds: info.fileList});
               if (status !== 'uploading') {
                 _this.setState({fileIds: info.fileList});
               }
               if (status === 'done') {
+                _this.setState({fileIds: info.fileList});
                 message.success(`${info.file.name} 加载成功！！`);
               } else if (status === 'error') {
                 message.error(`${info.file.name} 加载失败！！`);
@@ -279,11 +285,14 @@ class Library extends Component {
             // onDrop(e) {
             //   console.log('Dropped files', e.dataTransfer.files);
             // },
-            // onRemove(file) {
-            //     console.log('object :>> ', file.uid);
-            // }, 
+            onRemove(file) {
+                var newFileIds = fileIds;
+                newFileIds.filter(item => item.uid !== file.uid);
+                _this.setState({fileIds: newFileIds});
+            }, 
             withCredentials: true,
-            headers: {Authorization: ""}
+            headers: {Authorization: token},
+            fileList: fileIds
         }
         return (
             <div style={{ margin: 18, marginTop: 110 }}>
@@ -298,7 +307,7 @@ class Library extends Component {
                         } else {
                             level = "";
                         }
-                        this.setState({ level }, () => { this.onPropChange(pathname) })
+                        this.setState({ level, page: 1 }, () => { this.onPropChange(pathname) })
                     }} /></div>
                     <div style={{ flex: 4 }}><Search options={options2} haben={false} /></div>
                     <div style={{ flex: 2, minWidth: 300 }}>
@@ -314,11 +323,13 @@ class Library extends Component {
                     </div>
                 </div>
                 <Outlet />
-                <Pagination defaultCurrent={page} total={total} onChange={(page, pageSize) => {
+                <div style={ {minWidth: 1000} }>
+                <Pagination  style= { {minWidth: 700} } defaultCurrent={page} total={total} onChange={(page, pageSize) => {
                     this.setState({ page, pageSize }, () => {
                         this.onPropChange(pathname);
                     })
                 }} />
+                </div>
                 <Modal open={open} onCancel={() => {this.props.sendAction({ type: "wortItem", form: {} });this.setState({open: false, loading: false, form: {} })}} title={<div style={{ borderLeft: '5px solid red', paddingLeft: 5, color: '#4B83F0' }}>{pathname === "/library/eins" ? "添加内容" : "添加白名单"}</div>}
                     maskClosable={true} closeIcon={false} centered={true} width={650} style={{ height: 430 }}
                     footer={[
