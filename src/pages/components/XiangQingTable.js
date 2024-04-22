@@ -114,8 +114,8 @@ class XiangQingTable extends Component {
             <Spin spinning={wait}>
             <table style={ this.props.style }>
                 <colgroup>
-                    <col style={ {width: 50,minWidth: 50,textAlign: 'center', minHeight: 70} }/>
-                    <col style={ {width: 60,minWidth: 60, textAlign: 'center', minHeight: 70} } />
+                    <col style={ {width: 30,minWidth: 30,textAlign: 'center', minHeight: 70} }/>
+                    <col style={ {width: 40,minWidth: 40, textAlign: 'center', minHeight: 70} } />
                     <col style={ {width: 120,minWidth: 120, textAlign: 'center', minHeight: 70} } />
                     <col style={ {width: 140,minWidth: 120, textAlign: 'center', minHeight: 70} } />
                     <col style={ {width: 60,minWidth: 80, textAlign: 'center', minHeight: 70} }  />

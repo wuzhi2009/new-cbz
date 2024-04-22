@@ -36,6 +36,7 @@ const fontStyle = {
 const options = [{key: "文章片段", value: 1},{key: "站点名称", value: 2}];
 const options2 = [{key: "全部", value: "2"},{key: "未修改", value: "0"},{key: "已修改", value: "1"},{key: "无需修改", value: "null"}];
 const options3 = [{key: "默认排序", value: "id"},{key: "时间升序", value: "time"},{key: "时间降序", value: "time1"}];
+const options4 = [{key: "全部", value: "null"},{key: "自定义禁用词", value: "自定义禁用词"},{key: "自定义替换词", value: "自定义替换词"},{key: "自定义领导姓名错误", value: "自定义领导姓名错误"}];
 /**
  * 检测结果
  * 
@@ -225,7 +226,7 @@ class TaskCenterXiangQing extends Component {
                 </div>
                 <div style={ {marginTop: 20, marginLeft: 20, minWidth: 1430} }>
                     <div style={ {display: 'inline-block'} }><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
-                    <div style={ {display: 'inline-block', marginLeft: 12} }><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
+                    <div style={ {display: 'inline-block', marginLeft: 12} }><XiaLaKuang title="错误类型" options={options4} change={this.changeCuoWuType.bind(this)} /></div>
                     <div style={ {display: 'inline-block', marginLeft: 12} }><XiaLaKuang title="排序" options={options3} change={this.changePaiXu.bind(this)} /></div>
                     <div style={ {display: 'inline-block', float: 'right', marginRight: 20} }><Search options={options} /></div>
                 </div>
