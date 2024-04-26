@@ -11,8 +11,9 @@ class CountDataErrDayList extends Component {
     render() { 
         return (
             <>
-                <img alt="" src={icon} />
-                <img alt="" src={icon2} />
+                            <img alt="" src={icon} />
+                            <img alt="" src={icon2} />
+                
             </>
         );
     }

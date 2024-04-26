@@ -1,4 +1,4 @@
-import { Empty } from 'antd';
+import { Empty, Spin } from 'antd';
 import React, { Component } from 'react';
 import { getHightHz } from '../api/CountData/CountDataApi';
 const tableKopf = ["序号", "规范表述", "不规范表述", "错误次数"];
@@ -8,18 +8,18 @@ const tableKopf = ["序号", "规范表述", "不规范表述", "错误次数"];
  * @author wuzhi
  */
 class CountDataTable extends Component {
-    state = { data: [] }
+    state = { data: [], wait: true }
     componentDidMount() {
         getHightHz().then(res => {
             if (res.data.code === 200) {
-                this.setState({ data: res.data.data });
+                this.setState({ data: res.data.data, wait: false });
             }
         })
     }
     render() {
-        const { data } = this.state;
+        const { data, wait } = this.state;
         return (
-            <>
+            <Spin spinning={wait}>
                 <div style={{ color: '#61a3ff', fontWeight: 700, fontSize: 18 }} >高频错敏词</div>
                 <table style={{ marginTop: 5, borderSpacing: '0 0px' }} width={600} >
                     <colgroup>
@@ -66,7 +66,7 @@ class CountDataTable extends Component {
                     <Empty image={<div style={ {lineHeight: 13} }>{Empty.PRESENTED_IMAGE_SIMPLE}</div>} style={ {backgroundColor: '#FFFFFF', height: 168, margin: '10px 24px'} } />: <></>
                 }
                 </div>
-            </>
+            </Spin>
         );
     }
 }

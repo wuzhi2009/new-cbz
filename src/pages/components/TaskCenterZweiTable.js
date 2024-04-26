@@ -4,7 +4,7 @@ import OpenUndClose from './OpenUndClose';
 import Modal from './Modal';
 import { Empty, message, Spin } from 'antd';
 import { stop } from '../api/TaskCenter/TaskCenterApi';
-import {LoadingOutlined } from '@ant-design/icons';
+import {LoadingOutlined, ThunderboltTwoTone } from '@ant-design/icons';
 const tableKopf = ["id", "类型", "检测名称", "发起人", "发起时间", "检测范围", "状态", "操作"];
 /**
  * 正在检测表格
@@ -67,7 +67,7 @@ class TaskCenterZweiTable extends Component {
                         <td style={ {textAlign: 'center'} }>{item.originator}</td>
                         <td style={ {textAlign: 'center'} }>{item.createTime}</td>
                         <td style={ {textAlign: 'center'} }><OpenUndClose text={ JSON.parse(item.siteChannelsJson) } /></td>
-                        <td style={ {textAlign: 'center'} }>{item.status === 1 ? <div style={ {color: '#FF9854'} }>等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
+                        <td style={ {textAlign: 'center'} }>{item.status === 1 ? <div style={ {color: '#FF9854'} }><ThunderboltTwoTone twoToneColor={"#FFB584"} />等待运行</div> : <div style={ {color: 'red'} }>正在运行</div>}</td>
                         <td style={ {textAlign: 'center'} }>
                             <div style={ {display: 'inlineBlock',width: 120,height: 26, textAlign: 'center',backgroundColor: 'red',color: '#fff', cursor: 'pointer'} } onClick={() => {this.setState({open: true, id:item.id})}}>
                                 <span style={ { userSelect: 'none', position: 'relative', top: '15%', fontWeight: 600} }>取消</span>

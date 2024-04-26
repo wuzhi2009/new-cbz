@@ -1,4 +1,4 @@
-import { Progress } from 'antd';
+import { Progress, Spin } from 'antd';
 import React, { Component } from 'react';
 import { getErrTop } from '../api/CountData/CountDataApi';
 const DasTypeStyle = {
@@ -18,12 +18,12 @@ const DasTypeStyle = {
  * @author wuzhi
  */
 class CountDataErrTopUl extends Component {
-    state = { data: [], key: 1 } 
+    state = { data: [], key: 1, wait: true } 
     go = (key) => {
-        this.setState({key});
+        this.setState({key, wait: true});
         getErrTop(key).then(res => {
             if (res.data.code === 200) {
-                this.setState({data: res.data.data});
+                this.setState({data: res.data.data, wait: false});
             }
         })
     }
@@ -31,14 +31,14 @@ class CountDataErrTopUl extends Component {
         this.go(1);
     }
     render() { 
-        const { data, key } = this.state;
+        const { data, key, wait } = this.state;
         var spanStyle = { ...DasTypeStyle, backgroundColor: '#EDEDED', color: 'black' };
         var total = 0;
         data.forEach(item => {
             total = total + item.errAnzahl;
         })
         return (
-            <>
+            <Spin spinning={wait}>
                 <div style={{ color: '#61a3ff', fontWeight: 700, fontSize: 18, display: 'inline-block', userSelect: 'none' }}>错误量TOP10</div>
                 <div style={{ minWidth: 136, display: 'inline-block', marginLeft: 104}}><span style={key === 1 ? DasTypeStyle : spanStyle} onClick={() => { if (key !== 1) { this.go(1) } }}>网站</span>
                             <span style={key === 2 ? DasTypeStyle : spanStyle} onClick={() => { if (key !== 2) { this.go(2) } }}>新媒体</span>
@@ -57,7 +57,7 @@ class CountDataErrTopUl extends Component {
                         )
                     })}
                 </ul>
-            </>
+            </Spin>
         );
     }
 }

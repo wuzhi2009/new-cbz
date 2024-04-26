@@ -1,4 +1,4 @@
-import { Progress } from 'antd';
+import { Progress, Spin } from 'antd';
 import React, { Component } from 'react';
 import { getErrCity } from '../api/CountData/CountDataApi';
 /**
@@ -7,22 +7,22 @@ import { getErrCity } from '../api/CountData/CountDataApi';
  * @author wuzhi
  */
 class CountDataErrCityUl extends Component {
-    state = { data: [] } 
+    state = { data: [], wait: true } 
     componentDidMount() {
         getErrCity().then(res => {
             if (res.data.code === 200) {
-                this.setState({data: res.data.data});
+                this.setState({data: res.data.data, wait: false});
             }
         })
     }
     render() { 
-        const { data } = this.state;
+        const { data, wait } = this.state;
         var total = 0;
         data.forEach(item => {
             total = total + item.errAnzahl;
         })
         return (
-            <>
+            <Spin spinning={wait}>
                 <div style={{ color: '#61a3ff', fontWeight: 700, fontSize: 18, display: 'inline-block', userSelect: 'none' }}>市级错误量TOP</div>
                 <div style={{ minWidth: 76, display: 'inline-block', marginLeft: 149, fontSize: 12}}><span style={ {color: 'red'} }>*</span>全平台统计
                 </div>
@@ -40,7 +40,7 @@ class CountDataErrCityUl extends Component {
                         )
                     })}
                 </ul>
-            </>
+            </Spin>
         );
     }
 }
