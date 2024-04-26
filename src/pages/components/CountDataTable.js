@@ -51,7 +51,7 @@ class CountDataTable extends Component {
                                 data.map((item, key) => {
                                     return (
                                         <tr key={key + 900} style={key % 2 === 1 ? { backgroundColor: 'white', height: 45 } : { backgroundColor: '#f0f0f0', height: 45 }}>
-                                            <td style={{ textAlign: 'center' }}>{key}</td>
+                                            <td style={{ textAlign: 'center' }}>{key + 1}</td>
                                             <td style={{ textAlign: 'center' }}>{JSON.parse(item.amendments)[0]}</td>
                                             <td style={{ textAlign: 'center' }}>{item.errorDescription}</td>
                                             <td style={{ textAlign: 'center' }}>{item.errAnzahl}</td>

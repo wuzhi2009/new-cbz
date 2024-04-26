@@ -27,5 +27,29 @@ export function getErrTop(mediaType) {
     return get(`/sp/count/errTop?mediaType=${mediaType}`);
 }
 
-const req = { getErrCity, getErrTop, getHightHz };
+/**
+ * 获取检测数据
+ * 
+ * @param {*} deptName 
+ * @param {*} mediaType 
+ * @param {*} startDate 
+ * @param {*} endDate 
+ * @returns 
+ */
+export function list(deptName, mediaType, startDate, endDate) {
+    return get(`/sp/count/list?deptName=${deptName}&pingTai=${mediaType}&startDate=${startDate}&endDate=${endDate}`);
+}
+
+/**
+ * 获取每天检测数据
+ * 
+ * @param {*} date 
+ * @param {*} dpName 
+ * @returns 
+ */
+export function day(date, dpName) {
+    return get(`/sp/count/day?deptName=${dpName}&date=${date}`);
+}
+
+const req = { getErrCity, getErrTop, getHightHz, list, day };
 export default req;

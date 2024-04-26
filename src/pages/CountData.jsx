@@ -7,6 +7,8 @@ import CountDataItem from './components/CountDataItem';
 import CountDataTag from './components/CountDataTag';
 import CountDataTime from './components/CountDataTime';
 import CountDataXiaLa from './components/CountDataXiaLa';
+import { list } from './api/CountData/CountDataApi';
+import { Spin } from 'antd';
 // 日期格式化添加0
 const addZero = (num) => {
     return num < 10 ? '0' + num : num;
@@ -24,14 +26,19 @@ const fDate = (date) => {
  * @author wuzhi
  */
 class CountData extends Component {
-    state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "" } 
+    state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "", data:{}, wait: true } 
     componentDidMount() {
         var now = new Date();
         now = fDate(now);
         this.setState({now});
+        list("", "", "", "").then(res => {
+            if (res.data.code === 200) {
+                this.setState({data: res.data.data, wait: false});
+            }
+        })
     }
     render() { 
-        const { now } = this.state;
+        const { now, wait, data, dpName } = this.state;
         return (
             <>
             <div style={ {margin: '15px 11px', minWidth: 1727, position: 'relative'} }>
@@ -44,23 +51,25 @@ class CountData extends Component {
                     <div style={ {display: 'inline-block', width: 'calc(100% - 236px)'} }>
                         <div><CountDataXiaLa /></div>
                         <div style={ {marginTop: 18} }>
-                            <CountDataTag ciShu={10} ziShu={40} />
+                            <CountDataTag date={now} dpName={dpName} />
                         </div>
                     </div>
                 </div>
+                <Spin spinning={wait}>
                 <div style={ {width: '100%', height: 232, marginTop: 40} }>
                     <div>
-                      <CountDataItem title={"累计检测次数"} num={123} />
-                    <CountDataItem title={"累计检测文件数"} num={0} />
-                    <CountDataItem title={"累计已修改数"} num={0} />
-                    <CountDataItem title={"累计无需修改数"} num={0} />  
+                    <CountDataItem title={"累计检测次数"} num={data.examineNumber} />
+                    <CountDataItem title={"累计检测文件数"} num={data.docNumber} />
+                    <CountDataItem title={"累计已修改数"} num={data.modifiedNumber} />
+                    <CountDataItem title={"累计无需修改数"} num={data.noModifiedNumber} />  
                     </div>
                     <div style={ {marginTop: 30} }>
-                    <CountDataItem title={"累计检测字数"} num={0} />
-                    <CountDataItem title={"累计检测文章数"} num={0} />
-                    <CountDataItem title={"累计待修改数"} num={0} />   
+                    <CountDataItem title={"累计检测字数"} num={data.examineSize} />
+                    <CountDataItem title={"累计检测文章数"} num={data.textNumber} />
+                    <CountDataItem title={"累计待修改数"} num={data.waitNumber} />   
                     </div>
                 </div>
+                </Spin>
                 </div>
                 <div style={ {width: 600, height: 365, display: 'inline-block', position: 'absolute', right: 10} }>
                     <CountDataTable />
