@@ -19,7 +19,7 @@ class CountDataItem extends Component {
         }
         return (
             <div style={ {display: 'inline-block', height: 69, width: 166, textAlign: 'center', marginLeft: 15} }>
-                <Tooltip title={<div style={ {textAlign: 'center'} }>{num}</div>}><div style={ {color: '#7DB3FF', fontSize: 24, fontWeight: 700} }>{nowNum}</div></Tooltip>
+                <Tooltip title={<div style={ {textAlign: 'center'} }>{num}</div>}><div style={ {color: '#61A3FF', fontSize: 24, fontWeight: 700} }>{nowNum}</div></Tooltip>
                 <div style={ {marginTop: 10, fontSize: 17} }>{title}</div>
             </div>
         );

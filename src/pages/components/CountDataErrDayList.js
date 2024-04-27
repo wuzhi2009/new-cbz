@@ -7,17 +7,24 @@ const icon2 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABACAYAAABFqxr
  * 错误天数表
  * 
  * @author wuzhi
+ * @param seriousNumber 严重错误表述数量
+ * @param sevenDayNumber 七天未修改数
+ * @param allErrNumber 全部错误数
  */
 class CountDataErrDayList extends Component {
-    state = { data: [] } 
+    state = { data: [], demo: 1 } 
     render() { 
         return (
             <>
-            <div>
-                <Progress type="circle" percent={75} size={80} strokeWidth={11} />
-                <Progress type="circle" percent={75} size={80} strokeWidth={11} />
-                <img alt="" src={icon} />
-                <img alt="" src={icon2} />
+            <div style={ {marginBottom: 10} }>
+                <div style={ {position: 'relative', display: 'inline-block', width: 172, height: 99, marginLeft: 40} }>
+                    <Progress type="circle" percent={75} size={80} strokeWidth={11} /><div style={ {position: 'absolute', left: -15, margin: '10px 0'} }>严重错误表述率</div>
+                </div>
+                <div style={ {position: 'relative', display: 'inline-block', width: 120, height: 99} }>
+                    <Progress type="circle" percent={75} size={80} strokeWidth={11} /><div style={ {position: 'absolute', left: 12, margin: '10px 0'} }>修改率</div>
+                </div>
+                <div style={ {position: 'relative', display: 'inline-block', width: 260, height: 99, top: 40} }><img alt="" src={icon} /><div style={ {position: 'absolute', right: 80, top: 20, margin: '0 10px'} }>严重错误表述</div><span style={ {color: 'red', fontSize: 24, fontWeight: 'bold'} }>234234</span></div>
+                <div style={ {position: 'relative', display: 'inline-block', width: 260, height: 99, top: 40} }><img alt="" src={icon2} /><div style={ {position: 'absolute', right: 80, top: 20, margin: '0 10px'} }>超7天未修改数<span style={ {color: 'red', fontSize: 24, fontWeight: 'bold'} }>12312312312</span></div></div>
             </div>    
             <CountDataLineCharts />
             </>
