@@ -20,7 +20,7 @@ class CountDataTable extends Component {
         const { data, wait } = this.state;
         return (
             <Spin spinning={wait}>
-                <div style={{ color: '#61a3ff', fontWeight: 700, fontSize: 18 }} >高频错敏词</div>
+                <div style={{ color: '#61a3ff', fontWeight: 700, fontSize: 18, userSelect: 'none' }} >高频错敏词</div>
                 <table style={{ marginTop: 5, borderSpacing: '0 0px' }} width={600} >
                     <colgroup>
                         <col style={{ width: 60, minWidth: 60, textAlign: 'center', minHeight: 70 }} />

@@ -114,7 +114,7 @@ class MonitorItemZwei extends Component {
                     <span className='spanspan' onClick={() => {this.setChenkDate(3)}} style={ key === 3 ? {backgroundColor: '#4B83F0', color: 'white'} : {} }>季度</span>
                     <span className='spanspan' onClick={() => {this.setChenkDate(4)}} style={ key === 4 ? {backgroundColor: '#4B83F0', color: 'white'} : {} }>一年</span>
                     <span style={ {width: 320} }>
-                        <RangePicker placeholder={["开始日期", "结束日期"]} 
+                        <RangePicker placeholder={["      开始日期", "       结束日期"]} 
                             suffixIcon={<img src={icon} alt='' />} 
                             onChange={(_, value) => {
                                 if (value[0] && value[1]) {

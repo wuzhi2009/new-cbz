@@ -11,19 +11,19 @@ class CountDataXiaLa extends Component {
     render() { 
         return (
             <>
-                        <Select
+                <Select
                 style={{
                     width: 120,
                     marginRight: 46
                 }}
                 />
-                        <Select
+                <Select
                 style={{
                     width: 120,
                     marginRight: 46
                 }}
                 />
-                        <Select
+                <Select
                 style={{
                     width: 120,
                 }}

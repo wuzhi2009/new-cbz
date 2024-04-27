@@ -51,5 +51,9 @@ export function day(date, dpName) {
     return get(`/sp/count/day?deptName=${dpName}&date=${date}`);
 }
 
-const req = { getErrCity, getErrTop, getHightHz, list, day };
+export function getErroList() {
+    return get(`/sp/count/erroList`);
+}
+
+const req = { getErrCity, getErrTop, getHightHz, list, day, getErroList };
 export default req;

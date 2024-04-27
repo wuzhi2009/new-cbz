@@ -9,17 +9,8 @@ import CountDataTime from './components/CountDataTime';
 import CountDataXiaLa from './components/CountDataXiaLa';
 import { list } from './api/CountData/CountDataApi';
 import { Spin } from 'antd';
-// 日期格式化添加0
-const addZero = (num) => {
-    return num < 10 ? '0' + num : num;
-}
-// 日期格式化
-const fDate = (date) => {
-    var year = date.getFullYear();
-    var month = addZero(date.getMonth() + 1);
-    var day = addZero(date.getDate());
-    return year + '-' + month + '-' + day;
-}
+import CountDataRiLi from './components/CountDataRiLi';
+import Img from '../imgs/022督办事项图标.e9ec03ef.png';
 /**
  * 统计页面
  * 
@@ -27,23 +18,30 @@ const fDate = (date) => {
  */
 class CountData extends Component {
     state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "", data:{}, wait: true } 
-    componentDidMount() {
-        var now = new Date();
-        now = fDate(now);
-        this.setState({now});
-        list("", "", "", "").then(res => {
+    getList = (dpName, mediaType, startDate, endDate) => {
+        this.setState({wait: true});
+        list(dpName, mediaType, startDate, endDate).then(res => {
             if (res.data.code === 200) {
                 this.setState({data: res.data.data, wait: false});
             }
         })
+    }
+    componentDidMount() {
+        this.getList("", "", "", "");
+    }
+    componentDidUpdate(oldProps, oldState) {
+        const { startDate, endDate, dpName, mediaType } = this.state;
+        if (startDate !== oldState.startDate || endDate !== oldState.endDate) {
+            this.getList(dpName, mediaType, startDate, endDate);
+        }
     }
     render() { 
         const { now, wait, data, dpName } = this.state;
         return (
             <>
             <div style={ {margin: '15px 11px', minWidth: 1727, position: 'relative'} }>
-                <div style={ {width: 340, height: 365, display: 'inline-block', position: 'absolute', left: 10} }>
-                    ssss
+                <div style={ {width: 340, height: 365, display: 'inline-block', position: 'absolute', left: 10, border: '1px solid #D9D9D9'} }>
+                    <CountDataRiLi onChange={(startDate, endDate, now) => {this.setState({startDate, endDate, now})}} />
                 </div>
                 <div style={ {width: 727, height: 365, display: 'inline-block', position: 'absolute', left: 'calc(43% - 727px / 2)'} }>
                 <div style={ {width: '100%', height: 133, marginTop: 30} }>
@@ -58,15 +56,15 @@ class CountData extends Component {
                 <Spin spinning={wait}>
                 <div style={ {width: '100%', height: 232, marginTop: 40} }>
                     <div>
-                    <CountDataItem title={"累计检测次数"} num={data.examineNumber} />
-                    <CountDataItem title={"累计检测文件数"} num={data.docNumber} />
-                    <CountDataItem title={"累计已修改数"} num={data.modifiedNumber} />
-                    <CountDataItem title={"累计无需修改数"} num={data.noModifiedNumber} />  
+                    <CountDataItem title={"累计检测次数"} num={data.examineNumber ? data.examineNumber : 0} />
+                    <CountDataItem title={"累计检测文件数"} num={data.docNumber ? data.docNumber : 0} />
+                    <CountDataItem title={"累计已修改数"} num={data.modifiedNumber ? data.modifiedNumber : 0} />
+                    <CountDataItem title={"累计无需修改数"} num={data.noModifiedNumber ? data.noModifiedNumber : 0} />  
                     </div>
                     <div style={ {marginTop: 30} }>
-                    <CountDataItem title={"累计检测字数"} num={data.examineSize} />
-                    <CountDataItem title={"累计检测文章数"} num={data.textNumber} />
-                    <CountDataItem title={"累计待修改数"} num={data.waitNumber} />   
+                    <CountDataItem title={"累计检测字数"} num={data.examineSize ? data.examineSize : 0} />
+                    <CountDataItem title={"累计检测文章数"} num={data.textNumber ? data.textNumber : 0} />
+                    <CountDataItem title={"累计待修改数"} num={data.waitNumber ? data.waitNumber : 0} />   
                     </div>
                 </div>
                 </Spin>
@@ -76,9 +74,12 @@ class CountData extends Component {
                 </div>
             </div>
             <div style={ {position: 'relative', top: 390, minWidth: 1730} }>
-                <div style={ {width: 860, position: 'absolute', left: 10, height: 520, borderTop: '1px dashed #DCDCDC'} }><CountDataErrDayList /></div>
+                <div style={ {width: 860, position: 'absolute', left: 20, height: 520, borderTop: '1px dashed #DCDCDC'} }><CountDataErrDayList /></div>
                 <div style={ {width: 350, position: 'absolute', right: 390} }><CountDataErrTopUl /></div>
                 <div style={ {width: 350, position: 'absolute', right: 10} }><CountDataErrCityUl /></div>
+            </div>
+            <div className="yiDong">
+                <img src={Img} alt=""  width="100px" />
             </div>
             </>
         );

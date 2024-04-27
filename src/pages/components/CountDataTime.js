@@ -62,13 +62,15 @@ class CountDataTime extends Component {
             nongLiMonth = numberGoChinese(nongLiMonth);
         }
         if (nongLiDay <= 9) {
-            nongLiDay = "初" + numberGoChinese(nl.day);
+            nongLiDay = "初" + numberGoChinese(nongLiDay);
+        } else if (nongLiDay > 20 && nongLiDay < 30) {
+            nongLiDay = "廿" + numberGoChinese(nongLiDay).substring(2);
         } else {
             nongLiDay = numberGoChinese(nongLiDay);
         }
         return (
             <>
-                <div style={ {color: '#868FF0', fontSize: 36, fontWeight: 'bold', marginBottom: 50} }>{now}</div>
+                <div style={ {color: '#868FF0', fontSize: 36, fontWeight: 'bold', marginBottom: 50, userSelect: 'none'} }>{now}</div>
                 <div  style={ {color:'#595959', marginLeft: 3, fontSize: 18, transform: 'translateY(-25px)'} }>农历{nongLiMonth}月{nongLiDay}<span style={ {marginLeft: 25} }>{xqj}</span></div>
             </>
         );
