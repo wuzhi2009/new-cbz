@@ -11,13 +11,14 @@ import { list } from './api/CountData/CountDataApi';
 import { Spin } from 'antd';
 import CountDataRiLi from './components/CountDataRiLi';
 import Img from '../imgs/022督办事项图标.e9ec03ef.png';
+import { getUserInfo } from './api/Monitor/ChooseMonitorApi';
 /**
  * 统计页面
  * 
  * @author wuzhi
  */
 class CountData extends Component {
-    state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "", data:{}, wait: true } 
+    state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "", data:{}, wait: true, isAdmin: false } 
     getList = (dpName, mediaType, startDate, endDate) => {
         this.setState({wait: true});
         list(dpName, mediaType, startDate, endDate).then(res => {
@@ -28,15 +29,27 @@ class CountData extends Component {
     }
     componentDidMount() {
         this.getList("", "", "", "");
+        getUserInfo().then(res => {
+            if (res.data.code === 200) {
+                const roles = res.data.user.roles;
+                var isAdmin = false;
+                roles.forEach(item => {
+                    if (item.roleId === 16) {
+                        isAdmin = true;
+                    }
+                })
+                this.setState({isAdmin});
+            }
+        })
     }
     componentDidUpdate(oldProps, oldState) {
         const { startDate, endDate, dpName, mediaType } = this.state;
-        if (startDate !== oldState.startDate || endDate !== oldState.endDate) {
+        if (startDate !== oldState.startDate || endDate !== oldState.endDate || dpName !== oldState.dpName || mediaType !== oldState.mediaType) {
             this.getList(dpName, mediaType, startDate, endDate);
-        }
+        } 
     }
     render() { 
-        const { now, wait, data, dpName } = this.state;
+        const { now, wait, data, dpName, isAdmin } = this.state;
         return (
             <>
             <div style={ {margin: '15px 11px', minWidth: 1727, position: 'relative'} }>
@@ -47,7 +60,7 @@ class CountData extends Component {
                 <div style={ {width: '100%', height: 133, marginTop: 30} }>
                     <div style={ {display: 'inline-block', width: 236, height: 101} }><CountDataTime now={now} /></div>
                     <div style={ {display: 'inline-block', width: 'calc(100% - 236px)'} }>
-                        <div><CountDataXiaLa /></div>
+                        <div><CountDataXiaLa onChange={(deptName, pingTai) => {this.setState({dpName: deptName, mediaType: pingTai})}} /></div>
                         <div style={ {marginTop: 18} }>
                             <CountDataTag date={now} dpName={dpName} />
                         </div>
@@ -74,13 +87,15 @@ class CountData extends Component {
                 </div>
             </div>
             <div style={ {position: 'relative', top: 390, minWidth: 1730} }>
-                <div style={ {width: 860, position: 'absolute', left: 20, height: 520, borderTop: '1px dashed #DCDCDC'} }><CountDataErrDayList /></div>
+                <div style={ {width: 900, position: 'absolute', left: 20, height: 520, borderTop: '1px dashed #DCDCDC'} }>
+                    <CountDataErrDayList seriousNumber={data.seriousNumber} sevenDayNumber={data.sevenDayNumber} allErrNumber={data.allErrNumber} modifiedNumber={data.modifiedNumber} wait={wait} />
+                </div>
                 <div style={ {width: 350, position: 'absolute', right: 390} }><CountDataErrTopUl /></div>
                 <div style={ {width: 350, position: 'absolute', right: 10} }><CountDataErrCityUl /></div>
             </div>
-            <div className="yiDong">
+            {isAdmin ? <div className="yiDong">
                 <img src={Img} alt=""  width="100px" />
-            </div>
+            </div> : <></>}
             </>
         );
     }

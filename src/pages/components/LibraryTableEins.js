@@ -2,6 +2,7 @@ import { Empty, Spin } from 'antd';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LangText from './LangText';
+import { CloseCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons'
 const tableKopf = ["序号", "正确表述", "错误表述", "添加时间", "最后更新时间", "操作"];
 /**
  * 词库表
@@ -51,8 +52,11 @@ class LibraryTableEins extends Component {
                     return (
                     <tr key={ key } style={ {backgroundColor: 'white', height: 45} }>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{(key + 1) + ((nowPage - 1) * nowPageSize)}</td>
-                        <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.wort}</td>
-                        <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={1} is={false} text={item.errSay} /></td>
+                        <td style={ {border: '1px solid #8F9399'} }><CheckCircleTwoTone twoToneColor="#39CE39" style={ {float: 'left', marginTop: 4, marginLeft: 5, marginRight: 14} }/>{item.wort}</td>
+                        <td style={ {border: '1px solid #8F9399'} }>
+                            <div style={ {float: 'left', marginTop: 10} }><CloseCircleTwoTone twoToneColor="red" style={ {marginRight: 19, marginLeft: 5} } /></div>
+                            <div style={ {display: 'inline-block', padding: '10px 0px', maxWidth: 'calc(100% - 40px)'} }><LangText col={1} is={false} text={item.errSay} /></div>
+                            </td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.createTime}</td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.updateTime}</td>
                         <td style={ {textAlign: 'center', border: '1px solid #8F9399'} } className='aaaa'>

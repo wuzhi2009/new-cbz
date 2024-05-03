@@ -1,4 +1,4 @@
-import { Progress } from 'antd';
+import { Progress, Spin } from 'antd';
 import React, { Component } from 'react';
 import CountDataLineCharts from './CountDataLineCharts';
 const icon = "data:image/png;base64,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";
@@ -10,22 +10,49 @@ const icon2 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABACAYAAABFqxr
  * @param seriousNumber 严重错误表述数量
  * @param sevenDayNumber 七天未修改数
  * @param allErrNumber 全部错误数
+ * @param modifiedNumber 累计已修改数
+ * @param wait 是否等待
  */
 class CountDataErrDayList extends Component {
     state = { data: [], demo: 1 } 
     render() { 
+        const { seriousNumber, sevenDayNumber, allErrNumber, modifiedNumber, wait } = this.props;
+        // 严重错误表述率
+        var yzcwbsl = ((seriousNumber / allErrNumber) * 100).toFixed(0);
+        if (isNaN(yzcwbsl)) {
+            yzcwbsl = 0;
+        }
+        // 修改率
+        var xgl = ((modifiedNumber / allErrNumber) * 100).toFixed(0);
+        if (isNaN(xgl)) {
+            xgl = 0;
+        }
         return (
             <>
-            <div style={ {marginBottom: 10} }>
-                <div style={ {position: 'relative', display: 'inline-block', width: 172, height: 99, marginLeft: 40} }>
-                    <Progress type="circle" percent={75} size={80} strokeWidth={11} /><div style={ {position: 'absolute', left: -15, margin: '10px 0'} }>严重错误表述率</div>
-                </div>
-                <div style={ {position: 'relative', display: 'inline-block', width: 120, height: 99} }>
-                    <Progress type="circle" percent={75} size={80} strokeWidth={11} /><div style={ {position: 'absolute', left: 12, margin: '10px 0'} }>修改率</div>
-                </div>
-                <div style={ {position: 'relative', display: 'inline-block', width: 260, height: 99, top: 40} }><img alt="" src={icon} /><div style={ {position: 'absolute', right: 80, top: 20, margin: '0 10px'} }>严重错误表述</div><span style={ {color: 'red', fontSize: 24, fontWeight: 'bold'} }>234234</span></div>
-                <div style={ {position: 'relative', display: 'inline-block', width: 260, height: 99, top: 40} }><img alt="" src={icon2} /><div style={ {position: 'absolute', right: 80, top: 20, margin: '0 10px'} }>超7天未修改数<span style={ {color: 'red', fontSize: 24, fontWeight: 'bold'} }>12312312312</span></div></div>
-            </div>    
+            <Spin spinning={wait}>
+                <div style={ {marginBottom: 10} }>
+                    <div style={ {position: 'relative', display: 'inline-block', width: 172, height: 99, marginLeft: 40, userSelect: 'none'} }>
+                        <Progress type="circle" percent={yzcwbsl} size={80} strokeWidth={11} /><div style={ {position: 'absolute', left: -15, margin: '2px 0'} }>严重错误表述率</div>
+                    </div>
+                    <div style={ {position: 'relative', display: 'inline-block', width: 120, height: 99, userSelect: 'none'} }>
+                        <Progress type="circle" percent={xgl} size={80} strokeWidth={11} /><div style={ {position: 'absolute', left: 16, margin: '2px 0'} }>修改率</div>
+                    </div>
+                    <div style={ {position: 'relative', display: 'inline-block', width: 270, height: 99, top: 40, userSelect: 'none'} }>
+                        <img alt="" src={icon} />
+                        <div style={ {display: 'inline-block', position: 'absolute', top: 10} }>
+                    <div style={ {display: 'inline-block'} }>严重错误表述</div>
+                    <div style={ {color: 'red', fontSize: 24, fontWeight: 'bold', display: 'inline-block', marginLeft: 5} }>{seriousNumber ? seriousNumber : 0}</div>
+                    </div>
+                    </div>
+                    <div style={ {position: 'relative', display: 'inline-block', width: 290, height: 99, top: 40, userSelect: 'none'} }>
+                        <img alt="" src={icon2} />
+                    <div style={ {display: 'inline-block', position: 'absolute', top: 10} }>
+                    <div style={ {display: 'inline-block'} }>超7天未修改数</div>
+                    <div style={ {display: 'inline-block', color: 'red', fontSize: 24, fontWeight: 'bold', marginLeft: 5} }>{sevenDayNumber ? sevenDayNumber : 0}</div>
+                    </div>
+                    </div>
+                </div> 
+            </Spin>   
             <CountDataLineCharts />
             </>
         );
