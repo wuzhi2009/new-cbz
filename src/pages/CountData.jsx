@@ -8,17 +8,19 @@ import CountDataTag from './components/CountDataTag';
 import CountDataTime from './components/CountDataTime';
 import CountDataXiaLa from './components/CountDataXiaLa';
 import { list } from './api/CountData/CountDataApi';
-import { Spin } from 'antd';
+import { Modal, Spin } from 'antd';
 import CountDataRiLi from './components/CountDataRiLi';
 import Img from '../imgs/022督办事项图标.e9ec03ef.png';
 import { getUserInfo } from './api/Monitor/ChooseMonitorApi';
+import AdminModal from './components/AdminModal';
+const x = "data:image/png;base64,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";
 /**
  * 统计页面
  * 
  * @author wuzhi
  */
 class CountData extends Component {
-    state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "", data:{}, wait: true, isAdmin: false } 
+    state = { startDate: "", endDate: "", dpName: "", mediaType: "", now: "", data:{}, wait: true, isAdmin: false, open: false } 
     getList = (dpName, mediaType, startDate, endDate) => {
         this.setState({wait: true});
         list(dpName, mediaType, startDate, endDate).then(res => {
@@ -49,7 +51,7 @@ class CountData extends Component {
         } 
     }
     render() { 
-        const { now, wait, data, dpName, isAdmin } = this.state;
+        const { now, wait, data, dpName, isAdmin, open } = this.state;
         return (
             <>
             <div style={ {margin: '15px 11px', minWidth: 1727, position: 'relative'} }>
@@ -94,8 +96,12 @@ class CountData extends Component {
                 <div style={ {width: 350, position: 'absolute', right: 10} }><CountDataErrCityUl /></div>
             </div>
             {isAdmin ? <div className="yiDong">
-                <img src={Img} alt=""  width="100px" />
+                <img src={Img} alt=""  width="100px" onClick={() => {this.setState({open: true})}} />
             </div> : <></>}
+            <Modal open={open} footer={null} closable={false} width= {1080}>
+                <div style={ {position: 'absolute', top: -50, right: -50, cursor: 'pointer'} } onClick={() => {this.setState({open: false})}}><img alt='' src={x} width='50px' /></div>
+                <AdminModal />
+            </Modal>
             </>
         );
     }
