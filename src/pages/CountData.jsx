@@ -98,7 +98,7 @@ class CountData extends Component {
             {isAdmin ? <div className="yiDong">
                 <img src={Img} alt=""  width="100px" onClick={() => {this.setState({open: true})}} />
             </div> : <></>}
-            <Modal open={open} footer={null} closable={false} width= {1080}>
+            <Modal open={open} footer={null} closable={false} width= {1080} afterOpenChange={(op) => document.body.style.overflowY = (op ? 'hidden' : 'scroll')} >
                 <div style={ {position: 'absolute', top: -50, right: -50, cursor: 'pointer'} } onClick={() => {this.setState({open: false})}}><img alt='' src={x} width='50px' /></div>
                 <AdminModal />
             </Modal>

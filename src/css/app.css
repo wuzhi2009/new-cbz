@@ -289,3 +289,7 @@
 .yiDong:hover {
   right: 10px;
 }
+.adminPingTai {
+  max-height: 300px;
+  overflow-y: scroll;
+}

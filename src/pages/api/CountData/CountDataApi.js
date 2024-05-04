@@ -55,16 +55,16 @@ export function getErroList() {
     return get(`/sp/count/erroList`);
 }
 
-export function getSeriousErr(page, pageSize, siteName, errorPlatform, errorDescription, amendments) {
-    return get(`/sp/count/seriousErr?page=${page}&pageSize=${pageSize}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
+export function getSeriousErr(page, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments) {
+    return get(`/sp/count/seriousErr?page=${page}&pageSize=${pageSize}&deptName=${deptName}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
 }
 
-export function getSevenDay(page, pageSize, siteName, errorPlatform, errorDescription, amendments) {
-    return get(`/sp/count/sevenDay?page=${page}&pageSize=${pageSize}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
+export function getSevenDay(page, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments) {
+    return get(`/sp/count/sevenDay?page=${page}&pageSize=${pageSize}&deptName=${deptName}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
 }
 
-export function getWaitChange(page, pageSize, siteName, errorPlatform, errorDescription, amendments) {
-    return get(`/sp/count/waitChange?page=${page}&pageSize=${pageSize}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
+export function getWaitChange(page, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments) {
+    return get(`/sp/count/waitChange?page=${page}&pageSize=${pageSize}&deptName=${deptName}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
 }
 
 const req = { getErrCity, getErrTop, getHightHz, list, day, getErroList, getSeriousErr, getSevenDay, getWaitChange };

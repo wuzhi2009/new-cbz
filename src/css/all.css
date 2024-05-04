@@ -10,5 +10,5 @@ table, th, td {
 
 body {
     width: 100%!important;
-    overflow-y: scroll !important;
+    /* overflow-y: scroll !important; */
 }

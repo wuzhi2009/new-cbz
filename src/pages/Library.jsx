@@ -330,11 +330,11 @@ class Library extends Component {
                     })
                 }} />
                 </div>
-                <Modal open={open} onCancel={() => {this.props.sendAction({ type: "wortItem", form: {} });this.setState({open: false, loading: false, form: {} })}} title={<div style={{ borderLeft: '5px solid red', paddingLeft: 5, color: '#4B83F0' }}>{pathname === "/library/eins" ? "添加内容" : "添加白名单"}</div>}
+                <Modal open={open} onCancel={() => {this.props.sendAction({ type: "wortItem", form: {} });this.setState({open: false, form: {} })}} title={<div style={{ borderLeft: '5px solid red', paddingLeft: 5, color: '#4B83F0' }}>{pathname === "/library/eins" ? "添加内容" : "添加白名单"}</div>}
                     maskClosable={true} closeIcon={false} centered={true} width={650} style={{ height: 430 }}
                     footer={[
                         <Button key={60600} style={{ marginRight: 40, width: 100, backgroundColor: '#ECF2F8' }} onClick={() => {
-                            this.setState({ open: false, loading: false, form: {} });
+                            this.setState({ open: false, form: {} });
                             // 为了能够再次点击打开
                             this.props.sendAction({ type: "wortItem", form: {} });
                         }}>取消</Button>,
@@ -364,9 +364,9 @@ class Library extends Component {
                     </Form>
                 </Modal>
                 {/* 是否导出和删除 */}
-                <Modal onCancel={() => {this.props.sendAction({ type: "delWort", delId: "" });this.setState({open2: false, loading: false, delId: "" })}} open={open2} width={416} title={<div><QuestionCircleTwoTone twoToneColor="#FBC14F" style={{ margin: 15, fontSize: 24 }} />提示</div>} footer={[
+                <Modal onCancel={() => {this.props.sendAction({ type: "delWort", delId: "" });this.setState({open2: false, delId: "" })}} open={open2} width={416} title={<div><QuestionCircleTwoTone twoToneColor="#FBC14F" style={{ margin: 15, fontSize: 24 }} />提示</div>} footer={[
                     <Button key={60700} style={{ marginRight: 5, width: 100, backgroundColor: '#ECF2F8' }} onClick={() => {
-                        this.setState({ open2: false, loading: false, delId: "" });
+                        this.setState({ open2: false, delId: "" });
                         // 为了能够再次点击打开
                         this.props.sendAction({ type: "delWort", delId: "" });
                     }}>取消</Button>,
