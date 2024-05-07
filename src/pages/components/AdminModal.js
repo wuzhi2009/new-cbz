@@ -50,19 +50,19 @@ class AdminModal extends Component {
         })
         getSevenDay("", "", "", "", "", "", "").then(res => {
             if (res.data.code === 200) {
-                this.setState({ data: res.data.data, total2: res.data.total })
+                this.setState({ total2: res.data.total })
             }
         })
         getWaitChange("", "", "", "", "", "", "").then(res => {
             if (res.data.code === 200) {
-                this.setState({ data: res.data.data, total3: res.data.total })
+                this.setState({ total3: res.data.total })
             }
         })
     }
     componentDidUpdate(oldProps, oldState) {
         const { key, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments } = this.state;
         // 切换头部选择
-        if (key !== oldState.key || deptName !== oldState.deptName || errorPlatform !== oldState.errorPlatform) {
+        if (key !== oldState.key || (deptName && deptName !== oldState.deptName) || (errorPlatform && errorPlatform !== oldState.errorPlatform)) {
             this.setState({ wait: true });
             switch (key) {
                 case 1:
@@ -161,25 +161,25 @@ class AdminModal extends Component {
                                     switch (key) {
                                         case 1:
                                             // 严重表述错误
-                                            getSeriousErr(1, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments).then(res => {
+                                            getSeriousErr(1, pageSize, "", "", "", "", "").then(res => {
                                                 if (res.data.code === 200) {
-                                                    this.setState({ data: res.data.data, total: res.data.total, wait: false, deptName, errorPlatform, errorDescription, amendments, page: 1 })
+                                                    this.setState({ data: res.data.data, total: res.data.total, wait: false })
                                                 }
                                             })
                                             break;
                                         case 2:
                                             // 超7天未修改数
-                                            getSevenDay(1, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments).then(res => {
+                                            getSevenDay(1, pageSize, "", "", "", "", "").then(res => {
                                                 if (res.data.code === 200) {
-                                                    this.setState({ data: res.data.data, total2: res.data.total, wait: false, deptName, errorPlatform, errorDescription, amendments, page: 1 })
+                                                    this.setState({ data: res.data.data, total2: res.data.total, wait: false })
                                                 }
                                             })
                                             break;
                                         case 3:
                                             // 累计待修改数
-                                            getWaitChange(1, pageSize, deptName, siteName, errorPlatform, errorDescription, amendments).then(res => {
+                                            getWaitChange(1, pageSize, "", "", "", "", "").then(res => {
                                                 if (res.data.code === 200) {
-                                                    this.setState({ data: res.data.data, total3: res.data.total, wait: false, deptName, errorPlatform, errorDescription, amendments, page: 1 })
+                                                    this.setState({ data: res.data.data, total3: res.data.total, wait: false })
                                                 }
                                             })
                                             break;

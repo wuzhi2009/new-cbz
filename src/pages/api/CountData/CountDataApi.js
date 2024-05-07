@@ -37,6 +37,9 @@ export function getErrTop(mediaType) {
  * @returns 
  */
 export function list(deptName, mediaType, startDate, endDate) {
+    if (!(deptName && mediaType && startDate && endDate)) {
+        return get("/sp/count/list");
+    }
     return get(`/sp/count/list?deptName=${deptName}&pingTai=${mediaType}&startDate=${startDate}&endDate=${endDate}`);
 }
 

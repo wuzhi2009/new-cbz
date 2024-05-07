@@ -18,7 +18,7 @@ class CountDataItem extends Component {
             nowNum = (nowNum / 10000).toFixed(2) + "万";
         }
         return (
-            <div style={ {display: 'inline-block', height: 69, width: 166, textAlign: 'center', marginLeft: 15} }>
+            <div style={ {display: 'inline-block', height: 69, width: 166, textAlign: 'center', marginLeft: 15, userSelect: 'none'} }>
                 <Tooltip title={<div style={ {textAlign: 'center'} }>{num}</div>}><div style={ {color: '#61A3FF', fontSize: 24, fontWeight: 700} }>{nowNum}</div></Tooltip>
                 <div style={ {marginTop: 10, fontSize: 17} }>{title}</div>
             </div>

@@ -118,7 +118,7 @@ class AdminTable extends Component {
                 tree[0].children.forEach(item => {
                     item.type = 'sub';
                     item.popupClassName = 'adminPingTai';
-                    item.popupOffset = [-55, 0];
+                    item.popupOffset = [0, 0];
                     item.key = item.label
                     if (item.label === "自治区部门") {
                         item.children.forEach(item2 => {

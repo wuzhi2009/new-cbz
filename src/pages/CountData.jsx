@@ -54,7 +54,7 @@ class CountData extends Component {
         const { now, wait, data, dpName, isAdmin, open } = this.state;
         return (
             <>
-            <div style={ {margin: '15px 11px', minWidth: 1727, position: 'relative'} }>
+            <div style={ {margin: '15px 11px', minWidth: 1680, position: 'relative'} }>
                 <div style={ {width: 340, height: 365, display: 'inline-block', position: 'absolute', left: 10, border: '1px solid #D9D9D9'} }>
                     <CountDataRiLi onChange={(startDate, endDate, now) => {this.setState({startDate, endDate, now})}} />
                 </div>
@@ -88,7 +88,7 @@ class CountData extends Component {
                     <CountDataTable />
                 </div>
             </div>
-            <div style={ {position: 'relative', top: 390, minWidth: 1730} }>
+            <div style={ {position: 'relative', top: 390, minWidth: 1680} }>
                 <div style={ {width: 900, position: 'absolute', left: 20, height: 520, borderTop: '1px dashed #DCDCDC'} }>
                     <CountDataErrDayList seriousNumber={data.seriousNumber} sevenDayNumber={data.sevenDayNumber} allErrNumber={data.allErrNumber} modifiedNumber={data.modifiedNumber} wait={wait} />
                 </div>

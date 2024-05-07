@@ -84,7 +84,7 @@ class Pagination extends Component{
             pages.push(<li className={currentPage === totalPage ? "activePage" : "abc"} key={totalPage} onClick={this.pageClick.bind(this, totalPage)}>{totalPage}</li>)
         }
         //下一页
-        pages.push(<li className={currentPage === totalPage ? "nomore" : "abc"} onClick={this.nextPageHandeler.bind(this)} key={totalPage + 1}>&gt;</li>);
+        pages.push(<li className={currentPage === totalPage ? "nomore" : "abc"} onClick={this.nextPageHandeler.bind(this, totalPage)} key={totalPage + 1}>&gt;</li>);
         var options = [{key:"10条/页", value:10},{key:"20条/页", value:20},{key:"50条/页", value:50}];
         pages.push(
             <select style={ selectStyle } onChange={ (event) => {
@@ -157,7 +157,7 @@ class Pagination extends Component{
     }
     //上一页事件
     prePageHandeler() {
-        var {currentPage} = this.state
+        var { currentPage } = this.state
         if (--currentPage === 0) {
             return false;
         }
@@ -165,8 +165,8 @@ class Pagination extends Component{
     }
  
     //下一页事件
-    nextPageHandeler() {
-        var {currentPage,totalPage} = this.state
+    nextPageHandeler(totalPage) {
+        var { currentPage } = this.state
         // const {totalPage} = this.props.pageConfig;
         if (++currentPage > totalPage) {
             return false;
