@@ -1,4 +1,4 @@
-import { get } from '../../../utils/reqUtil';
+import { get, post } from '../../../utils/reqUtil';
 
 /**
  * 获取高频错词排行
@@ -70,5 +70,15 @@ export function getWaitChange(page, pageSize, deptName, siteName, errorPlatform,
     return get(`/sp/count/waitChange?page=${page}&pageSize=${pageSize}&deptName=${deptName}&siteName=${siteName}&errorPlatform=${errorPlatform}&errorDescription=${errorDescription}&amendments=${amendments}`);
 }
 
-const req = { getErrCity, getErrTop, getHightHz, list, day, getErroList, getSeriousErr, getSevenDay, getWaitChange };
+/**
+ * 提醒
+ * 
+ * @param {*} info 
+ * @returns 
+ */
+export function tx(info) {
+    return post("/sp/count//errRemind", info);
+}
+
+const req = { getErrCity, getErrTop, getHightHz, list, day, getErroList, getSeriousErr, getSevenDay, getWaitChange, tx };
 export default req;

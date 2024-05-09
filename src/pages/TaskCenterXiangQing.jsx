@@ -36,7 +36,20 @@ const fontStyle = {
 const options = [{key: "文章片段", value: 1},{key: "站点名称", value: 2}];
 const options2 = [{key: "全部", value: "2"},{key: "未修改", value: "0"},{key: "已修改", value: "1"},{key: "无需修改", value: "null"}];
 const options3 = [{key: "默认排序", value: "id"},{key: "时间升序", value: "time"},{key: "时间降序", value: "time1"}];
-const options4 = [{key: "全部", value: "null"},{key: "自定义禁用词", value: "自定义禁用词"},{key: "自定义替换词", value: "自定义替换词"},{key: "自定义领导姓名错误", value: "自定义领导姓名错误"}];
+const options4 = [{key: "全部", value: ""},{key: "自定义禁用词", value: "自定义禁用词"},{key: "自定义替换词", value: "自定义替换词"},{key: "自定义领导姓名错误", value: "自定义领导姓名错误"},
+{key: "自定义领导人职务搭配错误", value: "自定义领导人职务搭配错误"},{key: "自定义领导人排序错误", value: "自定义领导人排序错误"},
+{key: "领导姓名错误", value: "领导姓名错误"},{key: "领导职务名称错误", value: "领导职务名称错误"},{key: "领导姓名职务搭配错误", value: "领导姓名职务搭配错误"},
+{key: "领导职务排序错误", value: "领导职务排序错误"},{key: "落马官员", value: "落马官员"},
+{key: "专用表述错误", value: "专用表述错误"},{key: "国家主权错误", value: "国家主权错误"},{key: "机构 / 组织 / 会议名称错误", value: "机构 / 组织 / 会议名称错误"},
+{key: "政策法规文件名称错误", value: "政策法规文件名称错误"},{key: "国家名称错误", value: "国家名称错误"},
+{key: "省市县搭配错误", value: "省市县搭配错误"},{key: "暴恐", value: "暴恐"},{key: "迷信邪教", value: "迷信邪教"},{key: "泄露国家密码", value: "泄露国家密码"},
+{key: "泄露军队信息", value: "泄露军队信息"},{key: "泄露内部信息", value: "泄露内部信息"},{key: "黄赌毒", value: "黄赌毒"},
+{key: "不文明/不恰当用语", value: "不文明/不恰当用语"},{key: "广告法违禁词", value: "广告法违禁词"},{key: "民族宗教错误", value: "民族宗教错误"},
+{key: "自定义错误", value: "自定义错误"},{key: "常见错误", value: "常见错误"},{key: "其他涉政涉敏错误", value: "其他涉政涉敏错误"},
+{key: "少字", value: "少字"},{key: "多字", value: "多字"},{key: "错字/别字", value: "错字/别字"},
+{key: "字词顺序颠倒", value: "字词顺序颠倒"},{key: "语法错误", value: "语法错误"},{key: "标点符号错误", value: "标点符号错误"},
+{key: "日期时间错误", value: "日期时间错误"}, {key: "数字/金额错误", value: "数字/金额错误"}, {key: "语序错误", value: "语序错误"},
+{key: "其它常见词句错误", value: "其它常见词句错误"}, {key: "疾病名称", value: "疾病名称"}, {key: "其他", value: "其他"}];
 /**
  * 检测结果
  * 
@@ -125,7 +138,14 @@ class TaskCenterXiangQing extends Component {
 	}
 	// 错误类型下拉框
 	changeCuoWuType = (value) => {
-		console.log('暂时先不写 :>> ');
+		const { smId, modifyState, pageSize, paiXu } = this.state;
+        var info = {smId, errorType: value, modifyState, paiXu, page: 1, pageSize};
+        this.setState({wait: true});
+        getXiangQingTable(info).then(res => {
+            if (res.data.code === 200) {
+                this.setState({data: res.data.data, total: res.data.total, page: 1, del:"", wait: false});
+            }
+        })
 		this.setState({errorType:value, del:""});
 	}
 	// 排序下拉框

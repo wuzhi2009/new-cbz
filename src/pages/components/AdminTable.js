@@ -13,6 +13,7 @@ const tableKopf = ["不规范表述", "规范表述", "操作"]
  * @param pageSize 每页几条数据
  * @param wait 是否加载中
  * @param onChange(siteName, pingTai)
+ * @param onTiXing(id)
  */
 class AdminTable extends Component {
     state = { page: 1, pageSize: 10, ids:[], quanXuan: false, menuItems: [], open: false, siteName: "", pingTai: "", open2: false } 
@@ -226,7 +227,7 @@ class AdminTable extends Component {
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399', color: 'red'} }>{item.errorDescription}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newAmendments[0]}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>
-                                        <div className='YellowButton' style={ {background: '#61A3FF', color: 'white'} } ><span>提醒</span></div>
+                                        <div className='YellowButton' style={ {background: '#61A3FF', color: 'white'} } onClick={() => {this.props.onTiXing(item.id)}}><span>提醒</span></div>
                                     </td>
                                 </tr>
                             )

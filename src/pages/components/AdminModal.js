@@ -1,7 +1,8 @@
-import { Breadcrumb, Input } from 'antd';
+import { Breadcrumb, Input, Modal, message } from 'antd';
 import React, { Component } from 'react';
 import Pagination from '../components/Pagination';
-import { getSeriousErr, getSevenDay, getWaitChange } from '../api/CountData/CountDataApi';
+import { getSeriousErr, getSevenDay, getWaitChange, tx } from '../api/CountData/CountDataApi';
+import { QuestionCircleTwoTone } from '@ant-design/icons';
 import AdminTable from './AdminTable';
 const titleStyle = {
     padding: '15px 20px',
@@ -40,7 +41,7 @@ const shuZiStyle = {
  * @author wuzhi
  */
 class AdminModal extends Component {
-    state = { key: 1, data: [], ids: [], page: 1, pageSize: 10, total: 0, wait: false, deptName: "", siteName: "", errorPlatform: "", errorDescription: "", amendments: "", total2: 0, total3: 0 }
+    state = { key: 1, data: [], ids: [], page: 1, pageSize: 10, total: 0, wait: false, deptName: "", siteName: "", errorPlatform: "", errorDescription: "", amendments: "", total2: 0, total3: 0, open: false, allTiXing: false }
     componentDidMount() {
         this.setState({ wait: true });
         getSeriousErr("", "", "", "", "", "", "").then(res => {
@@ -94,8 +95,45 @@ class AdminModal extends Component {
             }
         }
     }
+    // 提醒
+    tiXing = (id) => {
+        const { ids, key, deptName, siteName, errorPlatform, allTiXing } = this.state;
+        if (id) {
+            // 通过点击提醒过来的
+            var s = [];
+            s.push(id);
+            var info = {ids: s, errType: key};
+            tx(info).then(res => {
+                if (res.data.code === 200) {
+                    message.success(res.data.msg);
+                    this.setState({open: false});
+                }
+            })
+        } else {
+            // 通过点击上方两个按钮过来的
+            if (allTiXing) {
+                // 全部提醒
+                var infoZwei = {errType: key, siteName, deptName, errorPlatform};
+                tx(infoZwei).then(res => {
+                    if (res.data.code === 200) {
+                        message.success(res.data.msg);
+                        this.setState({open: false});
+                    }
+                })
+            } else {
+                // 选择提醒
+                var infoDrei = {ids, errType: key};
+                tx(infoDrei).then(res => {
+                    if (res.data.code === 200) {
+                        message.success(res.data.msg);
+                        this.setState({open: false});
+                    }
+                })
+            }     
+        }
+    }
     render() {
-        const { key, data, page, pageSize, total, wait, deptName, siteName, errorPlatform, errorDescription, amendments, total2, total3 } = this.state;
+        const { key, data, page, pageSize, total, wait, deptName, siteName, errorPlatform, errorDescription, amendments, total2, total3, open, ids } = this.state;
         var nowTotal = 0;
         switch (key) {
             case 1:
@@ -145,8 +183,14 @@ class AdminModal extends Component {
                         />
                     </div>
                     <div style={{ display: 'inline-block', float: 'right' }}>
-                        <span className='YellowButton heikuang' style={{ backgroundColor: '#62D862', width: 96, marginRight: 15, marginTop: 15 }} onClick={() => { }}><span>选择提醒</span></span>
-                        <span className='YellowButton heikuang' style={{ backgroundColor: '#66BDFF', width: 96, marginTop: 15 }} onClick={() => { }}><span>一键提醒</span></span>
+                        <span className='YellowButton heikuang' style={{ backgroundColor: '#62D862', width: 96, marginRight: 15, marginTop: 15 }} onClick={() => {
+                            if (ids.length <= 0) {
+                                message.warning("请选择数据！！");
+                            } else {
+                                this.setState({open: true, allTiXing: false});
+                            }
+                         }}><span>选择提醒</span></span>
+                        <span className='YellowButton heikuang' style={{ backgroundColor: '#66BDFF', width: 96, marginTop: 15 }} onClick={() => { this.setState({open: true, allTiXing: true}) }}><span>一键提醒</span></span>
                     </div>
                 </div>
                 <div style={{ borderTop: '1px solid #EFEFEF' }}>
@@ -217,7 +261,9 @@ class AdminModal extends Component {
                             }
                         }}><span>查 询</span></span>
                     </div>
-                    <AdminTable data={data} changeIds={(ids) => { this.setState({ ids }) }} page={page} pageSize={pageSize} wait={wait} onChange={(deptName, errorPlatform) => { this.setState({ deptName, errorPlatform }) }} />
+                    <AdminTable data={data} changeIds={(ids) => { this.setState({ ids }) }} page={page} pageSize={pageSize} wait={wait}
+                        onChange={(deptName, errorPlatform) => { this.setState({ deptName, errorPlatform }) }} 
+                        onTiXing={(id) => {this.setState({allTiXing: false}, () => {this.tiXing(id)});}} />
                     <Pagination defaultCurrent={page} total={nowTotal} onChange={(page, pageSize) => {
                         this.setState({ wait: true });
                         // 检验现在的key判断请求哪个接口
@@ -252,6 +298,9 @@ class AdminModal extends Component {
                         this.setState({ page, pageSize });
                     }} />
                 </div>
+                <Modal open={open} onCancel={() => {this.setState({open: false})}} title={<div><QuestionCircleTwoTone twoToneColor="#FBC14F" style={{ margin: 15, fontSize: 24 }} />提示</div>} onOk={() => {this.tiXing(null)}}>
+                    <div style={ {fontSize: 18, marginLeft: 40} }>确认提醒该数据</div>
+                </Modal>
             </>
         );
     }

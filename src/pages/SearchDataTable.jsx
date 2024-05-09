@@ -14,6 +14,20 @@ import { chongXinJianCe } from './api/TaskCenterXiangQing/XiangQingApi';
 const tableKopf = ["序号", "单位", "站点/账号名称", "平台", "错误类型", "不规范表述", "规范表述", "文章标题", "片段", "数据类型", "引用页", "发布时间", "修改状态"];
 const options = [{ key: "文章片段", value: 1 }, { key: "站点名称", value: 2 }];
 const options2 = [{ key: "全部", value: "2" }, { key: "未修改", value: "0" }, { key: "已修改", value: "1" }, { key: "无需修改", value: "null" }];
+const options3 = [{key: "全部", value: ""},{key: "自定义禁用词", value: "自定义禁用词"},{key: "自定义替换词", value: "自定义替换词"},{key: "自定义领导姓名错误", value: "自定义领导姓名错误"},
+{key: "自定义领导人职务搭配错误", value: "自定义领导人职务搭配错误"},{key: "自定义领导人排序错误", value: "自定义领导人排序错误"},
+{key: "领导姓名错误", value: "领导姓名错误"},{key: "领导职务名称错误", value: "领导职务名称错误"},{key: "领导姓名职务搭配错误", value: "领导姓名职务搭配错误"},
+{key: "领导职务排序错误", value: "领导职务排序错误"},{key: "落马官员", value: "落马官员"},
+{key: "专用表述错误", value: "专用表述错误"},{key: "国家主权错误", value: "国家主权错误"},{key: "机构 / 组织 / 会议名称错误", value: "机构 / 组织 / 会议名称错误"},
+{key: "政策法规文件名称错误", value: "政策法规文件名称错误"},{key: "国家名称错误", value: "国家名称错误"},
+{key: "省市县搭配错误", value: "省市县搭配错误"},{key: "暴恐", value: "暴恐"},{key: "迷信邪教", value: "迷信邪教"},{key: "泄露国家密码", value: "泄露国家密码"},
+{key: "泄露军队信息", value: "泄露军队信息"},{key: "泄露内部信息", value: "泄露内部信息"},{key: "黄赌毒", value: "黄赌毒"},
+{key: "不文明/不恰当用语", value: "不文明/不恰当用语"},{key: "广告法违禁词", value: "广告法违禁词"},{key: "民族宗教错误", value: "民族宗教错误"},
+{key: "自定义错误", value: "自定义错误"},{key: "常见错误", value: "常见错误"},{key: "其他涉政涉敏错误", value: "其他涉政涉敏错误"},
+{key: "少字", value: "少字"},{key: "多字", value: "多字"},{key: "错字/别字", value: "错字/别字"},
+{key: "字词顺序颠倒", value: "字词顺序颠倒"},{key: "语法错误", value: "语法错误"},{key: "标点符号错误", value: "标点符号错误"},
+{key: "日期时间错误", value: "日期时间错误"}, {key: "数字/金额错误", value: "数字/金额错误"}, {key: "语序错误", value: "语序错误"},
+{key: "其它常见词句错误", value: "其它常见词句错误"}, {key: "疾病名称", value: "疾病名称"}, {key: "其他", value: "其他"}];
 /**
  * 查询检测结果页面
  * 
@@ -197,7 +211,7 @@ class SearchDataTable extends Component {
                     </div>
                     <div style={{ marginTop: 20, marginLeft: 20, minWidth: 1430 }}>
                         <div style={{ display: 'inline-block' }}><XiaLaKuang title="状态" options={options2} change={this.changeZhuangTai.bind(this)} /></div>
-                        <div style={{ display: 'inline-block', marginLeft: 12 }}><XiaLaKuang title="错误类型" options={options2} change={this.changeCuoWuType.bind(this)} /></div>
+                        <div style={{ display: 'inline-block', marginLeft: 12 }}><XiaLaKuang title="错误类型" options={options3} change={this.changeCuoWuType.bind(this)} /></div>
                         <div style={{ display: 'inline-block', float: 'right', marginRight: 20 }}><Search options={options} /></div>
                     </div>
                 </div>
