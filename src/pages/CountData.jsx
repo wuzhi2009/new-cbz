@@ -53,7 +53,7 @@ class CountData extends Component {
     render() { 
         const { now, wait, data, dpName, isAdmin, open } = this.state;
         return (
-            <>
+            <div style={ {height: 900} }>
             <div style={ {margin: '15px 11px', minWidth: 1680, position: 'relative'} }>
                 <div style={ {width: 340, height: 365, display: 'inline-block', position: 'absolute', left: 10, border: '1px solid #D9D9D9'} }>
                     <CountDataRiLi onChange={(startDate, endDate, now) => {this.setState({startDate, endDate, now})}} />
@@ -102,7 +102,7 @@ class CountData extends Component {
                 <div style={ {position: 'absolute', top: -50, right: -50, cursor: 'pointer'} } onClick={() => {this.setState({open: false})}}><img alt='' src={x} width='50px' /></div>
                 <AdminModal />
             </Modal>
-            </>
+            </div>
         );
     }
 }
