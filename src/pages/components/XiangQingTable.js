@@ -196,7 +196,7 @@ class XiangQingTable extends Component {
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><LangText col={3} text={<span style={ {fontSize: 12} }>{item.articleTitle}</span>} is={false} /> </td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><div style={ {minHeight: 65} }><LangText col={3} text={newDescription} is={true} /></div></td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.doctype}</td>
-                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><Tooltip title={item.postUrl}><a href={item.postUrl}>{newPostUrl}</a></Tooltip></td>
+                                    <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }><Tooltip title={item.postUrl}><a href={item.postUrl} target="_blank" rel='noopener noreferrer'>{newPostUrl}</a></Tooltip></td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{item.postTime}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>{newModifyState}</td>
                                     <td style={ {textAlign: 'center', border: '1px solid #8F9399'} }>
