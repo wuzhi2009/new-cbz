@@ -180,7 +180,7 @@ class XiangQingTable extends Component {
                                     break;
                             }
                             var newPostUrl = postUrl;
-                            if (postUrl.length > 37) {
+                            if (postUrl && postUrl.length > 37) {
                                 newPostUrl = postUrl.substring(0, 37) + "...";
                             }
                             return (

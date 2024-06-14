@@ -77,7 +77,7 @@ export function getWaitChange(page, pageSize, deptName, siteName, errorPlatform,
  * @returns 
  */
 export function tx(info) {
-    return post("/sp/count//errRemind", info);
+    return post("/sp/count/errRemind", info);
 }
 
 const req = { getErrCity, getErrTop, getHightHz, list, day, getErroList, getSeriousErr, getSevenDay, getWaitChange, tx };
